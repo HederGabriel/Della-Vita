@@ -1,0 +1,84 @@
+@charset "utf-8";
+
+/* Reset de margens e preenchimentos */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo do container principal */
+main {
+    width: 400px;
+    min-height: 400px; /* Garantir altura mínima */
+    background-color: red;
+    text-align: center;
+    margin: 15vh auto 0px auto;
+    padding: 20px; /* Espaçamento interno */
+    box-sizing: border-box; /* Incluir padding no tamanho total */
+}
+
+/* Estilo do formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding-top: 20px;
+    justify-content: space-between; /* Distribuir espaço */
+}
+
+/* Estilo dos rótulos */
+form label {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Estilo dos campos de entrada */
+form input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Estilo ao focar nos campos de entrada */
+form input:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Estilo dos botões */
+form button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo do botão "Voltar" */
+form button#btn-voltar {
+    background-color: gray;
+    color: white;
+    margin-top: 10px;
+}
+
+form button#btn-voltar:hover {
+    background-color: darkgray;
+}
+
+/* Estilo da mensagem de erro */
+.error-message {
+    color: yellow;
+    font-size: 14px;
+    text-align: center;
+    margin: 0; /* Remover margens extras */
+}

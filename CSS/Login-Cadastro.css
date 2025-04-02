@@ -1,0 +1,58 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: 400px;
+    height: 500px;
+    background-color: red;
+    text-align: center;
+    margin: 15vh auto 0px auto;
+}
+
+form button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+
+form button#btn-login {
+    margin-top: 22vh;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+form button#btn-esqueci {
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+}
+
+form button#btn-esqueci:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+form button#btn-voltar {
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+form button#btn-voltar:hover {
+    background-color: darkgray;
+}
