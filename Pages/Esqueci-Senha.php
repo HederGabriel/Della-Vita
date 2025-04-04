@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esqueci a Senha</title>
     <link rel="stylesheet" href="/CSS/Esqueci-Senha.css"> <!-- Estilo da página -->
+    <script src="../JS/esqueci-senha.js"></script>
 </head>
 <body>
     

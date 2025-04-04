@@ -1,0 +1,51 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 20px 10px 20px; /* Reduzi ainda mais o padding vertical */
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo {
+    width: 100px;
+    height: 50px;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.login-btn {
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px; /* Largura da imagem */
+    height: 70px; /* Altura da imagem */
+    border-radius: 50%;
+    overflow: hidden; /* Garante que a imagem não ultrapasse os limites */
+    background-color: #f4f4f4;
+    padding: 0; /* Zerei o padding */
+    object-fit: cover; /* Garante que a imagem se ajuste corretamente */
+}

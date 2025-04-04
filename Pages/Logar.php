@@ -10,6 +10,7 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logar</title>
     <link rel="stylesheet" href="/CSS/Logar.css"> <!-- Estilo da página -->
+    <script src="../JS/logar.js"></script>
 </head>
 <body>
     
@@ -37,6 +38,8 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
 
                 if ($result->num_rows > 0) {
                     // Login bem-sucedido
+                    $cliente = $result->fetch_assoc(); // Obter informações do cliente
+                    $_SESSION['cliente'] = $cliente; // Armazenar informações na sessão
                     $_SESSION['error_message'] = null; // Limpar mensagem de erro
                     header("Location: index.php"); // Redirecionar para a página inicial
                     exit();

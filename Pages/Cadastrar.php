@@ -10,6 +10,7 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar</title>
     <link rel="stylesheet" href="/CSS/Cadastrar.css">
+    <script src="../JS/cadastrar.js"></script>
 </head>
 <body>
     

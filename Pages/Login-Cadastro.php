@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar</title>
     <link rel="stylesheet" href="../CSS/Login-Cadastro.css"> 
+    <script src="../JS/login-cadastro.js"></script>
 </head>
 <body>
 
