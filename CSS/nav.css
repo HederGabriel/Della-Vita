@@ -2,7 +2,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2px 20px 10px 20px; /* Reduzi ainda mais o padding vertical */
+    padding: 2px 20px 10px 20px;
     background-color: #f4f4f4;
     border-bottom: 1px solid #ccc;
 }
@@ -20,12 +20,33 @@ nav {
 .nav-links {
     display: flex;
     gap: 15px;
+    margin-left: 20px; /* Espaço entre a logo e os links */
 }
 
 .nav-links a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
+}
+
+.nav-links a.active {
+    color: #007BFF; /* Cor diferente para o link ativo */
+    font-weight: bold;
+    border-bottom: 2px solid #007BFF; /* Linha inferior para destacar */
+}
+
+.nav-search {
+    flex-grow: 1; /* Ocupa o espaço central */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-search input {
+    width: 60%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .login-btn {
@@ -41,19 +62,18 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70px; /* Largura da imagem */
-    height: 70px; /* Altura da imagem */
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    overflow: hidden; /* Garante que a imagem não ultrapasse os limites */
+    overflow: hidden;
     background-color: #f4f4f4;
-    padding: 0; /* Zerei o padding */
-    object-fit: cover; /* Garante que a imagem se ajuste corretamente */
+    padding: 0;
+    object-fit: cover;
 }
 
-/* Estilo para o menu flutuante */
 #user-menu {
-    display: none;
     position: absolute;
+    display: none;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -76,7 +96,6 @@ nav {
     color: black;
 }
 
-/* Estilo para o modal de logout */
 #logout-modal {
     display: none;
     position: fixed;

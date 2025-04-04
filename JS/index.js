@@ -1,6 +1,7 @@
 function toggleMenu(event) {
     const menu = document.getElementById('user-menu');
-    const rect = event.target.getBoundingClientRect();
+    const profile = event.target.closest('.user-profile');
+    const rect = profile.getBoundingClientRect();
     menu.style.top = `${rect.bottom + window.scrollY}px`;
     menu.style.left = `${rect.left + window.scrollX}px`;
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';

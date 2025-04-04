@@ -1,11 +1,6 @@
 <?php 
 include_once '../System/session.php'; // Inclui o arquivo de sessão
 
-// Verificar se o usuário veio da página Logar.php
-if (isset($_SESSION['cliente'])) {
-    $cliente = $_SESSION['cliente']; // Obter informações do cliente da sessão
-}
-
 // Logout do usuário
 if (isset($_POST['logout'])) {
     session_destroy(); // Destruir a sessão
@@ -16,15 +11,14 @@ if (isset($_POST['logout'])) {
 // Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Della Vita</title>
+    <title>Perfil</title>
     <link rel="stylesheet" href="../CSS/nav.css"> <!-- Estilo do nav -->
-    <link rel="stylesheet" href="../CSS/index.css"> <!-- Estilo específico do index -->
+    <link rel="stylesheet" href="../CSS/Perfil.css"> <!-- Estilo específico do perfil -->
     <script src="../JS/index.js"></script>
 </head>
 <body>
@@ -58,18 +52,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </ul>
     </div>
     <div id="overlay" onclick="hideLogoutModal()"></div>
-    <div id="logout-modal">
+    <div id="logout-modal" class="centered">
         <p>Tem certeza que deseja sair?</p>
         <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
         <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
     </div>
+    <form id="logout-form" method="POST" style="display: none;">
+        <input type="hidden" name="logout" value="1">
+    </form>
+    
+    <main>
+        <img src="../IMG/Profile/Default.png" alt="Avatar" class="avatar">
+        <div class="client-name">
+            <?= isset($cliente['nome']) ? htmlspecialchars($cliente['nome']) : 'Nome do Cliente'; ?>
+        </div>
+        <div class="placeholder-box"></div>
+    </main>
 
-    <!-- Página inicial do sistema -->
-    <h1>PAGINA INICIAL</h1>
-    <?php if (isset($cliente)): ?>
-        <form id="logout-form" method="POST" style="display: none;">
-            <input type="hidden" name="logout" value="1">
-        </form>
-    <?php endif; ?>
 </body>
 </html>
