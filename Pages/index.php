@@ -52,8 +52,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </nav>
     <div id="user-menu">
         <ul>
-            <li><a href="Perfil.php">Perfil</a></li>
-            <li><a href="#">Pedidos</a></li>
+            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
+            <li><a href="#" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
             <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
         </ul>
     </div>

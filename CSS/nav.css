@@ -96,6 +96,12 @@ nav {
     color: black;
 }
 
+#user-menu ul li a.active {
+    color: #007BFF; /* Cor diferente para o link ativo */
+    font-weight: bold;
+    border-bottom: 2px solid #007BFF; /* Linha inferior para destacar */
+}
+
 #logout-modal {
     display: none;
     position: fixed;
