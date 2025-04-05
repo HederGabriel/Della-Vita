@@ -43,12 +43,12 @@ CREATE TABLE `clientes` (
   `id_cliente` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
   `email` varchar(150) NOT NULL,
-  `senha` varchar(6) NOT NULL,
+  `senha` varbinary(128) NOT NULL,
   `telefone` varchar(20) DEFAULT NULL,
   `avatar` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,12 +60,12 @@ DROP TABLE IF EXISTS `enderecos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `enderecos` (
   `id_endereco` int(11) NOT NULL AUTO_INCREMENT,
-  `rua` varchar(150) NOT NULL,
-  `numero` varchar(10) NOT NULL,
-  `bairro` varchar(100) NOT NULL,
-  `setor` varchar(100) DEFAULT NULL,
-  `cep` varchar(10) NOT NULL,
-  `complemento` varchar(250) DEFAULT NULL,
+  `rua` varbinary(150) NOT NULL,
+  `numero` varbinary(10) NOT NULL,
+  `bairro` varbinary(100) NOT NULL,
+  `setor` varbinary(100) DEFAULT NULL,
+  `cep` varbinary(10) NOT NULL,
+  `complemento` varbinary(250) DEFAULT NULL,
   `id_pedido` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_endereco`),
   KEY `id_pedido` (`id_pedido`),
@@ -165,4 +165,4 @@ CREATE TABLE `produtos` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-01  9:49:21
+-- Dump completed on 2025-04-05 12:35:06
