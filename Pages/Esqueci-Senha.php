@@ -63,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $email = $_SESSION['recovery_email'];
 
             if ($novaSenha === $confirmeSenha) {
-                // Atualizar a senha no banco de dados
-                $sql = "UPDATE clientes SET senha = '$novaSenha' WHERE email = '$email'";
+                $novaSenhaHash = password_hash($novaSenha, PASSWORD_DEFAULT); // Criptografar a nova senha
+                $sql = "UPDATE clientes SET senha = '$novaSenhaHash' WHERE email = '$email'";
                 if ($conn->query($sql)) {
                     $_SESSION['error_message'] = "Senha redefinida com sucesso.";
                     unset($_SESSION['recovery_email']);

@@ -42,7 +42,7 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $nomeUsuario = $_POST['nome'];
             $email = $_POST['email'];
-            $senha = $_POST['senha'];
+            $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Criptografar a senha
 
             // Verificar se o email já está cadastrado
             $checkEmailSql = "SELECT email FROM clientes WHERE email = '$email'";
