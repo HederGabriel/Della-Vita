@@ -33,22 +33,24 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
                 $senha = $_POST['senha'];
 
                 // Verificar credenciais no banco de dados
-                $sql = "SELECT * FROM clientes WHERE email = '$email' AND senha = '$senha'";
+                $sql = "SELECT * FROM clientes WHERE email = '$email'";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
-                    // Login bem-sucedido
                     $cliente = $result->fetch_assoc(); // Obter informações do cliente
-                    $_SESSION['cliente'] = $cliente; // Armazenar informações na sessão
-                    $_SESSION['error_message'] = null; // Limpar mensagem de erro
-                    header("Location: index.php"); // Redirecionar para a página inicial
-                    exit();
+                    if (password_verify($senha, $cliente['senha'])) { // Verificar a senha
+                        $_SESSION['cliente'] = $cliente; // Armazenar informações na sessão
+                        $_SESSION['error_message'] = null; // Limpar mensagem de erro
+                        header("Location: index.php"); // Redirecionar para a página inicial
+                        exit();
+                    } else {
+                        $_SESSION['error_message'] = "Erro: Email ou senha inválidos.";
+                    }
                 } else {
-                    // Credenciais inválidas
                     $_SESSION['error_message'] = "Erro: Email ou senha inválidos.";
-                    header("Location: Logar.php"); // Recarregar a página
-                    exit();
                 }
+                header("Location: Logar.php"); // Recarregar a página
+                exit();
             }
 
             // Exibir mensagem de erro, se existir, e removê-la
