@@ -14,6 +14,16 @@ function hideMenu() {
     document.getElementById('user-menu').style.display = 'none';
 }
 
+function showLogoutModal() {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('logout-modal').style.display = 'block';
+}
+
+function hideLogoutModal() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('logout-modal').style.display = 'none';
+}
+
 document.addEventListener('click', function (event) {
     const menu = document.getElementById('user-menu');
     const profile = document.querySelector('.user-profile');

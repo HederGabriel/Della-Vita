@@ -48,3 +48,22 @@ function selectAvatar(avatarPath) {
     // Define o valor do avatar selecionado no campo oculto
     document.getElementById('selected-avatar').value = avatarPath;
 }
+
+// Função para alterar senha
+document.querySelector('.change-password-btn').addEventListener('click', function () {
+    window.location.href = '/alterar-senha.html';
+});
+
+// Função para gerenciar endereços
+document.querySelector('.addresses-btn').addEventListener('click', function () {
+    window.location.href = '/enderecos.html';
+});
+
+// Função para excluir conta
+document.querySelector('.delete-account-btn').addEventListener('click', function () {
+    const confirmDelete = confirm('Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.');
+    if (confirmDelete) {
+        alert('Conta excluída com sucesso.');
+        // Adicione a lógica para excluir a conta aqui
+    }
+});

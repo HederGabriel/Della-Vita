@@ -2,6 +2,16 @@
 include_once '../System/session.php'; // Inclui o arquivo de sessão
 include_once '../System/db.php'; // Inclui o arquivo de conexão com o banco de dados
 
+// Verifica se o cliente clicou em "Sair"
+if (isset($_POST['logout'])) {
+    session_destroy(); // Destruir a sessão
+    if (isset($_COOKIE[session_name()])) {
+        setcookie(session_name(), '', time() - 3600, '/'); // Remover cookie de sessão
+    }
+    header("Location: index.php"); // Redirecionar para a página inicial
+    exit();
+}
+
 // Verifica se a sessão está ativa
 if (!isset($_SESSION['id_cliente'])) {
     header("Location: login-Cadastro.php"); // Redireciona para login se não estiver logado
@@ -45,7 +55,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title>Perfil</title>
     <link rel="stylesheet" href="../CSS/nav.css"> <!-- Estilo do nav -->
     <link rel="stylesheet" href="../CSS/Perfil.css"> <!-- Estilo específico do perfil -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!-- Bootstrap Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"> <!-- Google Material Symbols -->
     <script src="../JS/Perfil.js"></script> <!-- Script externo -->
 </head>
@@ -89,7 +98,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <input type="hidden" name="logout" value="1">
     </form>
     
-    <main>
+    <header>
         <div class="avatar-container">
             <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Avatar" class="avatar">
             <div class="client-name">
@@ -98,23 +107,48 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <span class="edit-icon">edit</span> <!-- Ícone posicionado atrás -->
             <button class="edit-avatar-btn" onclick="toggleAvatarOptions()"></button> <!-- Botão transparente -->
         </div>
-        <div class="placeholder-box"></div> <!-- Espaço cinza exibido por padrão -->
-        <div id="avatar-options" style="display: none;"> <!-- Opções escondidas por padrão -->
-            <form method="POST" id="avatar-form">
-                <div class="avatar-options-container">
-                    <img src="../IMG/Profile/01.png" alt="Avatar 1" class="avatar-option" onclick="selectAvatar('../IMG/Profile/01.png')">
-                    <img src="../IMG/Profile/02.png" alt="Avatar 2" class="avatar-option" onclick="selectAvatar('../IMG/Profile/02.png')">
-                    <img src="../IMG/Profile/03.png" alt="Avatar 3" class="avatar-option" onclick="selectAvatar('../IMG/Profile/03.png')">
-                    <img src="../IMG/Profile/04.png" alt="Avatar 4" class="avatar-option" onclick="selectAvatar('../IMG/Profile/04.png')">
-                </div>
-                <input type="hidden" name="avatar" id="selected-avatar">
-                <div class="avatar-buttons">
-                    <button type="submit">Salvar</button>
-                    <button type="submit" name="reset_avatar">Padrão</button>
-                </div>
-            </form>
-        </div>
+    </header>
+
+    <main>
+        <section class="profile-options">
+            <!-- Botões de opções -->
+            <button onclick="window.location.href='MeusDados.php'" class="profile-option-btn">
+                Meus Dados
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+            </button>
+
+            <button onclick="window.location.href='Esqueci-Senha.php'" class="profile-option-btn">
+                Alterar Senha
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+            </button>
+
+            <button onclick="window.location.href='Enderecos.php'" class="profile-option-btn">
+                Endereços
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+            </button>
+
+            <button onclick="if(confirm('Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.')) { alert('Conta excluída com sucesso.'); }" class="profile-option-btn delete-account-btn">
+                Excluir Conta
+                <span class="material-symbols-outlined">arrow_forward_ios</span>
+            </button>
+        </section>
     </main>
+
+    <div id="avatar-options" style="display: none;">
+        <form method="POST" id="avatar-form">
+            <div class="avatar-options-container">
+                <img src="../IMG/Profile/01.png" alt="Avatar 1" class="avatar-option" onclick="selectAvatar('../IMG/Profile/01.png')">
+                <img src="../IMG/Profile/02.png" alt="Avatar 2" class="avatar-option" onclick="selectAvatar('../IMG/Profile/02.png')">
+                <img src="../IMG/Profile/03.png" alt="Avatar 3" class="avatar-option" onclick="selectAvatar('../IMG/Profile/03.png')">
+                <img src="../IMG/Profile/04.png" alt="Avatar 4" class="avatar-option" onclick="selectAvatar('../IMG/Profile/04.png')">
+            </div>
+            <input type="hidden" name="avatar" id="selected-avatar">
+            <div class="avatar-buttons">
+                <button type="submit">Salvar</button>
+                <button type="submit" name="reset_avatar">Padrão</button>
+            </div>
+        </form>
+    </div>
     <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
     <script src="../JS/Perfil.js"></script>
 </body>

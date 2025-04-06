@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         ?>
 
         <div class="button-container">
-            <button type="button" id="btn-voltar" onclick="window.location.href='Login-Cadastro.php'">Voltar</button>
+            <button type="button" id="btn-voltar" onclick="window.location.href='<?= $_SERVER['HTTP_REFERER'] ?? 'Login-Cadastro.php' ?>'">Voltar</button>
         </div>
     </main>
 
