@@ -62,8 +62,8 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70px;
-    height: 70px;
+    width: 70px; /* Ajustado para 70px */
+    height: 70px; /* Ajustado para 70px */
     border-radius: 50%;
     overflow: hidden;
     background-color: #f4f4f4;

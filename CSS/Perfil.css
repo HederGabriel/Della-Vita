@@ -3,6 +3,17 @@ main {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    /* pointer-events: none; Removido para tornar o elemento interativo */
+}
+
+
+
+nav {
+    pointer-events: auto; /* Permite interação com o nav */
+}
+
+nav * {
+    pointer-events: auto; /* Permite interação com todos os elementos dentro do nav */
 }
 
 .avatar {
@@ -10,18 +21,153 @@ main {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    pointer-events: none; /* Torna o avatar não interativo */
 }
 
 .client-name {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin: 0px 0px 0px 0px; /* Ajusta a margem para -10px no topo e 0px nas laterais */
+    text-align: center; /* Centraliza o texto */
+    pointer-events: none; /* Torna o elemento não interativo */
 }
 
 .placeholder-box {
     width: 80%;
     height: 200px;
-    background-color: #ccc;
+    background-color: #ccc; /* Fundo cinza */
     border-radius: 10px;
+    display: block; /* Exibe o espaço cinza por padrão */
+    margin: 40px auto 0px auto; /* Centraliza horizontalmente */
+}
+
+.avatar-container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Alinha avatar e nome em coluna */
+    align-items: center;
+    gap: 3px; /* Reduz ainda mais o espaçamento entre avatar e nome */
+    margin-top: 20px; /* Espaçamento entre o nav e o avatar-container */
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 25px; /* Mantém o botão na mesma posição */
+    right: -7px; /* Mantém o botão na mesma posição */
+    background-color: transparent; /* Fundo transparente */
+    color: transparent; /* Torna o texto invisível */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 20px; /* Aumenta o tamanho do botão para cobrir o ícone */
+    cursor: pointer;
+    z-index: 2; /* Garante que o botão fique acima do ícone */
+}
+
+.edit-avatar-btn:hover {
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 26px; /* Alinha o ícone com o botão */
+    right: -2px; /* Alinha o ícone com o botão */
+    font-size: 30px; /* Ajusta o tamanho do ícone */
+    color: black; /* Cor do ícone */
+    font-family: 'Material Symbols Outlined', sans-serif; /* Fonte do Google Icons */
+    pointer-events: none; /* Torna o ícone não interativo */
+    z-index: 1; /* Garante que o ícone fique atrás do botão */
+}
+
+#avatar-options {
+    display: none; /* Inicialmente escondido */
+    width: 80%; /* Mesma largura do placeholder */
+    height: 200px; /* Mesma altura do placeholder */
+    background-color: #f9f9f9; /* Fundo claro para as opções */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra */
+    margin: 40px auto 100px auto; /* Centraliza horizontalmente */
+    display: flex;
+    flex-direction: column; /* Alinha opções e botões em coluna */
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Espaçamento entre as opções */
+    padding: 10px;
+}
+
+.avatar-options-container {
+    display: flex;
+    gap: 15px; /* Espaçamento entre as opções */
+}
+
+.avatar-option {
+    width: 70px; /* Tamanho das opções */
+    height: 70px;
+    border-radius: 5px; /* Bordas levemente arredondadas */
+    border: 2px solid #ccc; /* Borda cinza claro */
+    padding: 5px; /* Espaçamento entre a borda e a imagem */
+    background-color: white; /* Fundo branco para destacar a imagem */
+    cursor: pointer;
+    object-fit: cover;
+    transition: transform 0.2s, border-color 0.2s; /* Animação ao passar o mouse e ao selecionar */
+}
+
+.avatar-option:hover {
+    transform: scale(1.1); /* Aumenta levemente ao passar o mouse */
+}
+
+.avatar-option.selected {
+    border-color: #007BFF; /* Cor azul do destaque da página atual */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Adiciona um brilho azul ao redor */
+}
+
+.avatar-buttons {
+    display: flex;
+    justify-content: center; /* Centraliza os botões */
+    gap: 15px; /* Espaçamento entre os botões */
+    margin-top: 15px; /* Espaçamento acima dos botões */
+}
+
+.avatar-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.avatar-buttons button[type="submit"] {
+    background-color: #4CAF50; /* Verde para o botão Salvar */
+    color: white;
+}
+
+.avatar-buttons button[name="reset_avatar"] {
+    background-color: #f44336; /* Vermelho para o botão Padrão */
+    color: white;
+}
+
+#avatar-options button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f44336; /* Vermelho para o botão limpar */
+    color: white;
+    font-weight: bold;
+}
+
+#user-menu {
+    position: absolute; /* Position relative to the viewport */
+    background-color: white; /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+    border-radius: 8px; /* Rounded corners */
+    z-index: 1000; /* Ensure it appears above other elements */
+    padding: 10px; /* Add padding */
+ 
+    display: none; /* Initially hidden */
+}
+
+.user-profile {
+    position: relative; /* Define the context for positioning */
+    cursor: pointer; /* Show that it's clickable */
 }

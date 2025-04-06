@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Iniciar a sessão para gerenciar mensagens de erro
-include '../System/db_connect.php'; // Conexão com o banco de dados
+include '../System/db.php'; // Conexão com o banco de dados
 ?>
 
 <!DOCTYPE html>
@@ -45,20 +45,21 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
             $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Criptografar a senha
 
             // Verificar se o email já está cadastrado
-            $checkEmailSql = "SELECT email FROM clientes WHERE email = '$email'";
-            $result = $conn->query($checkEmailSql);
+            $checkEmailSql = "SELECT email FROM clientes WHERE email = :email";
+            $stmt = $pdo->prepare($checkEmailSql);
+            $stmt->execute(['email' => $email]);
 
-            if ($result->num_rows > 0) {
+            if ($stmt->rowCount() > 0) {
                 // Email já cadastrado
                 $_SESSION['error_message'] = "Erro: Este email já está cadastrado.";
                 header("Location: Cadastrar.php");
                 exit();
             } else {
                 // Inserir novo usuário no banco de dados
-                $sql = "INSERT INTO clientes (nome, email, senha) 
-                        VALUES ('$nomeUsuario', '$email', '$senha')";
+                $sql = "INSERT INTO clientes (nome, email, senha) VALUES (:nome, :email, :senha)";
+                $stmt = $pdo->prepare($sql);
 
-                if ($conn->query($sql)) {
+                if ($stmt->execute(['nome' => $nomeUsuario, 'email' => $email, 'senha' => $senha])) {
                     $_SESSION['error_message'] = null; // Limpar mensagem de erro
                     header("Location: Logar.php");
                     exit();

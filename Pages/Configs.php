@@ -1,5 +1,5 @@
 <?php 
-include_once '../session.php'; // Inclui o arquivo de sessão
+include_once '../System/session.php'; // Inclui o arquivo de sessão
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -23,7 +23,7 @@ include_once '../session.php'; // Inclui o arquivo de sessão
         <?php if (isset($cliente)): ?>
             <!-- Exibir perfil do usuário -->
             <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="../IMG/Profile/Default.png" alt="Foto de Perfil">
+                <img src="<?= htmlspecialchars($cliente['avatar']) ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
             <!-- Botão de login -->

@@ -1,9 +1,17 @@
 <?php 
 include_once '../System/session.php'; // Inclui o arquivo de sessão
+include_once '../System/db.php'; // Inclui o arquivo de conexão com o banco de dados
 
-// Verificar se o usuário veio da página Logar.php
-if (isset($_SESSION['cliente'])) {
-    $cliente = $_SESSION['cliente']; // Obter informações do cliente da sessão
+// Verificar se o usuário está logado
+if (isset($_SESSION['id_cliente'])) {
+    $id_cliente = $_SESSION['id_cliente'];
+    $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
+    $stmt->execute(['id_cliente' => $id_cliente]);
+    $cliente = $stmt->fetch();
+    if ($cliente) {
+        $_SESSION['nome'] = $cliente['nome'];
+        $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
+    }
 }
 
 // Logout do usuário
@@ -40,10 +48,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="nav-search">
             <input type="text" placeholder="Buscar...">
         </div>
-        <?php if (isset($cliente)): ?>
+        <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
             <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="../IMG/Profile/Default.png" alt="Foto de Perfil">
+                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
             <!-- Botão de login -->
@@ -71,5 +79,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <input type="hidden" name="logout" value="1">
         </form>
     <?php endif; ?>
+    <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
+    <script src="../JS/index.js"></script>
 </body>
 </html>

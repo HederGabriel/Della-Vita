@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Iniciar a sessão para gerenciar mensagens de erro
-include '../System/db_connect.php'; // Conexão com o banco de dados
+include '../System/db.php'; // Conexão com o banco de dados
 ?>
 
 <!DOCTYPE html>
@@ -33,19 +33,17 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
                 $senha = $_POST['senha'];
 
                 // Verificar credenciais no banco de dados
-                $sql = "SELECT * FROM clientes WHERE email = '$email'";
-                $result = $conn->query($sql);
+                $sql = "SELECT * FROM clientes WHERE email = :email";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(['email' => $email]);
+                $cliente = $stmt->fetch();
 
-                if ($result->num_rows > 0) {
-                    $cliente = $result->fetch_assoc(); // Obter informações do cliente
-                    if (password_verify($senha, $cliente['senha'])) { // Verificar a senha
-                        $_SESSION['cliente'] = $cliente; // Armazenar informações na sessão
-                        $_SESSION['error_message'] = null; // Limpar mensagem de erro
-                        header("Location: index.php"); // Redirecionar para a página inicial
-                        exit();
-                    } else {
-                        $_SESSION['error_message'] = "Erro: Email ou senha inválidos.";
-                    }
+                if ($cliente && password_verify($senha, $cliente['senha'])) { // Verificar a senha
+                    $_SESSION['id_cliente'] = $cliente['id_cliente']; // Armazenar ID do cliente na sessão
+                    $_SESSION['nome'] = $cliente['nome']; // Armazenar nome na sessão
+                    $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png'; // Avatar padrão
+                    header("Location: index.php"); // Redirecionar para a página inicial
+                    exit();
                 } else {
                     $_SESSION['error_message'] = "Erro: Email ou senha inválidos.";
                 }

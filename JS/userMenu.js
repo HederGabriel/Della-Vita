@@ -1,0 +1,23 @@
+function toggleMenu(event) {
+    const menu = document.getElementById('user-menu');
+    const profile = event.target.closest('.user-profile');
+    if (!menu || !profile) return; // Ensure elements exist
+
+    const rect = profile.getBoundingClientRect();
+    menu.style.top = `${rect.bottom + window.scrollY}px`; // Position below the user-profile
+    menu.style.left = `${rect.left + window.scrollX}px`; // Align with the user-profile
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; // Toggle visibility
+    event.stopPropagation(); // Prevent click propagation
+}
+
+function hideMenu() {
+    document.getElementById('user-menu').style.display = 'none';
+}
+
+document.addEventListener('click', function (event) {
+    const menu = document.getElementById('user-menu');
+    const profile = document.querySelector('.user-profile');
+    if (menu && profile && !menu.contains(event.target) && !profile.contains(event.target)) {
+        menu.style.display = 'none'; // Hide menu if clicked outside
+    }
+});

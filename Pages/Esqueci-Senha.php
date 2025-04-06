@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Iniciar a sessão para gerenciar mensagens de erro
-include '../System/db_connect.php'; // Conexão com o banco de dados
+include '../System/db.php'; // Conexão com o banco de dados
 
 // Resetar a página ao recarregar
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -29,10 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $email = $_POST['email'];
 
             // Verificar se o email está cadastrado
-            $sql = "SELECT * FROM clientes WHERE email = '$email'";
-            $result = $conn->query($sql);
+            $sql = "SELECT * FROM clientes WHERE email = :email";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['email' => $email]);
 
-            if ($result->num_rows > 0) {
+            if ($stmt->rowCount() > 0) {
                 // Simular envio de código de recuperação
                 $_SESSION['recovery_email'] = $email;
                 $_SESSION['recovery_code'] = rand(100000, 999999); // Gerar código de 6 dígitos
@@ -64,8 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
             if ($novaSenha === $confirmeSenha) {
                 $novaSenhaHash = password_hash($novaSenha, PASSWORD_DEFAULT); // Criptografar a nova senha
-                $sql = "UPDATE clientes SET senha = '$novaSenhaHash' WHERE email = '$email'";
-                if ($conn->query($sql)) {
+                $sql = "UPDATE clientes SET senha = :senha WHERE email = :email";
+                $stmt = $pdo->prepare($sql);
+
+                if ($stmt->execute(['senha' => $novaSenhaHash, 'email' => $email])) {
                     $_SESSION['error_message'] = "Senha redefinida com sucesso.";
                     unset($_SESSION['recovery_email']);
                     unset($_SESSION['recovery_code']);
