@@ -44,6 +44,30 @@ if (isset($_POST['reset_avatar'])) {
     $_SESSION['avatar'] = '../IMG/Profile/Default.png'; // Reseta para o avatar padrão
 }
 
+// Verifica se o formulário de exclusão de conta foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
+    $password = $_POST['password'];
+
+    // Verifica se a senha está correta
+    $stmt = $pdo->prepare("SELECT senha FROM clientes WHERE id_cliente = ?");
+    $stmt->execute([$id_cliente]);
+    $cliente = $stmt->fetch();
+
+    if ($cliente && password_verify($password, $cliente['senha'])) {
+        // Exclui a conta do cliente
+        $stmt = $pdo->prepare("DELETE FROM clientes WHERE id_cliente = ?");
+        $stmt->execute([$id_cliente]);
+
+        // Destroi a sessão e redireciona para a página inicial
+        session_destroy();
+        echo "Conta excluída com sucesso.";
+        exit();
+    } else {
+        echo "Senha incorreta.";
+        exit();
+    }
+}
+
 // Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -110,45 +134,72 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </header>
 
     <main>
+        <!-- Avatar Options -->
+        <div id="avatar-options" style="display: none;">
+            <form method="POST" id="avatar-form">
+                <div class="avatar-options-container">
+                    <img src="../IMG/Profile/01.png" alt="Avatar 1" class="avatar-option" onclick="selectAvatar('../IMG/Profile/01.png')">
+                    <img src="../IMG/Profile/02.png" alt="Avatar 2" class="avatar-option" onclick="selectAvatar('../IMG/Profile/02.png')">
+                    <img src="../IMG/Profile/03.png" alt="Avatar 3" class="avatar-option" onclick="selectAvatar('../IMG/Profile/03.png')">
+                    <img src="../IMG/Profile/04.png" alt="Avatar 4" class="avatar-option" onclick="selectAvatar('../IMG/Profile/04.png')">
+                </div>
+                <input type="hidden" name="avatar" id="selected-avatar">
+                <div class="avatar-buttons">
+                    <button type="submit">Salvar</button>
+                    <button type="submit" name="reset_avatar">Padrão</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Profile Options -->
         <section class="profile-options">
-            <!-- Botões de opções -->
             <button onclick="window.location.href='MeusDados.php'" class="profile-option-btn">
+                <span class="material-symbols-outlined icon-left">person</span>
                 Meus Dados
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
             </button>
-
             <button onclick="window.location.href='Esqueci-Senha.php'" class="profile-option-btn">
+                <span class="material-symbols-outlined icon-left">key</span>
                 Alterar Senha
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
             </button>
-
-            <button onclick="window.location.href='Enderecos.php'" class="profile-option-btn">
-                Endereços
+            <button onclick="window.location.href=''" class="profile-option-btn">
+                <span class="material-symbols-outlined icon-left">palette</span>
+                Tema
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
             </button>
-
-            <button onclick="if(confirm('Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.')) { alert('Conta excluída com sucesso.'); }" class="profile-option-btn delete-account-btn">
+            <button class="profile-option-btn delete-account-btn">
+                <span class="material-symbols-outlined icon-left">delete</span>
                 Excluir Conta
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
             </button>
         </section>
+
+        <!-- Overlay para o modal -->
+        <div id="overlay-delete" onclick="hideDeleteModal()"></div>
+
+        <!-- Modal de exclusão de conta -->
+        <div id="delete-account-modal">
+            <p>Tem certeza de que deseja excluir sua conta?</p>
+            <div class="modal-buttons">
+                <button id="confirm-delete-btn" class="confirm-btn">Confirmar</button>
+                <button id="cancel-delete-btn" class="cancel-btn" onclick="hideDeleteModal()">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Modal para digitar a senha -->
+        <div id="password-modal" style="display: none;">
+            <p>Digite sua senha para confirmar a exclusão:</p>
+            <form method="POST" id="delete-account-form">
+                <input type="password" name="password" id="password-input" placeholder="Senha" minlength="6" maxlength="6" required>
+                <div class="modal-buttons">
+                    <button type="submit" class="confirm-btn">Confirmar</button>
+                    <button type="button" class="cancel-btn" onclick="hidePasswordModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </main>
 
-    <div id="avatar-options" style="display: none;">
-        <form method="POST" id="avatar-form">
-            <div class="avatar-options-container">
-                <img src="../IMG/Profile/01.png" alt="Avatar 1" class="avatar-option" onclick="selectAvatar('../IMG/Profile/01.png')">
-                <img src="../IMG/Profile/02.png" alt="Avatar 2" class="avatar-option" onclick="selectAvatar('../IMG/Profile/02.png')">
-                <img src="../IMG/Profile/03.png" alt="Avatar 3" class="avatar-option" onclick="selectAvatar('../IMG/Profile/03.png')">
-                <img src="../IMG/Profile/04.png" alt="Avatar 4" class="avatar-option" onclick="selectAvatar('../IMG/Profile/04.png')">
-            </div>
-            <input type="hidden" name="avatar" id="selected-avatar">
-            <div class="avatar-buttons">
-                <button type="submit">Salvar</button>
-                <button type="submit" name="reset_avatar">Padrão</button>
-            </div>
-        </form>
-    </div>
     <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
     <script src="../JS/Perfil.js"></script>
 </body>
