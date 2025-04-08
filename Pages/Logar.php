@@ -56,7 +56,7 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
             ?>
 
             <!-- Botões de ação -->
-            <button type="submit">Entrar</button>
+            <button type="submit" id="btn-entrar">Entrar</button>
             <br>
             <button type="button" id="btn-voltar" onclick="window.location.href='Login-Cadastro.php'">Voltar</button>
         </form>

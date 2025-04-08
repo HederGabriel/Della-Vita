@@ -31,7 +31,7 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
             <br>
 
             <!-- Botões de ação -->
-            <button type="submit">Cadastrar</button>
+            <button type="submit" id="btn-cadastrar">Cadastrar</button>
             <br>
             <button type="button" id="btn-voltar" onclick="window.location.href='Login-Cadastro.php'">Voltar</button>
         </form>
