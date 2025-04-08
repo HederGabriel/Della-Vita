@@ -1,77 +1,123 @@
+@charset "utf-8";
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background: linear-gradient(45deg, #ff8011c5, #ff8011c5, #ff1b1bc2);
     margin: 0;
-    padding: 0;
+    padding: 0 10%;
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 main {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
+    width: 100%;
 }
+
 
 label {
     font-size: 14px;
     font-weight: bold;
-    color: #333333;
+    color: #000;
     text-align: left;
+    width: 80%;
 }
 
 input {
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    width: 100%;
+    border: 1px solid red;
+    border-radius: 5px;
+    width: 80%;
     box-sizing: border-box;
 }
 
+input:focus {
+    outline: none;
+    border-color: yellow;
+    box-shadow: 0 0 5px rgba(255, 208, 0, 0.3);
+}
+
 button {
-    padding: 10px;
-    font-size: 14px;
+    width: 100%;
+    max-width: 250px;
+    padding: 12px;
+    font-size: 16px;
     font-weight: bold;
-    color: #ffffff;
-    background-color: #007bff;
+    color: white;
+    background-color: red;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: rgb(192, 3, 3);
+    transform: scale(1.07);
 }
 
 button#btn-voltar {
-    background-color: #6c757d;
+    background-color: red;
 }
 
 button#btn-voltar:hover {
-    background-color: #5a6268;
+    background-color: rgb(192, 3, 3);
 }
 
 .error-message {
-    color: #ff0000;
+    color: #ff5906;
     font-size: 14px;
     margin-top: 10px;
+    text-align: center;
 }
 
 .button-container {
     margin-top: 20px;
+    width: 100%;
     text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    body {
+        padding: 0 5%;
+    }
+
+    main {
+        padding: 20px 15px;
+    }
+
+    form::before,
+    form::after {
+        width: 16vw;
+        height: 16vw;
+    }
+
+    input, button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    label {
+        font-size: 13px;
+    }
 }

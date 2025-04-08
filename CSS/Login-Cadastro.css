@@ -1,58 +1,147 @@
-@charset "utf-8";
-
-* {
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(45deg, #ff8011c5,#ff8011c5, #ff1b1bc2);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10%;
     margin: 0;
-    padding: 0;
 }
 
 main {
-    width: 400px;
-    height: 500px;
-    background-color: red;
-    text-align: center;
-    margin: 15vh auto 0px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
 }
 
-form button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    text-align: center;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 50px;
+    background-color: #fff;
+    border: none;
+    border-radius: 16px;
+    text-align: right;
+    align-items: center;
+    max-width: 350px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+
+form::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 120px;
+    height: 100px;
+    background: url('https://i.pinimg.com/736x/80/c9/e6/80c9e6ce488aa29fd380e020c9edf221.jpg') no-repeat center/contain;
+    opacity: 0.7;
+    max-width: 100%;
+}
+
+form::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 100px;
+    height: 100px;
+    background: url('https://i.pinimg.com/736x/80/c9/e6/80c9e6ce488aa29fd380e020c9edf221.jpg') no-repeat center/contain;
+    opacity: 0.7;
+    max-width: 100%;
+}
+
+
+
+button {
+    width: 100%;
+    max-width: 250px;
+    padding: 15px;
+    font-size: 18px;
     border: none;
     border-radius: 5px;
-    margin: 20px 0px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-form button#btn-login {
-    margin-top: 22vh;
-}
 
-form button:hover {
-    background-color: #0056b3;
-}
-
-form button#btn-esqueci {
-    background-color: transparent;
+#btn-login {
+    background-color: #ff1b1c;
     color: white;
+    font-weight: bold;
+}
+
+
+#btn-cadastro {
+    background-color: #ff1b1c;
+    color: white;
+    font-weight: bold;
+}
+
+
+#btn-esqueci {
+    background-color: #fff;
+    color: #ff1b1c;
+    font-weight: bold;
+    max-width: 250px;
+    width: 100%;
+    padding: 2px;
+    font-size: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
     text-decoration: none;
 }
 
-form button#btn-esqueci:hover {
-    color: #0056b3;
+#btn-esqueci:hover{
     text-decoration: underline;
 }
 
-form button#btn-voltar {
-    background-color: gray;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
+
+button:hover {
+    opacity: 0.9;
+    transform: scale(1.07);
 }
 
-form button#btn-voltar:hover {
-    background-color: darkgray;
+@media(max-width:600px){
+    body{
+        padding: 0 5%;
+    }
+
+    form{
+        padding: 30px 20px;
+    }
+
+    form::before {
+        top: -5px;
+        left: -5px;
+        width: 16vw;
+        height:16vw;
+    }
+
+    form::after {
+        bottom: -5px;
+        right: -5px;
+        width: 16vw;
+        height:16vw;
+    }
+
+    button{
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    #btn-esqueci{
+        font-size: 14px;
+        padding: 8px;
+    }
 }
