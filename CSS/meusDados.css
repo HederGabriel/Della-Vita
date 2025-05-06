@@ -1,0 +1,121 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    pointer-events: auto;
+}
+
+.avatar-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    margin-top: 20px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #f48236;
+    object-fit: cover;
+}
+
+.client-name {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    pointer-events: none;
+}
+
+main {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: #555;
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus {
+    border-color: #f48236;
+    outline: none;
+}
+
+form button {
+    padding: 0.6rem 1.2rem;
+    margin-right: 0.5rem;
+    margin-bottom: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, color 0.3s;
+}
+
+form button[type="submit"] {
+    background: #f48236;
+    color: #fff;
+}
+
+form button[type="submit"]:hover {
+    background: #dc6d24;
+}
+
+form button[type="button"] {
+    background: #f48236;
+    color: #fff;
+}
+
+form button[type="button"]:hover {
+    background: #dc6d24;
+}
+
+#logout-modal {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 1.5rem;
+}

@@ -201,6 +201,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </main>
 
     <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
-    <script src="../JS/Perfil.js"></script>
 </body>
 </html>

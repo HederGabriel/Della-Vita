@@ -1,4 +1,9 @@
-main {
+*{
+    margin: 0;
+    padding: 0;
+}
+
+main{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,22 +26,28 @@ nav {
     pointer-events: auto;
 }
 
-nav * {
-    pointer-events: auto;
+.avatar-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    margin-top: 20px;
 }
 
 .avatar {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
+    border: 3px solid #f48236;
     object-fit: cover;
-    pointer-events: none;
 }
 
 .client-name {
+    margin: 0;
     font-size: 24px;
     font-weight: bold;
-    margin: 0;
+    color: #000;
     text-align: center;
     pointer-events: none;
 }
@@ -186,7 +197,7 @@ nav * {
     background-color: #fff;
     color: #000;
     border: none;
-    border-left: 4px solid #007BFF;
+    border-left: 4px solid #f48236;
     text-align: left;
     font-size: 18px;
     font-weight: bold;
@@ -196,8 +207,9 @@ nav * {
 }
 
 .profile-option-btn:hover {
-    background-color: #f5f5f5;
-    color: #007BFF;
+    background-color: #f4823665;
+    color: #f48236;
+    transform: translateX(5px);
 }
 
 .profile-option-btn.infinite-btn {
@@ -206,7 +218,7 @@ nav * {
     background-color: #fff;
     color: #000;
     border: none;
-    border-left: 4px solid #007BFF;
+    border-left: 4px solid #f48236;
     text-align: left;
     font-size: 18px;
     font-weight: bold;
@@ -215,8 +227,8 @@ nav * {
 }
 
 .profile-option-btn.infinite-btn:hover {
-    background-color: #f5f5f5;
-    color: #007BFF;
+    background-color: #ef731f3f;
+    color: #f48236;
 }
 
 .profile-option-btn.infinite-btn:hover .material-symbols-outlined {
@@ -227,25 +239,31 @@ nav * {
 .material-symbols-outlined {
     font-size: 15px;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    color: #007BFF;
+    color: #f48236;
     transition: font-size 0.3s ease-in-out;
 }
 
 .profile-option-btn.infinite-btn:hover .material-symbols-outlined {
     margin-right: 69.8%;
-    transition: font-size 0.5s ease-in-out, margin-right 0.5s ease-in-out;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .material-symbols-outlined {
     font-size: 15px !important;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    color: #007BFF;
+    color: #000;
     transition: color 0.3s;
 }
+
+.profile-option-btn:hover .material-symbols-outlined {
+    color: #f48236;
+}
+
 
 .profile-option-btn.infinite-btn:hover .material-symbols-outlined {
     margin-right: -2%;
     transition: margin-right 0.5s ease-in-out;
+    transform: translateX(5px);
 }
 
 .profile-option-btn.change-password-btn,
@@ -258,7 +276,7 @@ nav * {
     background-color: #fff;
     color: #000;
     border: none;
-    border-left: 4px solid #007BFF;
+    border-left: 4px solid #f48236;
     text-align: left;
     font-size: 18px;
     font-weight: bold;
@@ -270,7 +288,7 @@ nav * {
 .profile-option-btn.addresses-btn:hover,
 .profile-option-btn.delete-account-btn:hover {
     background-color: #f5f5f5;
-    color: #007BFF;
+    color: #f48236;
 }
 
 .profile-option-btn.delete-account-btn {
@@ -279,7 +297,7 @@ nav * {
 }
 
 .profile-option-btn.delete-account-btn:hover {
-    background-color: #ffe6e6;
+    background-color: #f4433644;
     color: #f44336;
 }
 
@@ -291,19 +309,18 @@ nav * {
 
 .profile-option-btn.delete-account-btn:hover .material-symbols-outlined {
     color: #f44336;
-    transform: translateX(5px);
 }
 
 .profile-option-btn .material-symbols-outlined.icon-left {
     font-size: 22px !important;
-    color: #007BFF;
+    color: #f48236;
     margin-right: 10px;
     transition: none;
 }
 
 .profile-option-btn:hover .material-symbols-outlined.icon-left {
     font-size: 22px !important;
-    color: #007BFF;
+    color: #f48236;
     transform: none;
 }
 
