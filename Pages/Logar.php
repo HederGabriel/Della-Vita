@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Iniciar a sessão para gerenciar mensagens de erro
-include '../System/db_connect.php'; // Conexão com o banco de dados
+include '../System/db.php'; // Conexão com o banco de dados
 ?>
 
 <!DOCTYPE html>
@@ -31,11 +31,12 @@ include '../System/db_connect.php'; // Conexão com o banco de dados
                 $email = $_POST['email'];
                 $senha = $_POST['senha'];
 
-                // Verificar credenciais no banco de dados
-                $sql = "SELECT * FROM clientes WHERE email = '$email' AND senha = '$senha'";
-                $result = $conn->query($sql);
+                // Usar prepared statement com PDO
+                $stmt = $pdo->prepare("SELECT * FROM clientes WHERE email = ? AND senha = ?");
+                $stmt->execute([$email, $senha]);
+                $usuario = $stmt->fetch();
 
-                if ($result->num_rows > 0) {
+                if ($usuario) {
                     // Login bem-sucedido
                     $_SESSION['error_message'] = null; // Limpar mensagem de erro
                     header("Location: index.php"); // Redirecionar para a página inicial

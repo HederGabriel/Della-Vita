@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Iniciar a sessão para gerenciar mensagens de erro
-include '../System/db_connect.php'; // Conexão com o banco de dados
+include '../System/db.php'; // Conexão com o banco de dados
 ?>
 
 <!DOCTYPE html>
