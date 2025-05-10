@@ -1,0 +1,24 @@
+{
+    "nome": "Combo Família",
+    "itens": [
+        {
+            "tipo": "pizza",
+            "quantidade": 2,
+            "tamanho": "grande",
+            "sabores": ["Calabresa", "Mussarela"]
+        },
+        {
+            "tipo": "bebida",
+            "descricao": "Refrigerante",
+            "volume": "2L",
+            "sabor": "Cola"
+        },
+        {
+            "tipo": "acompanhamento",
+            "descricao": "Batata Frita",
+            "porcao": "grande"
+        }
+    ],
+    "descricao_completa": "O Combo Família é ideal para compartilhar, com 2 pizzas grandes de sabores variados, 1 refrigerante de 2 litros e uma porção generosa de batata frita.",
+    "imagem_detalhada": "../IMG/Produtos/ComboFamilia_Detalhe.png"
+}

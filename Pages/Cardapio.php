@@ -1,0 +1,84 @@
+<?php 
+include_once '../System/session.php'; // Inclui o arquivo de sessão
+include_once '../System/db.php'; // Inclui o arquivo de conexão com o banco de dados
+
+// Verificar se o usuário está logado
+if (isset($_SESSION['id_cliente'])) {
+    $id_cliente = $_SESSION['id_cliente'];
+    $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
+    $stmt->execute(['id_cliente' => $id_cliente]);
+    $cliente = $stmt->fetch();
+    if ($cliente) {
+        $_SESSION['nome'] = $cliente['nome'];
+        $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
+    }
+}
+
+// Logout do usuário
+if (isset($_POST['logout'])) {
+    session_destroy(); // Destruir a sessão
+    header("Location: index.php"); // Redirecionar para a página inicial
+    exit();
+}
+
+// Página atual
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Della Vita</title>
+    <link rel="stylesheet" href="../CSS/nav.css"> 
+    <link rel="stylesheet" href="/CSS/font.css">
+    <link rel="stylesheet" href="../CSS/cardapio.css"> <!-- Estilo específico do index -->
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="index.php">LOGO</a>
+        </div>
+        <div class="nav-links">
+            <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
+            <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
+            <a href="#" class="<?= $current_page === 'pagina3.php' ? 'active' : '' ?>">Página 3</a>
+        </div>
+        <div class="nav-search">
+            <input type="text" placeholder="Buscar...">
+        </div>
+        <?php if (isset($_SESSION['id_cliente'])): ?>
+            <!-- Exibir perfil do usuário -->
+            <div class="user-profile" onclick="toggleMenu(event)">
+                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
+            </div>
+        <?php else: ?>
+            <!-- Botão de login -->
+            <button class="login-btn" onclick="window.location.href='login-Cadastro.php'">Entrar</button>
+        <?php endif; ?>
+    </nav>
+    <div id="user-menu">
+        <ul>
+            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
+            <li><a href="#" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
+            <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
+        </ul>
+    </div>
+    <div id="overlay" onclick="hideLogoutModal()"></div>
+    <div id="logout-modal">
+        <p>Tem certeza que deseja sair?</p>
+        <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
+        <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+    </div>
+
+    <!-- Página inicial do sistema -->
+    <h1>Cardapio</h1>
+    <?php if (isset($cliente)): ?>
+        <form id="logout-form" method="POST" style="display: none;">
+            <input type="hidden" name="logout" value="1">
+        </form>
+    <?php endif; ?>
+    <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
+</body>
+</html>

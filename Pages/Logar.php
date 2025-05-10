@@ -10,6 +10,7 @@ include '../System/db.php'; // Conexão com o banco de dados
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logar</title>
     <link rel="stylesheet" href="/CSS/Logar.css"> <!-- Estilo da página -->
+    <link rel="stylesheet" href="/CSS/font.css">
     <script src="../JS/logar.js"></script>
 </head>
 <body>

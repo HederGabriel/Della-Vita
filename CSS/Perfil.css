@@ -11,6 +11,10 @@ main{
     position: relative;
 }
 
+body {
+    margin: 8px !important;
+}
+
 header {
     display: flex;
     flex-direction: column;

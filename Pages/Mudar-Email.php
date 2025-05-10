@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     <meta charset="UTF-8">
     <title>Mudar Email</title>
     <link rel="stylesheet" href="/CSS/Esqueci-Senha.css">
+    <link rel="stylesheet" href="/CSS/font.css">
 </head>
 <body>
 <main>

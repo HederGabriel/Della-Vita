@@ -6,6 +6,7 @@
     <title>Entrar</title>
     <link rel="stylesheet" href="../CSS/Login-Cadastro.css"> 
     <script src="../JS/login-cadastro.js"></script>
+    <link rel="stylesheet" href="/CSS/font.css">
 </head>
 <body>
 

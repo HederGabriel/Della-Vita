@@ -81,6 +81,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="../CSS/Perfil.css"> <!-- Estilo específico do perfil -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"> <!-- Google Material Symbols -->
     <script src="../JS/Perfil.js"></script> <!-- Script externo -->
+    <link rel="stylesheet" href="/CSS/font.css">
 </head>
 <body>
     <nav>
@@ -89,7 +90,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
-            <a href="#" class="<?= $current_page === 'pagina2.php' ? 'active' : '' ?>">Página 2</a>
+            <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
             <a href="#" class="<?= $current_page === 'pagina3.php' ? 'active' : '' ?>">Página 3</a>
         </div>
         <div class="nav-search">
