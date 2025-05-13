@@ -8,15 +8,11 @@ nav {
 }
 
 .logo {
-    width: 100px;
-    height: 50px;
-    background-color: #ddd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
+  width: 150px;  /* ou o valor atual da div */
+  height: auto;  /* mantém a proporção original da imagem */
+  display: block;
+  cursor: pointer;
 }
-
 .nav-links {
     display: flex;
     gap: 15px;

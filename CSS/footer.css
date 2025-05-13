@@ -1,0 +1,149 @@
+/* Estilo principal do footer */
+footer {
+  margin-top: 40px;
+  background-color: #f7f7f7;
+  padding: 40px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: center; /* Alinha verticalmente */
+  min-height: 200px; /* Garante altura mínima */
+  flex-direction: column; /* Adiciona direção coluna para o layout */
+}
+
+.footer-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center; /* Centraliza verticalmente a logo e o conteúdo */
+  margin: 0 auto;
+  width: 100%; /* Espaço entre logo e conteúdo */
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  height: auto; /* ou defina uma altura mínima, se necessário */
+  max-height: 300px; /* novo limite igual ao da imagem */
+}
+
+.footer-logo img {
+  width: 350px;
+  height: 280px;
+  object-fit: cover; /* ou 'contain' para encaixar tudo sem cortar */
+}
+
+/* Coluna direita: conteúdo */
+.footer-conteudo {
+  width: 80%; /* Aumenta a largura do conteúdo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centraliza o conteúdo verticalmente */
+}
+
+/* Centraliza o título */
+.footer-topo {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.footer-topo h1 {
+  font-size: 50px;
+  color: #333;
+  margin: 0;
+}
+
+/* Caixas lado a lado */
+.footer-boxes {
+  display: flex;
+  justify-content: center; /* Centraliza as caixas dentro do container */
+  gap: 20px; /* Espaço entre caixas */
+  width: 100%;
+}
+/* Estilos das caixas internas */
+footer div.social,
+footer div.contato,
+footer div.links {
+  background-color: #fff;
+  padding: 10px;
+  text-align: center;
+  width: 30%; /* Garante que as caixas ocupem 30% da largura */
+  min-width: 250px; /* Garante que as caixas não fiquem muito pequenas */
+}
+
+/* Social */
+footer div.social {
+  max-width: 250px;
+  max-height: 250px;
+
+}
+
+footer div.social h2 {
+  font-size: 30px;
+  color: #333;
+  margin: 0 0 40px 0;
+}
+
+footer div.social h3 {
+  font-size: 25px;
+  color: #333;
+  margin: 40px 0 0 0;
+}
+
+footer div.social img {
+  width: 70px;
+  height: 50px;
+  margin-top: 12px;
+}
+
+/* Contato */
+footer div.contato {
+  max-width: 280px;
+  max-height: 250px;
+
+}
+
+footer div.contato h2 {
+  font-size: 30px;
+  color: #333;
+  margin: 0 0 30px 0;
+}
+
+footer div.contato h3 {
+  font-size: 25px;
+  color: #333;
+  margin: 30px 0 0 0;
+}
+
+footer div.contato label {
+  font-weight: bold;
+}
+
+footer div.contato p {
+  display: inline-block;
+  margin-top: 12px;
+}
+
+/* Links */
+footer div.links {
+  max-width: 280px;
+  max-height: 250px;
+
+  color: #717171;
+}
+
+footer div.links h2 {
+  font-size: 30px;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+footer div.links p {
+  margin: 6px 0;
+}
+
+footer div.links p:hover {
+  color: #3E3E3E;
+  cursor: pointer;
+}

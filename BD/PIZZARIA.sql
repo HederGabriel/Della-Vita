@@ -48,7 +48,7 @@ CREATE TABLE `clientes` (
   `avatar` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,12 +148,13 @@ DROP TABLE IF EXISTS `produtos`;
 CREATE TABLE `produtos` (
   `id_produto` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
-  `descricao` text DEFAULT NULL,
   `preco` double NOT NULL,
-  `quantidade` int(11) NOT NULL,
   `imagem` varchar(255) DEFAULT NULL,
+  `descricao_resumida` varchar(100) DEFAULT NULL,
+  `dadosPagina` varchar(100) DEFAULT NULL,
+  `tipo` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -165,4 +166,4 @@ CREATE TABLE `produtos` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-05 12:35:06
+-- Dump completed on 2025-05-13  9:27:01
