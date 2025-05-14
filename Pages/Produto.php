@@ -23,8 +23,46 @@ if (isset($_POST['logout'])) {
 
 // Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
-?>
 
+if (!isset($_GET['id'])) {
+    echo "Produto não encontrado.";
+    exit();
+}
+
+$id_produto = $_GET['id'];
+$comando = $pdo->prepare("SELECT nome, preco, imagem, dadosPagina FROM produtos WHERE id_produto = ?");
+$comando->execute([$id_produto]); 
+$produto = $comando->fetch(PDO::FETCH_ASSOC);
+
+if ($produto) {
+    $nome = $produto['nome'];
+    $preco = $produto['preco'];
+    $imagem = $produto['imagem'];
+    $dadosJsonPath = $produto['dadosPagina'];
+
+    // Caminho absoluto para o arquivo JSON
+    // Corrigindo o caminho para usar o diretório correto
+    $jsonFullPath = realpath(__DIR__ . '/../Json/' . $dadosJsonPath); 
+
+    // Verifica se o arquivo existe
+    if ($jsonFullPath && file_exists($jsonFullPath)) {
+        $jsonContent = file_get_contents($jsonFullPath);
+        $dadosExtra = json_decode($jsonContent, true);
+
+        // Verifica se o JSON foi decodificado corretamente
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $descricaoCompleta = 'Erro ao ler os dados JSON.';
+            $ingredientes = [];
+        } else {
+            $descricaoCompleta = $dadosExtra['descricao_completa'] ?? 'Descrição não disponível';
+            $ingredientes = $dadosExtra['ingredientes'] ?? [];
+        }
+    } else {
+        $descricaoCompleta = 'Arquivo de descrição não encontrado.';
+        $ingredientes = [];
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -32,10 +70,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Della Vita</title>
-    <link rel="stylesheet" href="../CSS/nav.css"> <!-- Estilo do nav -->
-    <link rel="stylesheet" href="../CSS/produto.css"> <!-- Estilo específico do index -->
+    <link rel="stylesheet" href="../CSS/nav.css"> 
+    <link rel="stylesheet" href="../CSS/produto.css"> 
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
+    <script src="..\JS\Produto.js"></script>
 </head>
 <body>
     <nav>
@@ -79,8 +118,35 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </form>
     <?php endif; ?>
     <script src="../JS/userMenu.js"></script>
-    
-    <main>Pagina para compra</main>
+
+    <Header> 
+        <h1><?= htmlspecialchars($produto['nome']) ?></h1>
+        <img src="<?= htmlspecialchars($produto['imagem']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>">
+        <p><?= htmlspecialchars($descricaoCompleta) ?></p>
+    </Header>
+
+    <main>
+        <section>
+            <div class="ingredientes">
+                <h3>Lista de Ingredientes:</h3>
+                <ul>
+                    <?php foreach ($ingredientes as $ingrediente): ?>
+                        <li><?= htmlspecialchars($ingrediente) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+            <div class="tamanho">
+                <h2>Escolher tamanho:</h2>
+                <button onclick="selecionarTamanho(this)" data-preco="<?= $preco * 0.8 ?>">Pequeno</button>
+                <button class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= $preco ?>">Médio</button>
+                <button onclick="selecionarTamanho(this)" data-preco="<?= $preco * 1.3 ?>">Grande</button>
+            </div>
+
+            <div class="compra">
+                <h2 id="preco-formatado">R$ <?= number_format($preco, 2, ',', '.') ?></h2>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <div class="footer-container">
