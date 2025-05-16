@@ -1,161 +1,186 @@
 <?php 
-include_once '../System/session.php'; // Inclui o arquivo de sessão
-include_once '../System/db.php'; // Inclui o arquivo de conexão com o banco de dados
+include_once '../System/session.php';
+include_once '../System/db.php';
 
-// Verificar se o usuário está logado
-if (isset($_SESSION['id_cliente'])) {
-    $id_cliente = $_SESSION['id_cliente'];
+// Garantir que o usuário está logado para acessar a página
+if (!isset($_SESSION['id_cliente'])) {
+    header("Location: login-Cadastro.php");
+    exit();
+}
+
+$id_cliente = $_SESSION['id_cliente'] ?? null;
+$cliente = null;
+
+if ($id_cliente) {
     $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
     $stmt->execute(['id_cliente' => $id_cliente]);
-    $cliente = $stmt->fetch();
+    $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($cliente) {
+        // Atualizar dados da sessão se necessário
         $_SESSION['nome'] = $cliente['nome'];
         $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
     }
 }
 
-// Logout do usuário
+// Logout
 if (isset($_POST['logout'])) {
-    session_destroy(); // Destruir a sessão
-    header("Location: index.php"); // Redirecionar para a página inicial
+    session_destroy();
+    header("Location: index.php");
     exit();
 }
 
-// Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
 
-if (!isset($_GET['id'])) {
+// Validar parâmetro id do produto via GET
+if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     echo "Produto não encontrado.";
     exit();
 }
 
-$id_produto = $_GET['id'];
-$comando = $pdo->prepare("SELECT nome, preco, imagem, dadosPagina FROM produtos WHERE id_produto = ?");
-$comando->execute([$id_produto]); 
+$id_produto = (int)$_GET['id'];
+
+// Buscar dados do produto com query preparada
+$comando = $pdo->prepare("SELECT nome, preco, imagem, dadosPagina FROM produtos WHERE id_produto = :id_produto");
+$comando->execute(['id_produto' => $id_produto]);
 $produto = $comando->fetch(PDO::FETCH_ASSOC);
 
-if ($produto) {
-    $nome = $produto['nome'];
-    $preco = $produto['preco'];
-    $imagem = $produto['imagem'];
-    $dadosJsonPath = $produto['dadosPagina'];
+if (!$produto) {
+    echo "Produto não encontrado.";
+    exit();
+}
 
-    // Caminho absoluto para o arquivo JSON
-    // Corrigindo o caminho para usar o diretório correto
-    $jsonFullPath = realpath(__DIR__ . '/../Json/' . $dadosJsonPath); 
+$nome = $produto['nome'];
+$preco = (float)$produto['preco'];
+$imagem = $produto['imagem'];
+$dadosJsonPath = $produto['dadosPagina'];
 
-    // Verifica se o arquivo existe
-    if ($jsonFullPath && file_exists($jsonFullPath)) {
-        $jsonContent = file_get_contents($jsonFullPath);
-        $dadosExtra = json_decode($jsonContent, true);
+// Gerar caminho absoluto seguro para o JSON
+$jsonFullPath = realpath(__DIR__ . '/../Json/' . basename($dadosJsonPath));
 
-        // Verifica se o JSON foi decodificado corretamente
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $descricaoCompleta = 'Erro ao ler os dados JSON.';
-            $ingredientes = [];
-        } else {
-            $descricaoCompleta = $dadosExtra['descricao_completa'] ?? 'Descrição não disponível';
-            $ingredientes = $dadosExtra['ingredientes'] ?? [];
-        }
-    } else {
-        $descricaoCompleta = 'Arquivo de descrição não encontrado.';
+if ($jsonFullPath && file_exists($jsonFullPath)) {
+    $jsonContent = file_get_contents($jsonFullPath);
+    $dadosExtra = json_decode($jsonContent, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $descricaoCompleta = 'Erro ao ler os dados JSON.';
         $ingredientes = [];
+    } else {
+        $descricaoCompleta = $dadosExtra['descricao_completa'] ?? 'Descrição não disponível';
+        $ingredientes = $dadosExtra['ingredientes'] ?? [];
     }
+} else {
+    $descricaoCompleta = 'Arquivo de descrição não encontrado.';
+    $ingredientes = [];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Della Vita</title>
-    <link rel="stylesheet" href="../CSS/nav.css"> 
-    <link rel="stylesheet" href="../CSS/produto.css"> 
-    <link rel="stylesheet" href="/CSS/font.css">
-    <link rel="stylesheet" href="/CSS/footer.css">
-    <script src="..\JS\Produto.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><?= htmlspecialchars($nome, ENT_QUOTES | ENT_HTML5) ?> - Della Vita</title>
+    <link rel="stylesheet" href="../CSS/nav.css" /> 
+    <link rel="stylesheet" href="../CSS/produto.css" /> 
+    <link rel="stylesheet" href="../CSS/font.css" />
+    <link rel="stylesheet" href="../CSS/footer.css" />
 </head>
 <body>
     <nav>
-        <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
+        <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
 
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
             <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
         </div>
+
         <div class="nav-search">
             <input type="text" placeholder="Buscar...">
         </div>
-        <?php if (isset($_SESSION['id_cliente'])): ?>
-            <!-- Exibir perfil do usuário -->
+
+        <?php if ($cliente): ?>
             <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
+                <img src="<?= htmlspecialchars($cliente['avatar'], ENT_QUOTES | ENT_HTML5) ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
-            <!-- Botão de login -->
             <button class="login-btn" onclick="window.location.href='login-Cadastro.php'">Entrar</button>
         <?php endif; ?>
     </nav>
-    <div id="user-menu">
+
+    <div id="user-menu" style="display:none;">
         <ul>
             <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
             <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
             <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
         </ul>
     </div>
-    <div id="overlay" onclick="hideLogoutModal()"></div>
-    <div id="logout-modal">
+
+    <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
+    <div id="logout-modal" style="display:none;">
         <p>Tem certeza que deseja sair?</p>
         <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
         <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
     </div>
-    
-    <?php if (isset($cliente)): ?>
+
+    <?php if ($cliente): ?>
         <form id="logout-form" method="POST" style="display: none;">
-            <input type="hidden" name="logout" value="1">
+            <input type="hidden" name="logout" value="1" />
         </form>
     <?php endif; ?>
+
     <script src="../JS/userMenu.js"></script>
 
-    <Header> 
-        <h1><?= htmlspecialchars($produto['nome']) ?></h1>
-        <img src="<?= htmlspecialchars($produto['imagem']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>">
-        <p><?= htmlspecialchars($descricaoCompleta) ?></p>
-    </Header>
+    <header> 
+        <h1><?= htmlspecialchars($nome, ENT_QUOTES | ENT_HTML5) ?></h1>
+        <img src="<?= htmlspecialchars($imagem, ENT_QUOTES | ENT_HTML5) ?>" alt="<?= htmlspecialchars($nome, ENT_QUOTES | ENT_HTML5) ?>" />
+        <p><?= nl2br(htmlspecialchars($descricaoCompleta, ENT_QUOTES | ENT_HTML5)) ?></p>
+    </header>
 
     <main>
         <section>
             <div class="ingredientes">
                 <h3>Lista de Ingredientes:</h3>
+                <?php if (!empty($ingredientes)): ?>
                 <ul>
                     <?php foreach ($ingredientes as $ingrediente): ?>
-                        <li><?= htmlspecialchars($ingrediente) ?></li>
+                        <li><?= htmlspecialchars($ingrediente, ENT_QUOTES | ENT_HTML5) ?></li>
                     <?php endforeach; ?>
                 </ul>
+                <?php else: ?>
+                <p>Sem ingredientes listados.</p>
+                <?php endif; ?>
             </div>
+
             <div class="tamanho">
-                <h2>Escolher tamanho:</h2>
-                <button onclick="selecionarTamanho(this)" data-preco="<?= $preco * 0.8 ?>">Pequeno</button>
-                <button class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= $preco ?>">Médio</button>
-                <button onclick="selecionarTamanho(this)" data-preco="<?= $preco * 1.3 ?>">Grande</button>
+                <h2>Escolher tamanho da Pizza:</h2>
+                <button onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 0.8, 2, '.', '') ?>">Pequeno</button>
+                <button class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco, 2, '.', '') ?>">Médio</button>
+                <button onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 1.3, 2, '.', '') ?>">Grande</button>
             </div>
 
             <div class="compra">
-                <h2 id="preco-formatado">R$ <?= number_format($preco, 2, ',', '.') ?></h2>
+                <h2 class="preco-formatado">R$ <?= number_format($preco, 2, ',', '.') ?></h2>
+
+                <div class="entrega">
+                    <h3>Escolher forma de entrega:</h3>
+                    <button class="local space" onclick="selecionarEntrega(this)" data-entrega="local">Retirar no Local</button>
+                    <button class="local ativo" onclick="selecionarEntrega(this)" data-entrega="casa">Receber em Casa</button>
+                </div>
+
+                <br />
+                <div class="produto" data-id-produto="<?= htmlspecialchars($id_produto, ENT_QUOTES | ENT_HTML5) ?>" data-preco="<?= htmlspecialchars($preco, ENT_QUOTES | ENT_HTML5) ?>">
+                    <button class="addPedido">Adicionar ao Pedido</button>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-container">
-            <!-- Logo à esquerda -->
             <div class="footer-logo">
-                <img src="..\IMG\Logo1.jpg" alt="Logo Della Vita">
+                <img src="../IMG/Logo1.jpg" alt="Logo Della Vita" />
             </div>
 
-            <!-- Conteúdo à direita -->
             <div class="footer-conteudo">
                 <div class="footer-topo">
                     <h1>Explore mais</h1>
@@ -167,36 +192,20 @@ if ($produto) {
                         <p onclick="window.location.href='login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
-                        <p><a onclick="window.location.href='#'">Termos de Uso</a></p>
-                        <p><a onclick="window.location.href='#'">Política de Privacidade</a></p>
+                        <p><a href="#" onclick="return false;">Termos de Uso</a></p>
+                        <p><a href="#" onclick="return false;">Política de Privacidade</a></p>
                     </div>
                     <div class="contato">
                         <h2>Contatos</h2>
-                        <h3>Obrigado pela Preferência!</h3>
-                        <label for="t">Número <img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"> : </label>
-                        <p id="t">
-                            <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">
-                            Falar no WhatsApp
-                            </a>
-                        </p>
-                        <br>
-                        <label for="e"><img src="..\IMG\Icons\google.svg" alt="Google">mail: </label>
-                        <p>
-                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
-                            Enviar mensagem via Gmail
-                            </a>
-                        </p>
-                    </div>
-                    <div class="social">
-                        <h2>Redes Sociais</h2>
-                        <h3>Siga-Nós</h3>
-                        <a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"><img src="..\IMG\Icons\instagram.svg" alt="Instagram"></a>
-                        <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"><img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"></a>
-                        <a href="https://www.facebook.com/share/1APRM1n7BA/" target="_blank"><img src="..\IMG\Icons\facebook.svg" alt="Facebook"></a>
+                        <p>Telefone: (71) 99999-9999</p>
+                        <p>Email: dellavita@gmail.com</p>
+                        <p>Localização: Salvador, BA</p>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
+
+    <script src="../JS/Produto.js"></script>
 </body>
 </html>

@@ -69,7 +69,7 @@ div.ingredientes ul{
 }
 
 div.tamanho {
-    font-size: 32px;
+    font-size: 24px;
     margin: 40px 0 0 40px;
 }
 
@@ -77,7 +77,7 @@ div.tamanho button {
     width: 120px;
     height: 70px;
     margin: 0px 20px 0 0;
-    font-size: 20px;
+    font-size: 25px;
     cursor: pointer;
     border: 2px solid #ccc;
     background-color: #f4f4f4;
@@ -88,10 +88,10 @@ div.tamanho button.ativo {
 }
 
 div.compra {
-    margin: -345px 0 0 0;
+    margin: -34% 0 0 0;
     float: right;
     width: 400px;
-    height: 300px;
+    height: 350px;
     border: 1px solid #ddd;
     text-align: center;
 }
@@ -99,4 +99,29 @@ div.compra {
 div.compra h2 {
     font-size: 64px;
     margin-top: 8px;
+}
+
+div.compra button.space {
+    margin: 20px 15px 0 0;
+}
+
+div.compra button.local {
+    width: 160px;
+    height: 60px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid #ccc;
+}
+
+div.compra button.addPedido {
+    width: 200px;
+    height: 75px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    margin: 25px 0 0 0;
+}
+
+div.entrega button.ativo {
+    border: 3px solid #e44d26;
 }
