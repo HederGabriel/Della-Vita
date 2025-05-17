@@ -1,35 +1,37 @@
-// Marca o botão de tamanho selecionado
+// Função para selecionar o tamanho (componente radio-button estilo botão)
 function selecionarTamanho(botao) {
+    // Remove 'ativo' de todos os botões
     const botoes = document.querySelectorAll(".tamanho button");
     botoes.forEach(btn => btn.classList.remove("ativo"));
+
+    // Adiciona 'ativo' só no botão clicado
     botao.classList.add("ativo");
 
+    // Atualiza o preço exibido com base no data-preco do botão clicado
     const preco = parseFloat(botao.getAttribute("data-preco"));
     const precoFormatado = preco.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
     });
 
-    // Usar ID pois o h2 no HTML precisa ter id="preco-formatado"
     const precoElement = document.getElementById("preco-formatado");
     if (precoElement) {
         precoElement.innerText = precoFormatado;
     }
 }
 
+// Função para selecionar tipo de entrega (mesma lógica)
 function selecionarEntrega(botao) {
     const botoes = document.querySelectorAll(".entrega button");
     botoes.forEach(btn => btn.classList.remove("ativo"));
     botao.classList.add("ativo");
-
     const tipoEntrega = botao.getAttribute("data-entrega");
     console.log("Tipo de entrega selecionado:", tipoEntrega);
 }
 
-// arquivo: Produto.js
-
+// Evento para botão adicionar pedido
 document.querySelector('.addPedido').addEventListener('click', () => {
-    // Pega o id_produto da URL
+    // Pega o id do produto da URL
     const urlParams = new URLSearchParams(window.location.search);
     const id_produto = parseInt(urlParams.get('id'));
     if (!id_produto) {
@@ -37,33 +39,38 @@ document.querySelector('.addPedido').addEventListener('click', () => {
         return;
     }
 
-    // Pega o preço do elemento com id preco-formatado
-    const precoFormatado = document.getElementById('preco-formatado').innerText;
-    const precoLimpo = parseFloat(precoFormatado.replace(/[R$\s\.]/g, '').replace(',', '.'));
-
-    if (isNaN(precoLimpo)) {
-        alert('Preço inválido');
+    // Pega o botão de tamanho selecionado
+    const botaoSelecionado = document.querySelector('.tamanho button.ativo');
+    if (!botaoSelecionado) {
+        alert('Por favor, selecione um tamanho.');
         return;
     }
 
-    const quantidade = 1; // Pode ajustar para pegar do input se tiver
+    // Pega o preço ajustado do botão selecionado
+    const precoUnitario = parseFloat(botaoSelecionado.getAttribute('data-preco'));
+    if (isNaN(precoUnitario)) {
+        alert('Preço inválido.');
+        return;
+    }
 
-    fetch('../API/addPedido.php', {
+    // Quantidade padrão, pode ser um input futuramente
+    const quantidade = 1;
+
+    // Envia os dados via fetch para API (assumindo endpoint correto)
+    fetch('../System/addPedido.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
             id_produto,
             quantidade,
-            preco_unitario: precoLimpo
+            preco_unitario: precoUnitario.toFixed(2)
         })
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
             alert('Produto adicionado ao carrinho!');
-            // Atualizar UI ou redirecionar conforme necessário
+            // Atualizar UI se quiser
         } else {
             alert('Erro: ' + (data.error || 'Erro desconhecido'));
         }

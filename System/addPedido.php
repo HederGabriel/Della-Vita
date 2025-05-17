@@ -32,7 +32,7 @@ try {
 
     if (!$pedido) {
         // Buscar nome do cliente
-        $stmtNome = $pdo->prepare("SELECT nome FROM cliente WHERE id_cliente = :id_cliente");
+        $stmtNome = $pdo->prepare("SELECT nome FROM clientes WHERE id_cliente = :id_cliente");
         $stmtNome->execute(['id_cliente' => $id_cliente]);
         $clienteDados = $stmtNome->fetch(PDO::FETCH_ASSOC);
         $nome_cliente = $clienteDados['nome'] ?? 'Cliente';
