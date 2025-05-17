@@ -158,9 +158,10 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                 <button onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 1.3, 2, '.', '') ?>">Grande</button>
             </div>
 
+            <!-- Preço formatado -->
             <div class="compra">
-                <h2 class="preco-formatado">R$ <?= number_format($preco, 2, ',', '.') ?></h2>
-
+                <h2 id="preco-formatado" class="preco-formatado">R$ <?= number_format($preco, 2, ',', '.') ?></h2>
+                
                 <div class="entrega">
                     <h3>Escolher forma de entrega:</h3>
                     <button class="local space" onclick="selecionarEntrega(this)" data-entrega="local">Retirar no Local</button>
