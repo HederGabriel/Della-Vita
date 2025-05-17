@@ -88,12 +88,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <main>
         <?php 
             // Buscar 4 pizzas aleatórias do tipo normal
-            $stmtPizzas = $pdo->prepare("SELECT nome, preco, imagem, descricao_resumida FROM produtos WHERE tipo = 'normal' ORDER BY RAND() LIMIT 4");
+            $stmtPizzas = $pdo->prepare("SELECT id_produto, nome, preco, imagem, descricao_resumida FROM produtos WHERE tipo = 'normal' ORDER BY RAND() LIMIT 4");
+
             $stmtPizzas->execute();
             $produtos = $stmtPizzas->fetchAll();
 
             // Buscar 1 combo aleatório
-            $stmtCombo = $pdo->prepare("SELECT nome, preco, imagem, descricao_resumida FROM produtos WHERE tipo = 'combo' ORDER BY RAND() LIMIT 1");
+            $stmtCombo = $pdo->prepare("SELECT id_produto, nome, preco, imagem, descricao_resumida FROM produtos WHERE tipo = 'combo' ORDER BY RAND() LIMIT 1");
+
             $stmtCombo->execute();
             $combo = $stmtCombo->fetch();
         ?>
@@ -104,7 +106,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <div class="combo-info">
                     <h1><?= htmlspecialchars($combo['nome']) ?> - R$ <?= number_format($combo['preco'], 2, ',', '.') ?></h1>
                     <p><?= htmlspecialchars($combo['descricao_resumida']) ?></p>
-                    <button onclick="window.location.href='Produto.php'">Ver Combo</button>
+                    <button onclick="window.location.href='Produto.php?id=<?= $combo['id_produto']; ?>'">Ver Combo</button>
                 </div>
             <?php else: ?>
                 <p>Nenhum combo disponível no momento.</p>
@@ -129,7 +131,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <p><?= htmlspecialchars($produto['descricao_resumida']) ?></p>
                     <strong>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></strong>
                     <br>
-                    <button onclick="window.location.href='Produto.php'">Escolher</button>
+                    <button onclick="window.location.href='Produto.php?id=<?php echo $produto['id_produto']; ?>'">Escolher</button>
                 </div>
             <?php endforeach; ?>
         </section>
