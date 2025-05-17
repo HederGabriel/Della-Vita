@@ -54,8 +54,8 @@ footer {
 
 .footer-topo h1 {
   font-size: 42px;
-  color: #FF1B1B;
-  text-shadow: 1px 1px #FF7F11;
+  color: #df6325;
+  text-shadow: 1px 1px #ff80118a;
 }
 
 /* Caixas lado a lado */
@@ -89,7 +89,7 @@ footer div.social {
 
 footer div.social h2 {
   font-size: 26px;
-  color: #FF1B1B;
+  color: #df6325;
   margin: 0 0 40px 0;
 }
 
@@ -100,7 +100,7 @@ footer div.social h3 {
 }
 
 footer div.social img {
-  width: 60px;
+  width: 40px;
   height: 50px;
   margin: 10px;
   transition: transform 0.3s ease;
@@ -119,19 +119,20 @@ footer div.contato {
 
 footer div.contato h2 {
   font-size: 26px;
-  color: #FF1B1B;
+  color: #df6325;
   margin: 0 0 30px 0;
 }
 
 footer div.contato h3 {
   font-size: 25px;
-  color: #333;
+  color: #df6325;
   margin: 30px 0 0 0;
 }
 
 footer div.contato label {
-  font-weight: bold;
-  color: #FF1B1B;
+  font-size: 16px;
+  font-weight: 500;
+  color: #5c1f01;
 }
 
 footer div.contato p {
@@ -149,7 +150,7 @@ footer div.links {
 
 footer div.links h2 {
   font-size: 26px;
-  color: #FF1B1B;
+  color: #df6325;
   margin: 0 0 20px 0;
 }
 
@@ -160,7 +161,7 @@ footer div.links p {
 }
 
 footer div.links p:hover {
-  color: #FF1B1B;
+  color: #df6325;
   cursor: pointer;
 }
 
@@ -170,7 +171,7 @@ footer a {
 }
 
 footer a:hover {
-  color: #FF1B1B;
+  color: #df6325;
   text-decoration: underline;
 }
 

@@ -8,7 +8,7 @@
 body {
     margin: 8px !important;
     font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, #ff8011c5, #ff8011c5, #ff1b1bc2);
+    background: #fff;
 }
 
 /* Header */
@@ -34,14 +34,14 @@ header h1 {
     font-size: 50px;
     color: #333;
     max-width: 350px;
-    margin: 80px 0 0 100px;
+    margin: 0 80px 40px 100px;
 }
 
 header img {
     width: 495px;
     height: 330px;
-    margin: 70px 50px 40px 0;
-    border-radius: 8px;
+    margin: 90px 50px 40px 0;
+    border-radius: 10px;
 }
 
 /* Combo Section */
@@ -131,13 +131,23 @@ section.pizza .categoria {
     align-items: center;
     margin: 25px 0 60px 0;
     cursor: pointer;
-    background-color: #ff80118d;
+}
+
+section.pizza .categoria:hover {
+    background-color: #FF7F11;
+    color: #fff;
+    transition: 0.5s ease;
 }
 
 section.pizza .categoria p {
     font-size: 20px;
     color: #333;
     max-width: 110px;
+}
+
+section.pizza .categoria:hover p {
+    color: #fff;
+    transition: 0.5s ease;
 }
 
 .produto-card {
@@ -157,6 +167,7 @@ section.pizza .categoria p {
     height: auto;
     border-radius: 8px;
     margin: 0 15%;
+    margin-bottom: 16px;
 }
 
 .produto-card button {
@@ -192,7 +203,7 @@ section.pizza .grid-espaco {
 }
 
 section.pizza .btn-ver-mais {
-    color: white;
+    color: #e44d26;
     grid-column: 4 / 5;
     align-self: center;
     justify-self: center;
@@ -207,7 +218,7 @@ section.pizza .btn-ver-mais {
 
 section.pizza .btn-ver-mais:hover {
     color: #e44d26;
-    background-color: #e44c2613;
+    background-color: #e44c263c;
     transition: 0.5s ease;
 }
 
