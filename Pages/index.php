@@ -81,7 +81,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <script src="../JS/userMenu.js"></script>
 
     <Header> 
-        <h1>Lorem ipsum dolor sit amet consectetur, adipisicing elit. </h1>
+        <h1>Sofisticação e sabor, direto à sua porta.</h1>
         <img src="..\IMG\header.jpg" alt="Pizza">
     </Header>
 
@@ -168,7 +168,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             </a>
                         </p>
                         <br>
-                        <label for="e"><img src="..\IMG\Icons\google.svg" alt="Google">mail: </label>
+                        <label for="e">Gmail <img src="..\IMG\Icons\google.svg" alt="Google"> : </label>
                         <p>
                             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
                             Enviar mensagem via Gmail

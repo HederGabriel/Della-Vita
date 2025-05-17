@@ -1,141 +1,239 @@
+/* NAVBAR GERAL */
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2px 20px 10px 20px;
-    background-color: #f4f4f4;
-    border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff7f5;
+  border-bottom: 2px solid #FF7F11;
+  position: relative;
 }
 
+/* LOGO */
 .logo {
-  width: 150px;  /* ou o valor atual da div */
-  height: auto;  /* mantém a proporção original da imagem */
+  width: 150px;
+  height: auto;
   display: block;
   cursor: pointer;
 }
+
+/* LINKS DA NAV */
 .nav-links {
-    display: flex;
-    gap: 15px;
-    margin-left: 20px; /* Espaço entre a logo e os links */
+  display: flex;
+  gap: 15px;
+  margin-left: 20px;
+  flex-wrap: wrap;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #FF7F11;
 }
 
 .nav-links a.active {
-    color: #007BFF; /* Cor diferente para o link ativo */
-    font-weight: bold;
-    border-bottom: 2px solid #007BFF; /* Linha inferior para destacar */
+  color: #FF7F11;
+  border-bottom: 2px solid #FF7F11;
 }
 
+/* BARRA DE PESQUISA */
 .nav-search {
-    flex-grow: 1; /* Ocupa o espaço central */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-search input {
-    width: 60%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 60%;
+  padding: 6px 10px;
+  border: 1px solid #FF7F11;
+  border-radius: 6px;
+  outline-color: #FF1B1B;
 }
 
+/* BOTÃO DE LOGIN */
 .login-btn {
-    padding: 5px 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 6px 14px;
+  background-color: #FF1B1B;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
+.login-btn:hover {
+  background-color: #cc1515;
+}
+
+/* FOTO DE PERFIL */
 .user-profile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 70px; /* Ajustado para 70px */
-    height: 70px; /* Ajustado para 70px */
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #f4f4f4;
-    padding: 0;
-    object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #FFE5D0;
+  padding: 0;
+  object-fit: cover;
+  cursor: pointer;
 }
 
+/* MENU DO USUÁRIO */
 #user-menu {
-    position: absolute;
-    display: none;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    z-index: 1000;
-    padding: 10px;
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  display: none;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 1000;
+  padding: 10px;
+  min-width: 160px;
 }
 
 #user-menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 #user-menu ul li {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 #user-menu ul li a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+#user-menu ul li a:hover {
+  color: #FF1B1B;
 }
 
 #user-menu ul li a.active {
-    color: #007BFF; /* Cor diferente para o link ativo */
-    font-weight: bold;
-    border-bottom: 2px solid #007BFF; /* Linha inferior para destacar */
+  color: #FF1B1B;
+  border-bottom: 2px solid #FF7F11;
+  font-weight: bold;
 }
 
+/* MODAL DE LOGOUT */
 #logout-modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    border-radius: 8px;
-    text-align: center;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 8px;
+  text-align: center;
 }
 
 #logout-modal button {
-    margin: 5px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 #logout-modal .confirm-btn {
-    background-color: #f44336;
-    color: white;
+  background-color: #FF1B1B;
+  color: white;
 }
 
 #logout-modal .cancel-btn {
-    background-color: #ccc;
+  background-color: #ccc;
+  color: #333;
 }
 
 #overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .nav-links {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  .nav-search {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .nav-search input {
+    width: 90%;
+  }
+
+  .login-btn {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .user-profile {
+    margin-top: 10px;
+  }
+
+  #user-menu {
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    width: 120px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links a {
+    padding: 6px 0;
+  }
+
+  .nav-search input {
+    width: 100%;
+  }
+
+  .login-btn {
+    padding: 10px;
+  }
+
+  .user-profile {
+    width: 50px;
+    height: 50px;
+  }
 }

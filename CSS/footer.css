@@ -3,7 +3,7 @@ footer {
   margin-top: 40px;
   background-color: #f7f7f7;
   padding: 40px;
-  border-top: 1px solid #ccc;
+  border-top: 3px solid #ccc;
   display: flex;
   justify-content: center; /* Centraliza o conteúdo horizontalmente */
   align-items: center; /* Alinha verticalmente */
@@ -15,8 +15,11 @@ footer {
   display: flex;
   justify-content: flex-start;
   align-items: center; /* Centraliza verticalmente a logo e o conteúdo */
+  flex-wrap: wrap;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%; /* Espaço entre logo e conteúdo */
+  gap: 20px;
 }
 
 .footer-logo {
@@ -27,13 +30,14 @@ footer {
 }
 
 .footer-logo img {
-  width: 350px;
+  width: 300px;
   height: 280px;
-  object-fit: cover; /* ou 'contain' para encaixar tudo sem cortar */
+  object-fit: contain; /* ou 'contain' para encaixar tudo sem cortar */
 }
 
 /* Coluna direita: conteúdo */
 .footer-conteudo {
+  flex: 1;
   width: 80%; /* Aumenta a largura do conteúdo */
   display: flex;
   flex-direction: column;
@@ -49,15 +53,16 @@ footer {
 }
 
 .footer-topo h1 {
-  font-size: 50px;
-  color: #333;
-  margin: 0;
+  font-size: 42px;
+  color: #FF1B1B;
+  text-shadow: 1px 1px #FF7F11;
 }
 
 /* Caixas lado a lado */
 .footer-boxes {
   display: flex;
   justify-content: center; /* Centraliza as caixas dentro do container */
+  flex-wrap: wrap;
   gap: 20px; /* Espaço entre caixas */
   width: 100%;
 }
@@ -70,6 +75,9 @@ footer div.links {
   text-align: center;
   width: 30%; /* Garante que as caixas ocupem 30% da largura */
   min-width: 250px; /* Garante que as caixas não fiquem muito pequenas */
+  border-radius: 10px;
+  border: 2px solid #FF7F11;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Social */
@@ -80,8 +88,8 @@ footer div.social {
 }
 
 footer div.social h2 {
-  font-size: 30px;
-  color: #333;
+  font-size: 26px;
+  color: #FF1B1B;
   margin: 0 0 40px 0;
 }
 
@@ -92,9 +100,14 @@ footer div.social h3 {
 }
 
 footer div.social img {
-  width: 70px;
+  width: 60px;
   height: 50px;
-  margin-top: 12px;
+  margin: 10px;
+  transition: transform 0.3s ease;
+}
+
+footer div.social img:hover {
+  transform: scale(1.1);
 }
 
 /* Contato */
@@ -105,8 +118,8 @@ footer div.contato {
 }
 
 footer div.contato h2 {
-  font-size: 30px;
-  color: #333;
+  font-size: 26px;
+  color: #FF1B1B;
   margin: 0 0 30px 0;
 }
 
@@ -118,32 +131,91 @@ footer div.contato h3 {
 
 footer div.contato label {
   font-weight: bold;
+  color: #FF1B1B;
 }
 
 footer div.contato p {
   display: inline-block;
   margin-top: 12px;
+  font-size: 15px;
 }
 
 /* Links */
 footer div.links {
   max-width: 280px;
   max-height: 250px;
-
   color: #717171;
 }
 
 footer div.links h2 {
-  font-size: 30px;
+  font-size: 26px;
+  color: #FF1B1B;
   margin: 0 0 20px 0;
-  color: #333;
 }
 
 footer div.links p {
   margin: 6px 0;
+  color: #FF7F11;
+  transition: color 0.3s ease;
 }
 
 footer div.links p:hover {
-  color: #3E3E3E;
+  color: #FF1B1B;
   cursor: pointer;
 }
+
+footer a {
+  color: #FF7F11;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #FF1B1B;
+  text-decoration: underline;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 992px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-logo img {
+    width: 250px;
+  }
+
+  .footer-conteudo {
+    width: 100%;
+    align-items: center;
+  }
+
+  .footer-topo h1 {
+    font-size: 36px;
+  }
+
+  .footer-boxes > div {
+    width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-topo h1 {
+    font-size: 30px;
+  }
+
+  .footer-boxes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-boxes > div {
+    width: 100%;
+  }
+
+  footer div.social img {
+    width: 50px;
+    height: 40px;
+  }
+}
+
