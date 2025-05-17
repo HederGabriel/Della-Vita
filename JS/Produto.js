@@ -26,31 +26,47 @@ function selecionarEntrega(botao) {
     console.log("Tipo de entrega selecionado:", tipoEntrega);
 }
 
-document.querySelectorAll('.addPedido').forEach(botao => {
-    botao.addEventListener('click', () => {
-        const produtoDiv = botao.closest('.produto');
-        if (!produtoDiv) return;
+// arquivo: Produto.js
 
-        const id_produto = produtoDiv.dataset.idProduto;
-        const preco_unitario = parseFloat(produtoDiv.dataset.preco);
-        const quantidade = 1; // pode adaptar depois para input do usuário
-        const total = preco_unitario * quantidade;
+document.querySelector('.addPedido').addEventListener('click', () => {
+    // Pega o id_produto da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const id_produto = parseInt(urlParams.get('id'));
+    if (!id_produto) {
+        alert('Produto inválido');
+        return;
+    }
 
-        fetch('adicionar_item.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `id_produto=${encodeURIComponent(id_produto)}&quantidade=${quantidade}&preco_unitario=${preco_unitario}&total=${total}`
+    // Pega o preço do elemento com id preco-formatado
+    const precoFormatado = document.getElementById('preco-formatado').innerText;
+    const precoLimpo = parseFloat(precoFormatado.replace(/[R$\s\.]/g, '').replace(',', '.'));
+
+    if (isNaN(precoLimpo)) {
+        alert('Preço inválido');
+        return;
+    }
+
+    const quantidade = 1; // Pode ajustar para pegar do input se tiver
+
+    fetch('../API/addPedido.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            id_produto,
+            quantidade,
+            preco_unitario: precoLimpo
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-            } else {
-                alert("Erro: " + data.message);
-            }
-        })
-        .catch(() => alert("Erro na conexão."));
-    });
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Produto adicionado ao carrinho!');
+            // Atualizar UI ou redirecionar conforme necessário
+        } else {
+            alert('Erro: ' + (data.error || 'Erro desconhecido'));
+        }
+    })
+    .catch(() => alert('Erro ao comunicar com o servidor'));
 });

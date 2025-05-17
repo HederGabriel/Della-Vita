@@ -167,10 +167,8 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                     <button class="local ativo" onclick="selecionarEntrega(this)" data-entrega="casa">Receber em Casa</button>
                 </div>
 
-                <br />
-                <div class="produto" data-id-produto="<?= htmlspecialchars($id_produto, ENT_QUOTES | ENT_HTML5) ?>" data-preco="<?= htmlspecialchars($preco, ENT_QUOTES | ENT_HTML5) ?>">
-                    <button class="addPedido">Adicionar ao Pedido</button>
-                </div>
+                <br/>
+                <button class="addPedido">Adicionar ao Pedido</button>
             </div>
         </section>
     </main>
