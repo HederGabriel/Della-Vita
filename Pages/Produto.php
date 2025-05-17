@@ -176,10 +176,12 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
 
     <footer>
         <div class="footer-container">
+            <!-- Logo à esquerda -->
             <div class="footer-logo">
-                <img src="../IMG/Logo1.jpg" alt="Logo Della Vita" />
+                <img src="..\IMG\Logo1.jpg" alt="Logo Della Vita">
             </div>
 
+            <!-- Conteúdo à direita -->
             <div class="footer-conteudo">
                 <div class="footer-topo">
                     <h1>Explore mais</h1>
@@ -191,14 +193,32 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                         <p onclick="window.location.href='login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
-                        <p><a href="#" onclick="return false;">Termos de Uso</a></p>
-                        <p><a href="#" onclick="return false;">Política de Privacidade</a></p>
+                        <p><a onclick="window.location.href='#'">Termos de Uso</a></p>
+                        <p><a onclick="window.location.href='#'">Política de Privacidade</a></p>
                     </div>
                     <div class="contato">
                         <h2>Contatos</h2>
-                        <p>Telefone: (71) 99999-9999</p>
-                        <p>Email: dellavita@gmail.com</p>
-                        <p>Localização: Salvador, BA</p>
+                        <h3>Obrigado pela Preferência!</h3>
+                        <label for="t">Número <img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"> : </label>
+                        <p id="t">
+                            <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">
+                            Falar no WhatsApp
+                            </a>
+                        </p>
+                        <br>
+                        <label for="e"><img src="..\IMG\Icons\google.svg" alt="Google">mail: </label>
+                        <p>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
+                            Enviar mensagem via Gmail
+                            </a>
+                        </p>
+                    </div>
+                    <div class="social">
+                        <h2>Redes Sociais</h2>
+                        <h3>Siga-Nós</h3>
+                        <a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"><img src="..\IMG\Icons\instagram.svg" alt="Instagram"></a>
+                        <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"><img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"></a>
+                        <a href="https://www.facebook.com/share/1APRM1n7BA/" target="_blank"><img src="..\IMG\Icons\facebook.svg" alt="Facebook"></a>
                     </div>
                 </div>
             </div>
