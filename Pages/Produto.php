@@ -100,7 +100,7 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
 
         <?php if ($cliente): ?>
             <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($cliente['avatar'], ENT_QUOTES | ENT_HTML5) ?>" alt="Foto de Perfil">
+                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
             <button class="login-btn" onclick="window.location.href='login-Cadastro.php'">Entrar</button>
@@ -169,7 +169,7 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                 </div>
 
                 <br/>
-                <button class="addPedido">Adicionar ao Pedido</button>
+                <button class="addPedido" onclick="abrirModalQuantidade()">Adicionar ao Pedido</button>
             </div>
         </section>
     </main>
@@ -226,5 +226,16 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
     </footer>
 
     <script src="../JS/Produto.js"></script>
+    <div id="modal-quantidade" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Selecionar Quantidade</h2>
+            <input type="number" id="quantidade" value="1" min="1" onchange="atualizarTotal()" />
+            <p>Total: <span id="total-modal">R$ 0,00</span></p>
+            <div class="modal-buttons">
+                <button onclick="confirmarAdicionar()">Confirmar</button>
+                <button onclick="fecharModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
