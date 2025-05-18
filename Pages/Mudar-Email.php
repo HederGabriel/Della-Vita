@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 <main>
 <?php
 if (!isset($_SESSION['id_cliente'])) {
-    header("Location: login-Cadastro.php");
+    header("Location: Login-Cadastro.php");
     exit();
 }
 

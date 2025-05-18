@@ -1,12 +1,8 @@
 <?php 
+// Arquivo: Produto.php
+
 include_once '../System/session.php';
 include_once '../System/db.php';
-
-// Garantir que o usuário está logado para acessar a página
-if (!isset($_SESSION['id_cliente'])) {
-    header("Location: login-Cadastro.php");
-    exit();
-}
 
 $id_cliente = $_SESSION['id_cliente'] ?? null;
 $cliente = null;
@@ -16,9 +12,8 @@ if ($id_cliente) {
     $stmt->execute(['id_cliente' => $id_cliente]);
     $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($cliente) {
-        // Atualizar dados da sessão se necessário
         $_SESSION['nome'] = $cliente['nome'];
-        $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
+        $_SESSION['avatar'] = !empty($cliente['avatar']) ? $cliente['avatar'] : '../IMG/Profile/Default.png';
     }
 }
 
@@ -31,7 +26,7 @@ if (isset($_POST['logout'])) {
 
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Validar parâmetro id do produto via GET
+// Validar o ID do produto
 if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     echo "Produto não encontrado.";
     exit();
@@ -39,7 +34,6 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
 
 $id_produto = (int)$_GET['id'];
 
-// Buscar dados do produto com query preparada
 $comando = $pdo->prepare("SELECT nome, preco, imagem, dadosPagina FROM produtos WHERE id_produto = :id_produto");
 $comando->execute(['id_produto' => $id_produto]);
 $produto = $comando->fetch(PDO::FETCH_ASSOC);
@@ -54,25 +48,30 @@ $preco = (float)$produto['preco'];
 $imagem = $produto['imagem'];
 $dadosJsonPath = $produto['dadosPagina'];
 
-// Gerar caminho absoluto seguro para o JSON
-$jsonFullPath = realpath(__DIR__ . '/../Json/' . basename($dadosJsonPath));
+// Carregar JSON com verificação de segurança e robustez
+$descricaoCompleta = 'Descrição não disponível';
+$ingredientes = [];
 
-if ($jsonFullPath && file_exists($jsonFullPath)) {
-    $jsonContent = file_get_contents($jsonFullPath);
-    $dadosExtra = json_decode($jsonContent, true);
+if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath))) {
+    $jsonPath = __DIR__ . '/../Json/' . basename($dadosJsonPath);
+    if (is_file($jsonPath) && is_readable($jsonPath)) {
+        $jsonContent = file_get_contents($jsonPath);
+        $dadosExtra = json_decode($jsonContent, true);
 
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        $descricaoCompleta = 'Erro ao ler os dados JSON.';
-        $ingredientes = [];
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $descricaoCompleta = $dadosExtra['descricao_completa'] ?? 'Descrição não disponível';
+            $ingredientes = $dadosExtra['ingredientes'] ?? [];
+        } else {
+            $descricaoCompleta = 'Erro ao ler os dados JSON.';
+        }
     } else {
-        $descricaoCompleta = $dadosExtra['descricao_completa'] ?? 'Descrição não disponível';
-        $ingredientes = $dadosExtra['ingredientes'] ?? [];
+        $descricaoCompleta = 'Arquivo de descrição não encontrado.';
     }
 } else {
-    $descricaoCompleta = 'Arquivo de descrição não encontrado.';
-    $ingredientes = [];
+    $descricaoCompleta = 'Caminho do arquivo de descrição inválido.';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -103,7 +102,7 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                 <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
-            <button class="login-btn" onclick="window.location.href='login-Cadastro.php'">Entrar</button>
+            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
         <?php endif; ?>
     </nav>
 
@@ -169,7 +168,12 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                 </div>
 
                 <br/>
-                <button class="addPedido" onclick="abrirModalQuantidade()">Adicionar ao Pedido</button>
+                <?php if ($cliente): ?>
+                    <button class="addPedido" onclick="abrirModalQuantidade()">Adicionar ao Pedido</button>
+                <?php else: ?>
+                    <button class="addPedido" onclick="window.location.href='Login-Cadastro.php'">Adicionar ao Pedido</button>
+                <?php endif; ?>
+
             </div>
         </section>
     </main>
@@ -190,7 +194,7 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                     <div class="links">
                         <h2>Principais Links</h2>
                         <p onclick="window.location.href='index.php'">Início</p>
-                        <p onclick="window.location.href='login-Cadastro.php'">Entrar/Cadastro</p>
+                        <p onclick="window.location.href='Login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
                         <p><a onclick="window.location.href='#'">Termos de Uso</a></p>
@@ -199,14 +203,14 @@ if ($jsonFullPath && file_exists($jsonFullPath)) {
                     <div class="contato">
                         <h2>Contatos</h2>
                         <h3>Obrigado pela Preferência!</h3>
-                        <label for="t">Número <img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"> : </label>
+                        <label for="t">Número : </label>
                         <p id="t">
                             <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">
                             Falar no WhatsApp
                             </a>
                         </p>
                         <br>
-                        <label for="e"><img src="..\IMG\Icons\google.svg" alt="Google">mail: </label>
+                        <label for="e">Gmail: </label>
                         <p>
                             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
                             Enviar mensagem via Gmail

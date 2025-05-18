@@ -3,6 +3,7 @@ session_start(); // Iniciar a sessão para gerenciar mensagens de erro
 include '../System/db.php'; // Conexão com o banco de dados
 ?>
 
+<!-- Arquivo: Logar.php -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -17,6 +18,9 @@ include '../System/db.php'; // Conexão com o banco de dados
     
     <main>
         <form method="post">
+            <!-- Campo oculto para redirecionamento -->
+            <input type="hidden" name="redirect" value="<?= htmlspecialchars($_GET['redirect'] ?? $_POST['redirect'] ?? 'index.php') ?>">
+
             <!-- Campo para o email -->
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" autocomplete="off" required>
@@ -39,30 +43,32 @@ include '../System/db.php'; // Conexão com o banco de dados
                 $stmt->execute(['email' => $email]);
                 $cliente = $stmt->fetch();
 
-                if ($cliente && password_verify($senha, $cliente['senha'])) { // Verificar a senha
-                    $_SESSION['id_cliente'] = $cliente['id_cliente']; // Armazenar ID do cliente na sessão
-                    $_SESSION['nome'] = $cliente['nome']; // Armazenar nome na sessão
-                    $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png'; // Avatar padrão
-                    header("Location: index.php"); // Redirecionar para a página inicial
+                if ($cliente && password_verify($senha, $cliente['senha'])) {
+                    $_SESSION['id_cliente'] = $cliente['id_cliente'];
+                    $_SESSION['nome'] = $cliente['nome'];
+                    $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
+
+                    $redirect = $_POST['redirect'] ?? 'index.php';
+                    header("Location: " . $redirect);
                     exit();
                 } else {
                     $_SESSION['error_message'] = "Erro: Email ou senha inválidos.";
+                    header("Location: Logar.php?redirect=" . urlencode($_POST['redirect'] ?? 'index.php'));
+                    exit();
                 }
-                header("Location: Logar.php"); // Recarregar a página
-                exit();
             }
 
-            // Exibir mensagem de erro, se existir, e removê-la
+            // Exibir mensagem de erro, se existir
             if (isset($_SESSION['error_message']) && $_SESSION['error_message']) {
                 echo "<p class='error-message'>{$_SESSION['error_message']}</p>";
-                unset($_SESSION['error_message']); // Remover mensagem após exibição
+                unset($_SESSION['error_message']);
             }
             ?>
 
             <!-- Botões de ação -->
             <button type="submit" id="btn-entrar">Entrar</button>
             <br>
-            <button type="button" id="btn-voltar" onclick="window.location.href='Login-Cadastro.php'">Voltar</button>
+            <button type="button" id="btn-voltar" onclick="window.location.href='Login-Cadastro.php?redirect=<?= urlencode($_GET['redirect'] ?? 'index.php') ?>'">Voltar</button>
         </form>
     </main>
 

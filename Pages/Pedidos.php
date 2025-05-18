@@ -55,8 +55,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
-            <!-- Botão de login -->
-            <button class="login-btn" onclick="window.location.href='login-Cadastro.php'">Entrar</button>
+            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
         <?php endif; ?>
     </nav>
     <div id="user-menu">
@@ -98,7 +97,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <div class="links">
                         <h2>Principais Links</h2>
                         <p onclick="window.location.href='index.php'">Início</p>
-                        <p onclick="window.location.href='login-Cadastro.php'">Entrar/Cadastro</p>
+                        <p onclick="window.location.href='Login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
                         <p><a onclick="window.location.href='#'">Termos de Uso</a></p>
