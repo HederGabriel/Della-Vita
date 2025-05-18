@@ -33,6 +33,15 @@ CREATE TABLE `categorias` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `categorias`
+--
+
+LOCK TABLES `categorias` WRITE;
+/*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `clientes`
 --
 
@@ -48,8 +57,18 @@ CREATE TABLE `clientes` (
   `avatar` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clientes`
+--
+
+LOCK TABLES `clientes` WRITE;
+/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` VALUES (18,'Heder','hedergabrielsalessousa@gmail.com',_binary '$2y$10$/27BWN1U/qem7ZVAXjFfr.WbF1dFzoNm71iZhHsRnMYW9x8pphYv6',NULL,NULL),(19,'Ricka','alves.rickaelly@gmail.com',_binary '$2y$10$sEBku8Fe1./rTL0K5AS5U.tix4RaW86t5e47pvzmf/wqBNmRqHOMy',NULL,'../IMG/Profile/04.png');
+/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `enderecos`
@@ -74,6 +93,15 @@ CREATE TABLE `enderecos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `enderecos`
+--
+
+LOCK TABLES `enderecos` WRITE;
+/*!40000 ALTER TABLE `enderecos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `enderecos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `itens_pedido`
 --
 
@@ -85,6 +113,7 @@ CREATE TABLE `itens_pedido` (
   `quantidade` int(11) NOT NULL,
   `preco_unitario` double NOT NULL,
   `total` double NOT NULL,
+  `entrega` varchar(45) DEFAULT NULL,
   `id_pedido` int(11) DEFAULT NULL,
   `id_produto` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_item_pedido`),
@@ -92,8 +121,18 @@ CREATE TABLE `itens_pedido` (
   KEY `id_produto` (`id_produto`),
   CONSTRAINT `itens_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`),
   CONSTRAINT `itens_pedido_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produtos` (`id_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `itens_pedido`
+--
+
+LOCK TABLES `itens_pedido` WRITE;
+/*!40000 ALTER TABLE `itens_pedido` DISABLE KEYS */;
+INSERT INTO `itens_pedido` VALUES (16,1,39.99,39.99,'casa',2,1);
+/*!40000 ALTER TABLE `itens_pedido` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pagamentos`
@@ -112,6 +151,15 @@ CREATE TABLE `pagamentos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pagamentos`
+--
+
+LOCK TABLES `pagamentos` WRITE;
+/*!40000 ALTER TABLE `pagamentos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pagamentos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pedidos`
 --
 
@@ -126,7 +174,6 @@ CREATE TABLE `pedidos` (
   `data_pedido` date NOT NULL,
   `valor_total` double NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
-  `id_funcionario` int(11) DEFAULT NULL,
   `id_pagamento` int(11) DEFAULT NULL,
   `nota` int(11) DEFAULT NULL,
   `comentario` text DEFAULT NULL,
@@ -135,8 +182,18 @@ CREATE TABLE `pedidos` (
   KEY `id_pagamento` (`id_pagamento`),
   CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
   CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`id_pagamento`) REFERENCES `pagamentos` (`id_pagamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pedidos`
+--
+
+LOCK TABLES `pedidos` WRITE;
+/*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
+INSERT INTO `pedidos` VALUES (1,'Heder','carrinho','aberto','2025-05-17',0,18,NULL,NULL,NULL),(2,'Heder','carrinho','em aberto','2025-05-17',671.84,18,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `produtos`
@@ -153,9 +210,20 @@ CREATE TABLE `produtos` (
   `descricao_resumida` varchar(100) DEFAULT NULL,
   `dadosPagina` varchar(100) DEFAULT NULL,
   `tipo` varchar(100) DEFAULT NULL,
+  `sabor` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_produto`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `produtos`
+--
+
+LOCK TABLES `produtos` WRITE;
+/*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
+INSERT INTO `produtos` VALUES (1,'Pizza de Calabresa1',39.99,'..\\IMG\\Produtos\\Calabresa.png','Pizza clássica com calabresa.','..\\Json\\Calabresa.json','normal','tradicional'),(2,'Pizza de Calabresa2',39.99,'..\\IMG\\Produtos\\Calabresa.png','Pizza clássica com calabresa.','..\\Json\\Calabresa.json','normal','tradicional'),(3,'Pizza de Calabresa3',39.99,'..\\IMG\\Produtos\\Calabresa.png','Pizza clássica com calabresa.','..\\Json\\Calabresa.json','normal','doce'),(4,'Pizza de Calabresa4',39.99,'..\\IMG\\Produtos\\Calabresa.png','Pizza clássica com calabresa.','..\\Json\\Calabresa.json','normal','especial'),(6,'Combo Família',69.9,'..\\IMG\\Produtos\\ComboFamilia.svg','Combo com 2 pizzas, 1 refrigerante de 1L e uma porção de batata frita.','..\\Json\\ComboFamilia.json','combo','');
+/*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -166,4 +234,4 @@ CREATE TABLE `produtos` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-13  9:27:01
+-- Dump completed on 2025-05-18 15:04:24
