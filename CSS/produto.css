@@ -12,18 +12,20 @@ body {
 header {
     width: 1200px;
     height: 500px;
-    border: #ddd 2px solid;
+    border: #FF7F11 2px solid;
     border-radius: 4px;
     margin: 26px auto 20px auto;
     background-image: url(../IMG/headerBack.png);
     background-size: 100%;
     background-repeat: no-repeat;
+    position: relative;
+    padding: 20px;
 }
 
 header h1 {
     float: right;
     font-size: 96px;
-    color: #333;
+    color: #3d3d3d;
     max-width: 600px;
     margin: 50px 80px 0 0;
     text-align: center;
@@ -35,6 +37,10 @@ header img {
     height: 400px;
     margin: 50px 0 0 60px;
     border-radius: 8px;
+}
+header img:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease;
 }
 
 header p {
@@ -48,7 +54,7 @@ header p {
 main > section {
     width: 1200px;
     margin: 40px auto;
-    border: 1px solid #ddd;
+    border: 2px solid #FF7F11;
     box-sizing: border-box;
     border-radius: 4px;
     padding: 60px;
@@ -61,11 +67,17 @@ div.ingredientes {
 }
 
 div.ingredientes h3 {
-    margin: 0 0 0 -20px;
+    margin: 0 0 10px -20px;
+    color: #FF7F11;
 }
 
-div.ingredientes ul{
+div.ingredientes ul {
     max-width: 310px;
+}
+
+.tamanho h2 {
+    margin: 0px 0 10px 0;
+    color: #FF7F11;
 }
 
 div.tamanho {
@@ -78,13 +90,19 @@ div.tamanho button {
     height: 70px;
     margin: 0px 20px 0 0;
     font-size: 25px;
+    border: 2px solid #FF7F11;
+    border-radius: 8px;
+    color: #FF7F11;
     cursor: pointer;
-    border: 2px solid #ccc;
-    background-color: #f4f4f4;
 }
 
 div.tamanho button.ativo {
-    border: 3px solid #e44d26; /* destaque da borda ativa */
+    border: 3px solid #f53f12;
+}
+
+.tamanho button.ativo,
+.tamanho button:hover {
+    color: rgb(162, 91, 4);
 }
 
 div.compra {
@@ -92,7 +110,7 @@ div.compra {
     float: right;
     width: 400px;
     height: 350px;
-    border: 1px solid #ddd;
+    border: 2px solid #FF7F11;
     text-align: center;
 }
 
@@ -110,7 +128,16 @@ div.compra button.local {
     height: 60px;
     font-size: 16px;
     cursor: pointer;
-    border: 2px solid #ccc;
+    border: 2px solid #FF7F11;
+    border-radius: 8px;
+    background-color: white;
+    color: #FF7F11;
+}
+
+div.compra button.local:hover {
+    background-color: #ff80117e;
+    color: white;
+    transition: all 0.3s ease;
 }
 
 div.compra button.addPedido {
@@ -118,12 +145,28 @@ div.compra button.addPedido {
     height: 75px;
     font-size: 16px;
     cursor: pointer;
-    border: 2px solid #ccc;
+    border: 2px solid #FF7F11;
     margin: 25px 0 0 0;
+    padding: 12px 24px;
+    background-color: #FF7F11;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+div.compra button.addPedido:hover {
+    background-color: #d36811;
 }
 
 div.entrega button.ativo {
     border: 3px solid #e44d26;
+}
+
+.entrega h3 {
+    margin-bottom: 10px;
+    color: #FF7F11;
 }
 
 .modal {
@@ -132,29 +175,173 @@ div.entrega button.ativo {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* fundo escuro */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* garantir que fica na frente de outros elementos */
+    z-index: 1000;
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #eb7412;
     padding: 20px 30px;
     border-radius: 10px;
     text-align: center;
     width: 300px;
 }
 
+.modal-content h2 {
+    color: #f9f8f6;
+    margin-bottom: 10px;
+}
+
 .modal-content input[type="number"] {
     width: 80px;
     font-size: 1.2em;
     margin: 10px 0;
+    color: #000;
 }
 
 .modal-buttons {
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
+}
+
+.modal-content .modal-buttons button {
+    margin: 10px 8px 0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.modal-content .modal-buttons button:first-child {
+    background-color: #ddd;
+    color: #333;
+}
+
+.modal-content .modal-buttons button:last-child {
+    background-color: #ddd;
+    color: #333;
+}
+
+.modal-content .modal-buttons button:hover {
+    background-color: #ccc;
+    color: #000;
+    transition: background-color 0.3s ease;
+}
+
+/* RESPONSIVIDADE */
+
+/* Telas até 768px */
+@media (max-width: 768px) {
+    header {
+        width: 95%;
+        height: auto;
+        flex-direction: column;
+        background-size: cover;
+        padding: 20px 10px;
+    }
+
+    header h1 {
+        float: none;
+        font-size: 48px;
+        margin: 20px auto 0 auto;
+        text-align: center;
+    }
+
+    header img {
+        float: none;
+        width: 80%;
+        height: auto;
+        margin: 20px auto;
+        display: block;
+    }
+
+    header p {
+        float: none;
+        font-size: 18px;
+        margin: 20px auto;
+        text-align: center;
+        max-width: 90%;
+    }
+
+    main > section {
+        width: 95%;
+        padding: 30px;
+    }
+
+    div.ingredientes,
+    div.tamanho,
+    div.compra {
+        float: none;
+        margin: 20px auto;
+        width: 90%;
+        text-align: center;
+    }
+
+    div.tamanho button {
+        width: 100px;
+        height: 50px;
+        font-size: 20px;
+        margin: 10px 10px;
+    }
+
+    div.compra {
+        height: auto;
+        padding: 20px 0;
+    }
+
+    div.compra h2 {
+        font-size: 48px;
+    }
+
+    div.compra button.local,
+    div.compra button.addPedido {
+        width: 80%;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+}
+
+/* Telas até 480px */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 32px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    div.ingredientes,
+    div.tamanho {
+        font-size: 18px;
+    }
+
+    div.tamanho button {
+        width: 80px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    div.compra h2 {
+        font-size: 36px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+
+    .modal-content input[type="number"] {
+        width: 60px;
+        font-size: 1em;
+    }
+
+    .modal-content .modal-buttons button {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
 }
