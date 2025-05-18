@@ -22,6 +22,7 @@ function selecionarEntrega(botao) {
     const tipoEntrega = botao.getAttribute("data-entrega");
     console.log("Tipo de entrega selecionado:", tipoEntrega);
 }
+
 function abrirModalQuantidade() {
     const botaoEntrega = document.querySelector('.entrega button.ativo');
     if (!botaoEntrega) {
@@ -30,11 +31,6 @@ function abrirModalQuantidade() {
     }
 
     const tipoEntrega = botaoEntrega.getAttribute('data-entrega');
-
-    if (tipoEntrega === 'local') {
-        alert('A opção "Retirar no Local" estará disponível futuramente.');
-        return;
-    }
 
     const modal = document.getElementById('modal-quantidade');
     if (modal) {
@@ -98,16 +94,6 @@ function confirmarAdicionar() {
 
     const tipoEntrega = botaoEntrega.getAttribute('data-entrega');
 
-    if (tipoEntrega === 'local') {
-        alert('Entrega local ainda não está disponível. Função futura.');
-        return;
-    }
-
-    if (tipoEntrega !== 'casa') {
-        alert('Tipo de entrega inválido.');
-        return;
-    }
-
     const urlParams = new URLSearchParams(window.location.search);
     const id_produto = parseInt(urlParams.get('id'));
 
@@ -120,7 +106,7 @@ function confirmarAdicionar() {
         id_produto,
         quantidade,
         preco_unitario: precoUnitario.toFixed(2),
-        tipo_entrega: tipoEntrega
+        tipo_entrega: tipoEntrega  // GARANTIR que está aqui
     };
 
     fetch('../System/addPedido.php', {
@@ -130,17 +116,17 @@ function confirmarAdicionar() {
         },
         body: new URLSearchParams(dados)
     })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert('Produto adicionado ao carrinho!');
-                fecharModal();
-            } else {
-                alert('Erro: ' + (data.error || 'Erro desconhecido'));
-            }
-        })
-        .catch(() => alert('Erro ao comunicar com o servidor'));
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            fecharModal();
+        } else {
+            alert('Erro: ' + (data.error || 'Erro desconhecido'));
+        }
+    })
+    .catch(() => alert('Erro ao comunicar com o servidor'));
 }
+
 
 // Adiciona os eventos quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
