@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar</title>
     <link rel="stylesheet" href="../CSS/Login-Cadastro.css"> 
-
     <link rel="stylesheet" href="/CSS/font.css">
 </head>
 <body>
@@ -36,7 +35,17 @@
             <br>
             <button type="submit" name="action" value="esqueci" id="btn-esqueci">Esqueci a Senha</button>
             <br>
+            <button type="button" id="btn-cancelar">Cancelar</button>
         </form>
+
+        <script>
+            const btnCancelar = document.getElementById('btn-cancelar');
+            btnCancelar.addEventListener('click', () => {
+                // Redireciona para a URL original armazenada em redirect
+                const redirectUrl = <?= json_encode($redirect) ?>;
+                window.location.href = redirectUrl;
+            });
+        </script>
     </main>
 </body>
 </html>
