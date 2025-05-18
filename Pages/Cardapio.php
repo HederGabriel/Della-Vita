@@ -14,12 +14,15 @@ if (isset($_SESSION['id_cliente'])) {
     }
 }
 
-// Logout do usuário
 if (isset($_POST['logout'])) {
-    session_destroy(); // Destruir a sessão
-    header("Location: index.php"); // Redirecionar para a página inicial
+    session_destroy(); // Destrói a sessão
+
+    // Redireciona de volta para a mesma página
+    $redirect_url = $_POST['redirect'] ?? 'index.php';
+    header("Location: " . $redirect_url);
     exit();
 }
+
 
 // Página atual
 $current_page = basename($_SERVER['PHP_SELF']);

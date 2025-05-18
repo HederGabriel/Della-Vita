@@ -17,10 +17,12 @@ if ($id_cliente) {
     }
 }
 
-// Logout
 if (isset($_POST['logout'])) {
-    session_destroy();
-    header("Location: index.php");
+    session_destroy(); // Destrói a sessão
+
+    // Redireciona de volta para a mesma página
+    $redirect_url = $_POST['redirect'] ?? 'index.php';
+    header("Location: " . $redirect_url);
     exit();
 }
 

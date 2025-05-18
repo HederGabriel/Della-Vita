@@ -14,12 +14,13 @@ if (isset($_SESSION['id_cliente'])) {
     }
 }
 
-// Logout do usuário
 if (isset($_POST['logout'])) {
-    session_destroy(); // Destruir a sessão
-    header("Location: index.php"); // Redirecionar para a página inicial
+    session_destroy();
+    $redirect_url = $_POST['redirect'] ?? 'index.php';
+    header("Location: " . $redirect_url);
     exit();
 }
+
 
 // Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
@@ -77,6 +78,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <?php if (isset($cliente)): ?>
         <form id="logout-form" method="POST" style="display: none;">
             <input type="hidden" name="logout" value="1">
+            <input type="hidden" name="redirect" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
         </form>
     <?php endif; ?>
     <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
