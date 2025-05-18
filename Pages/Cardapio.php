@@ -89,7 +89,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="footer-container">
             <!-- Logo à esquerda -->
             <div class="footer-logo">
-                <img src="..\IMG\Logo.jpg" alt="Logo Della Vita">
+                <img src="..\IMG\Logo1.jpg" alt="Logo Della Vita">
             </div>
 
             <!-- Conteúdo à direita -->
@@ -104,20 +104,20 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <p onclick="window.location.href='Login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
-                        <p><a onclick="window.location.href='Termo.php'">Termos de Uso</a></p>
+                        <p><a onclick="window.location.href='#'">Termos de Uso</a></p>
                         <p><a onclick="window.location.href='#'">Política de Privacidade</a></p>
                     </div>
                     <div class="contato">
                         <h2>Contatos</h2>
                         <h3>Obrigado pela Preferência!</h3>
-                        <label for="t">Número <img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"> : </label>
+                        <label for="t">Número: </label>
                         <p id="t">
                             <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">
                             Falar no WhatsApp
                             </a>
                         </p>
                         <br>
-                        <label for="e"><img src="..\IMG\Icons\google.svg" alt="Google">mail: </label>
+                        <label for="e">Gmail: </label>
                         <p>
                             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
                             Enviar mensagem via Gmail

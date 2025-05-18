@@ -205,7 +205,7 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
                     <div class="contato">
                         <h2>Contatos</h2>
                         <h3>Obrigado pela Preferência!</h3>
-                        <label for="t">Número : </label>
+                        <label for="t">Número: </label>
                         <p id="t">
                             <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">
                             Falar no WhatsApp
