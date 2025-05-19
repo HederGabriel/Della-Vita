@@ -139,6 +139,7 @@ div.compra button.local:hover {
     background-color: #ff80117e;
     color: white;
     transition: all 0.3s ease;
+    border: 3px solid rgb(137, 35, 35)
 }
 
 div.compra button.addPedido {
@@ -162,7 +163,7 @@ div.compra button.addPedido:hover {
 }
 
 div.entrega button.ativo {
-    border: 3px solid #e44d26;
+    border: 3px solid rgb(137, 35, 35);
 }
 
 .entrega h3 {
