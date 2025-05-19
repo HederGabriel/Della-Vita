@@ -28,13 +28,15 @@ if (isset($_POST['logout'])) {
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
- <html lang="pt-BR">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Termos de Uso | Della Vita</title>
-  <link rel="stylesheet" href="../CSS/Termo.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Termos de Uso | Della Vita</title>
+    <link rel="stylesheet" href="../CSS/Termo.css">
     <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <script src="..\JS\userMenu.js"></script>
 </head>
 
 <body>
@@ -58,6 +60,26 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
         <?php endif; ?>
     </nav>
+
+    <div id="user-menu">
+        <ul>
+            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
+            <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
+            <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
+        </ul>
+    </div>
+    <div id="overlay" onclick="hideLogoutModal()"></div>
+    <div id="logout-modal">
+        <p>Tem certeza que deseja sair?</p>
+        <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
+        <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+    </div>
+    
+    <?php if (isset($cliente)): ?>
+        <form id="logout-form" method="POST" style="display: none;">
+            <input type="hidden" name="logout" value="1">
+        </form>
+    <?php endif; ?>
 
     <div class="container">
         <h1>Termos de Uso</h1>
