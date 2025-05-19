@@ -190,6 +190,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
     </footer>
 
-
 </body>
 </html>

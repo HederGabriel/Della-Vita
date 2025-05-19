@@ -23,11 +23,9 @@ if (isset($_POST['logout'])) {
     exit();
 }
 
-
 // Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -36,12 +34,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Della Vita</title>
     <link rel="stylesheet" href="../CSS/nav.css"> <!-- Estilo do nav -->
-    <link rel="stylesheet" href="../CSS/pedido.css"> <!-- Estilo específico do index -->
+    <link rel="stylesheet" href="../CSS/pedido.css">
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
 </head>
 <body>
-    <nav>
+        <nav>
         <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
 
         <div class="nav-links">
@@ -81,9 +79,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </form>
     <?php endif; ?>
     <script src="../JS/userMenu.js"></script>
-    
-    <main>Pagina para ver Pedidos</main>
-
     <footer>
         <div class="footer-container">
             <!-- Logo à esquerda -->
