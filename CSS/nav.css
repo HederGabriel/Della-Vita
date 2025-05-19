@@ -103,7 +103,8 @@ nav {
   border-radius: 8px;
   z-index: 1000;
   padding: 10px;
-  min-width: 160px;
+  min-width: 80px;
+  text-align: center;
 }
 
 #user-menu ul {

@@ -14,6 +14,7 @@ if (isset($_SESSION['id_cliente'])) {
     }
 }
 
+
 if (isset($_POST['logout'])) {
     session_destroy(); // Destrói a sessão
 

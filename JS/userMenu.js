@@ -15,6 +15,19 @@ function hideMenu() {
 }
 
 function showLogoutModal() {
+    // Adiciona o redirect dinamicamente ao formulário de logout
+    const logoutForm = document.getElementById('logout-form');
+    
+    let redirectInput = logoutForm.querySelector('input[name="redirect"]');
+    if (!redirectInput) {
+        redirectInput = document.createElement('input');
+        redirectInput.type = 'hidden';
+        redirectInput.name = 'redirect';
+        logoutForm.appendChild(redirectInput);
+    }
+
+    redirectInput.value = window.location.pathname + window.location.search;
+
     document.getElementById('overlay').style.display = 'block';
     document.getElementById('logout-modal').style.display = 'block';
 }
