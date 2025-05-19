@@ -117,6 +117,7 @@ CREATE TABLE `itens_pedido` (
   `id_pedido` int(11) DEFAULT NULL,
   `id_produto` int(11) DEFAULT NULL,
   `id_cliente` int(11) DEFAULT NULL,
+  `tamanho` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_item_pedido`),
   KEY `id_pedido` (`id_pedido`),
   KEY `id_produto` (`id_produto`),
@@ -133,7 +134,6 @@ CREATE TABLE `itens_pedido` (
 
 LOCK TABLES `itens_pedido` WRITE;
 /*!40000 ALTER TABLE `itens_pedido` DISABLE KEYS */;
-INSERT INTO `itens_pedido` VALUES (18,1,39.99,39.99,'casa',2,2,18);
 /*!40000 ALTER TABLE `itens_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,4 +237,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-19 19:57:16
+-- Dump completed on 2025-05-19 20:01:11
