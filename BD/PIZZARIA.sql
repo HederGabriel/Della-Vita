@@ -57,7 +57,7 @@ CREATE TABLE `clientes` (
   `avatar` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (18,'Heder','hedergabrielsalessousa@gmail.com',_binary '$2y$10$/27BWN1U/qem7ZVAXjFfr.WbF1dFzoNm71iZhHsRnMYW9x8pphYv6',NULL,NULL),(19,'Ricka','alves.rickaelly@gmail.com',_binary '$2y$10$sEBku8Fe1./rTL0K5AS5U.tix4RaW86t5e47pvzmf/wqBNmRqHOMy',NULL,'../IMG/Profile/04.png');
+INSERT INTO `clientes` VALUES (18,'Heder','hedergabrielsalessousa@gmail.com',_binary '$2y$10$/27BWN1U/qem7ZVAXjFfr.WbF1dFzoNm71iZhHsRnMYW9x8pphYv6',NULL,NULL),(19,'Ricka','alves.rickaelly@gmail.com',_binary '$2y$10$sEBku8Fe1./rTL0K5AS5U.tix4RaW86t5e47pvzmf/wqBNmRqHOMy',NULL,'../IMG/Profile/04.png'),(20,'Heder','heder@gmail.com',_binary '$2y$10$bBUkj0UkvY.i3USudsREg.T0VRmnP2xmoaxuINkupvSfPsACuCgj6',NULL,NULL),(21,'Heder','heder1@gmail.com',_binary '$2y$10$2OE5QS3RlGVxNpx/dMRPOOPqa4zlrj6PHStDC1eHzDVVR6I8Vc/M6',NULL,NULL);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,12 +116,15 @@ CREATE TABLE `itens_pedido` (
   `entrega` varchar(45) DEFAULT NULL,
   `id_pedido` int(11) DEFAULT NULL,
   `id_produto` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_item_pedido`),
   KEY `id_pedido` (`id_pedido`),
   KEY `id_produto` (`id_produto`),
+  KEY `itens_pedido_ibfk3` (`id_cliente`),
+  CONSTRAINT `itens_pedido_ibfk3` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `itens_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`),
   CONSTRAINT `itens_pedido_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produtos` (`id_produto`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +133,7 @@ CREATE TABLE `itens_pedido` (
 
 LOCK TABLES `itens_pedido` WRITE;
 /*!40000 ALTER TABLE `itens_pedido` DISABLE KEYS */;
-INSERT INTO `itens_pedido` VALUES (16,1,39.99,39.99,'casa',2,1);
+INSERT INTO `itens_pedido` VALUES (18,1,39.99,39.99,'casa',2,2,18);
 /*!40000 ALTER TABLE `itens_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +194,7 @@ CREATE TABLE `pedidos` (
 
 LOCK TABLES `pedidos` WRITE;
 /*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
-INSERT INTO `pedidos` VALUES (1,'Heder','carrinho','aberto','2025-05-17',0,18,NULL,NULL,NULL),(2,'Heder','carrinho','em aberto','2025-05-17',671.84,18,NULL,NULL,NULL);
+INSERT INTO `pedidos` VALUES (1,'Heder','carrinho','aberto','2025-05-17',0,18,NULL,NULL,NULL),(2,'Heder','carrinho','em aberto','2025-05-17',791.81,18,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,4 +237,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-18 15:04:24
+-- Dump completed on 2025-05-19 19:57:16
