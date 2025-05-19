@@ -1,4 +1,6 @@
 <?php
+// Arquivo: addPedido.php
+
 session_start();
 include_once '../System/db.php';
 
@@ -14,7 +16,7 @@ $id_cliente = $_SESSION['id_cliente'];
 $id_produto = filter_input(INPUT_POST, 'id_produto', FILTER_VALIDATE_INT);
 $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT);
 $preco_unitario = filter_input(INPUT_POST, 'preco_unitario', FILTER_VALIDATE_FLOAT);
-$tipo_entrega = filter_input(INPUT_POST, 'tipo_entrega', FILTER_SANITIZE_STRING); // NOVO
+$tipo_entrega = filter_input(INPUT_POST, 'tipo_entrega', FILTER_SANITIZE_STRING);
 
 if (!$id_produto || !$quantidade || !$preco_unitario || !$tipo_entrega) {
     http_response_code(400);
@@ -25,12 +27,13 @@ if (!$id_produto || !$quantidade || !$preco_unitario || !$tipo_entrega) {
 $total = $quantidade * $preco_unitario;
 
 try {
-    // Verificar se já existe pedido em aberto
+    // Verifica se há pedido em aberto
     $stmt = $pdo->prepare("SELECT id_pedido, valor_total FROM pedidos WHERE id_cliente = :id_cliente AND status_pedido = 'em aberto' LIMIT 1");
     $stmt->execute(['id_cliente' => $id_cliente]);
     $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$pedido) {
+        // Cria novo pedido
         $stmtNome = $pdo->prepare("SELECT nome FROM clientes WHERE id_cliente = :id_cliente");
         $stmtNome->execute(['id_cliente' => $id_cliente]);
         $clienteDados = $stmtNome->fetch(PDO::FETCH_ASSOC);
@@ -48,17 +51,25 @@ try {
         $valor_total_pedido = (float)$pedido['valor_total'];
     }
 
-    // Inserir item no carrinho, incluindo o tipo_entrega na coluna entrega
-    $stmt = $pdo->prepare("INSERT INTO itens_pedido (quantidade, preco_unitario, total, id_pedido, id_produto, entrega) VALUES (:quantidade, :preco_unitario, :total, :id_pedido, :id_produto, :entrega)");
+    // Inserir item no carrinho, agora incluindo também o id_cliente
+    $stmt = $pdo->prepare("
+        INSERT INTO itens_pedido (
+            quantidade, preco_unitario, total, id_pedido, id_produto, entrega, id_cliente
+        ) VALUES (
+            :quantidade, :preco_unitario, :total, :id_pedido, :id_produto, :entrega, :id_cliente
+        )
+    ");
     $stmt->execute([
         'quantidade' => $quantidade,
         'preco_unitario' => $preco_unitario,
         'total' => $total,
         'id_pedido' => $id_pedido,
         'id_produto' => $id_produto,
-        'entrega' => $tipo_entrega // NOVO
+        'entrega' => $tipo_entrega,
+        'id_cliente' => $id_cliente
     ]);
 
+    // Atualiza valor total do pedido
     $novo_valor_total = $valor_total_pedido + $total;
     $stmt = $pdo->prepare("UPDATE pedidos SET valor_total = :valor_total WHERE id_pedido = :id_pedido");
     $stmt->execute([
@@ -66,7 +77,12 @@ try {
         'id_pedido' => $id_pedido
     ]);
 
-    echo json_encode(['success' => true, 'message' => 'Item adicionado ao carrinho', 'id_pedido' => $id_pedido]);
+    echo json_encode([
+        'success' => true,
+        'message' => 'Item adicionado ao carrinho',
+        'id_pedido' => $id_pedido
+    ]);
+
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Erro no banco de dados: ' . $e->getMessage()]);
