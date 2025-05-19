@@ -6,6 +6,7 @@ include_once '../System/db.php';
 
 header('Content-Type: application/json');
 
+// Verifica se o usuário está autenticado
 if (!isset($_SESSION['id_cliente'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Usuário não autenticado']);
@@ -17,8 +18,10 @@ $id_produto = filter_input(INPUT_POST, 'id_produto', FILTER_VALIDATE_INT);
 $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT);
 $preco_unitario = filter_input(INPUT_POST, 'preco_unitario', FILTER_VALIDATE_FLOAT);
 $tipo_entrega = filter_input(INPUT_POST, 'tipo_entrega', FILTER_SANITIZE_STRING);
+$tamanho = filter_input(INPUT_POST, 'tamanho', FILTER_SANITIZE_STRING); // <- Novo campo
 
-if (!$id_produto || !$quantidade || !$preco_unitario || !$tipo_entrega) {
+// Verificação dos parâmetros
+if (!$id_produto || !$quantidade || !$preco_unitario || !$tipo_entrega || !$tamanho) {
     http_response_code(400);
     echo json_encode(['error' => 'Parâmetros inválidos']);
     exit();
@@ -51,12 +54,12 @@ try {
         $valor_total_pedido = (float)$pedido['valor_total'];
     }
 
-    // Inserir item no carrinho, agora incluindo também o id_cliente
+    // Insere item no pedido incluindo o tamanho
     $stmt = $pdo->prepare("
         INSERT INTO itens_pedido (
-            quantidade, preco_unitario, total, id_pedido, id_produto, entrega, id_cliente
+            quantidade, preco_unitario, total, id_pedido, id_produto, entrega, tamanho, id_cliente
         ) VALUES (
-            :quantidade, :preco_unitario, :total, :id_pedido, :id_produto, :entrega, :id_cliente
+            :quantidade, :preco_unitario, :total, :id_pedido, :id_produto, :entrega, :tamanho, :id_cliente
         )
     ");
     $stmt->execute([
@@ -66,10 +69,11 @@ try {
         'id_pedido' => $id_pedido,
         'id_produto' => $id_produto,
         'entrega' => $tipo_entrega,
+        'tamanho' => $tamanho, // <- Incluído aqui
         'id_cliente' => $id_cliente
     ]);
 
-    // Atualiza valor total do pedido
+    // Atualiza o valor total do pedido
     $novo_valor_total = $valor_total_pedido + $total;
     $stmt = $pdo->prepare("UPDATE pedidos SET valor_total = :valor_total WHERE id_pedido = :id_pedido");
     $stmt->execute([

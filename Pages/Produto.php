@@ -154,9 +154,9 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
 
             <div class="tamanho">
                 <h2>Escolher tamanho da Pizza:</h2>
-                <button onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 0.8, 2, '.', '') ?>">Pequeno</button>
-                <button class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco, 2, '.', '') ?>">Médio</button>
-                <button onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 1.3, 2, '.', '') ?>">Grande</button>
+                <button id="pq" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 0.8, 2, '.', '') ?>">Pequeno</button>
+                <button id="m" class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco, 2, '.', '') ?>">Médio</button>
+                <button id="g" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 1.3, 2, '.', '') ?>">Grande</button>
             </div>
 
             <!-- Preço formatado -->

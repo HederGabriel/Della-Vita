@@ -54,7 +54,6 @@ function fecharModal() {
     }
 }
 
-
 // Função para atualizar o valor total no modal
 function atualizarTotal() {
     const input = document.getElementById('quantidade');
@@ -85,6 +84,7 @@ function confirmarAdicionar() {
     }
 
     const precoUnitario = parseFloat(botaoSelecionado.getAttribute('data-preco'));
+    const tamanhoSelecionado = botaoSelecionado.id; // <- Pega o ID do botão (pq, m ou g)
 
     const botaoEntrega = document.querySelector('.entrega button.ativo');
     if (!botaoEntrega) {
@@ -106,7 +106,8 @@ function confirmarAdicionar() {
         id_produto,
         quantidade,
         preco_unitario: precoUnitario.toFixed(2),
-        tipo_entrega: tipoEntrega  // GARANTIR que está aqui
+        tipo_entrega: tipoEntrega,
+        tamanho: tamanhoSelecionado // <- Envia o tamanho
     };
 
     fetch('../System/addPedido.php', {
@@ -126,7 +127,6 @@ function confirmarAdicionar() {
     })
     .catch(() => alert('Erro ao comunicar com o servidor'));
 }
-
 
 // Adiciona os eventos quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
