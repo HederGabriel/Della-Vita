@@ -199,8 +199,8 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
                         <p onclick="window.location.href='Login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
-                        <p><a onclick="window.location.href='#'">Termos de Uso</a></p>
-                        <p><a onclick="window.location.href='#'">Política de Privacidade</a></p>
+                        <p><a onclick="window.location.href='Termo.php'">Termos de Uso</a></p>
+                        <p><a onclick="window.location.href='politica.php'">Política de Privacidade</a></p>
                     </div>
                     <div class="contato">
                         <h2>Contatos</h2>

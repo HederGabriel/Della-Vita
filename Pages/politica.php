@@ -30,61 +30,51 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Della Vita</title>
-    <link rel="stylesheet" href="../CSS/nav.css"> <!-- Estilo do nav -->
-    <link rel="stylesheet" href="../CSS/pedido.css"> <!-- Estilo específico do index -->
-    <link rel="stylesheet" href="/CSS/font.css">
-    <link rel="stylesheet" href="/CSS/footer.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de Privacidade | Pizzaria Sabor da Vila</title>
+  <link rel="stylesheet" href="../CSS/politica.css">
+  <link rel="stylesheet" href="/CSS/footer.css">
 </head>
 <body>
-    <nav>
-        <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
+  <div class="container">
+     <h1>Política de Privacidade</h1>
+    <p><strong>Última atualização:</strong> 18 de maio de 2025</p>
 
-        <div class="nav-links">
-            <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
-            <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
-            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
-        </div>
-        <div class="nav-search">
-            <input type="text" placeholder="Buscar...">
-        </div>
-        <?php if (isset($_SESSION['id_cliente'])): ?>
-            <!-- Exibir perfil do usuário -->
-            <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
-            </div>
-        <?php else: ?>
-            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
-        <?php endif; ?>
-    </nav>
-    <div id="user-menu">
-        <ul>
-            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
-            <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
-            <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
-        </ul>
-    </div>
-    <div id="overlay" onclick="hideLogoutModal()"></div>
-    <div id="logout-modal">
-        <p>Tem certeza que deseja sair?</p>
-        <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
-        <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
-    </div>
-    
-    <?php if (isset($cliente)): ?>
-        <form id="logout-form" method="POST" style="display: none;">
-            <input type="hidden" name="logout" value="1">
-        </form>
-    <?php endif; ?>
-    <script src="../JS/userMenu.js"></script>
-    
-    <main>Pagina para ver Pedidos</main>
+    <h2>1. Coleta de Informações</h2>
+    <p>Coletamos apenas as informações essenciais para processar seu pedido, como nome, telefone e endereço. Esses dados são fornecidos diretamente pelo cliente no momento da compra.</p>
 
-    <footer>
+    <h2>2. Uso das Informações</h2>
+    <p>Os dados coletados são utilizados para:</p>
+    <ul>
+      <li>Entregar os pedidos corretamente;</li>
+      <li>Entrar em contato em caso de dúvidas ou alterações;</li>
+      <li>Melhorar nosso atendimento e serviços.</li>
+    </ul>
+
+    <h2>3. Compartilhamento de Dados</h2>
+    <p>Seus dados <strong>nunca são vendidos, alugados ou compartilhados</strong> com terceiros. O acesso é restrito apenas aos colaboradores envolvidos na preparação e entrega do pedido.</p>
+
+    <h2>4. Armazenamento e Segurança</h2>
+    <p>Adotamos medidas de segurança para proteger suas informações contra acessos não autorizados. Os dados são armazenados pelo tempo necessário ao atendimento e posteriormente descartados com segurança.</p>
+
+    <h2>5. Contato</h2>
+    <p>Em caso de dúvidas sobre nossa política de privacidade, fale conosco:</p>
+    <ul>
+      <li><strong>WhatsApp:</strong><a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"> (62) 99977-2544</a></li>
+      <li><strong>E-mail:</strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
+        dellavitaenterprise@gmail.com</a></li>
+      <li><strong>Instagram:</strong><a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"> @della.vita.emterprise</a></li>
+      </a></li>
+    </ul>
+
+    <p><strong>Della Vita</strong> protege sua privacidade com responsabilidade e transparência.</p>
+    <p><strong>Della Vita</strong> agradece sua confiança e preferência!</p>
+</div>
+
+<footer>
         <div class="footer-container">
             <!-- Logo à esquerda -->
             <div class="footer-logo">
