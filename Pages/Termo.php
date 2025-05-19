@@ -38,52 +38,72 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 
 <body>
+    <nav>
+        <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
 
-<div class="container">
-    <h1>Termos de Uso</h1>
-    <p><strong>Última atualização:</strong> 18 de maio de 2025</p>
+        <div class="nav-links">
+            <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
+            <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
+            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
+        </div>
+        <div class="nav-search">
+            <input type="text" placeholder="Buscar...">
+        </div>
+        <?php if (isset($_SESSION['id_cliente'])): ?>
+            <!-- Exibir perfil do usuário -->
+            <div class="user-profile" onclick="toggleMenu(event)">
+                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
+            </div>
+        <?php else: ?>
+            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
+        <?php endif; ?>
+    </nav>
 
-    <h2>1. Pagamentos</h2>
-    <p>O pagamento dos pedidos é realizado <strong>apenas no momento da entrega.</strong></p>
-    <p>As formas aceitas são:</p>
-    <ul>
-      <li>Pix (enviado na hora da entrega);</li>
-      <li>Dinheiro (informar se precisa de troco);</li>
-      <li>Cartão de crédito ou débito (via maquininha no local).</li>
-    </ul>
-    <p><strong>Não realizamos cobranças ou pagamentos diretamente pelo site.</strong></p>
+    <div class="container">
+        <h1>Termos de Uso</h1>
+        <p><strong>Última atualização:</strong> 18 de maio de 2025</p>
 
-    <h2>2. Entregas</h2>
-    <ul>
-      <li>As entregas são realizadas exclusivamente dentro da cidade de <strong>Posse - GO</strong>;</li>
-      <li>O endereço deve ser preenchido corretamente para garantir a entrega eficiente;</li>
-      <li>Não nos responsabilizamos por atrasos causados por informações incorretas ou ausência no local.</li>
-    </ul>
+        <h2>1. Pagamentos</h2>
+        <p>O pagamento dos pedidos é realizado <strong>apenas no momento da entrega.</strong></p>
+        <p>As formas aceitas são:</p>
+        <ul>
+        <li>Pix (enviado na hora da entrega);</li>
+        <li>Dinheiro (informar se precisa de troco);</li>
+        <li>Cartão de crédito ou débito (via maquininha no local).</li>
+        </ul>
+        <p><strong>Não realizamos cobranças ou pagamentos diretamente pelo site.</strong></p>
 
-    <h2>3. Cancelamentos e Reembolsos</h2>
-    <p>O cliente pode cancelar o pedido <strong>antes do início do preparo</strong>. Após esse momento, o pedido entra em produção e não será possível cancelá-lo.</p>
-    <p>Se houver erro no pedido ou qualquer problema com a entrega, o cliente deve entrar em contato imediatamente para avaliarmos e resolvermos o caso da melhor maneira possível.</p>
+        <h2>2. Entregas</h2>
+        <ul>
+        <li>As entregas são realizadas exclusivamente dentro da cidade de <strong>Posse - GO</strong>;</li>
+        <li>O endereço deve ser preenchido corretamente para garantir a entrega eficiente;</li>
+        <li>Não nos responsabilizamos por atrasos causados por informações incorretas ou ausência no local.</li>
+        </ul>
 
-    <h2>4. Responsabilidades do Usuário</h2>
-    <p>Ao utilizar este site, o usuário compromete-se a:</p>
-    <ul>
-      <li>Fornecer dados verdadeiros e atualizados;</li>
-      <li>Não utilizar o sistema para fins ilícitos ou fraudulentos;</li>
-      <li>Agir de boa-fé e respeitar as políticas estabelecidas pela pizzaria.</li>
-    </ul>
+        <h2>3. Cancelamentos e Reembolsos</h2>
+        <p>O cliente pode cancelar o pedido <strong>antes do início do preparo</strong>. Após esse momento, o pedido entra em produção e não será possível cancelá-lo.</p>
+        <p>Se houver erro no pedido ou qualquer problema com a entrega, o cliente deve entrar em contato imediatamente para avaliarmos e resolvermos o caso da melhor maneira possível.</p>
 
-    <h2>5. Contato</h2>
-    <p>Para dúvidas ou suporte, entre em contato:</p>
-      <ul>
-      <li><strong>WhatsApp:</strong><a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"> (62) 99977-2544</a></li>
-      <li><strong>E-mail:</strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
-        dellavitaenterprise@gmail.com</a></li>
-      <li><strong>Instagram:</strong><a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"> @della.vita.emterprise</a></li>
-      </a></li>
-    </ul>
+        <h2>4. Responsabilidades do Usuário</h2>
+        <p>Ao utilizar este site, o usuário compromete-se a:</p>
+        <ul>
+        <li>Fornecer dados verdadeiros e atualizados;</li>
+        <li>Não utilizar o sistema para fins ilícitos ou fraudulentos;</li>
+        <li>Agir de boa-fé e respeitar as políticas estabelecidas pela pizzaria.</li>
+        </ul>
 
-    <hr />
-</div>
+        <h2>5. Contato</h2>
+        <p>Para dúvidas ou suporte, entre em contato:</p>
+        <ul>
+        <li><strong>WhatsApp:</strong><a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"> (62) 99977-2544</a></li>
+        <li><strong>E-mail:</strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
+            dellavitaenterprise@gmail.com</a></li>
+        <li><strong>Instagram:</strong><a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"> @della.vita.emterprise</a></li>
+        </a></li>
+        </ul>
+
+        <hr />
+    </div>
 
     <footer>
         <div class="footer-container">
