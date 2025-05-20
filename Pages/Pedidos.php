@@ -145,6 +145,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <?php else: ?>
                 <p>Não há pedidos para consumo no local.</p>
             <?php endif; ?>
+            <div class="finalizar-pedido-container">
+                <button class="finalizarPedido" onclick="window.location.href='..\System\finalizarPedido.php'">
+                    Finalizar Pedido
+                </button>
+            </div>
         </section>
         <script src="..\JS\Pedidos.js"></script>
     </main>

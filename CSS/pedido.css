@@ -106,3 +106,24 @@ section.pedidos {
 .h2-active {
     border-color: #28a745 !important;
 }
+
+.finalizar-pedido-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.finalizarPedido {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.finalizarPedido:hover {
+    background-color: #d62839;
+}
