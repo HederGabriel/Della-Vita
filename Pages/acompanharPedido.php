@@ -61,14 +61,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Della Vita - Pedidos</title>
+    <title>Della Vita - Acompanhar</title>
     <link rel="stylesheet" href="../CSS/nav.css" />
-    <link rel="stylesheet" href="../CSS/pedido.css" />
+    <link rel="stylesheet" href="../CSS/acompanhar.css" />
     <link rel="stylesheet" href="/CSS/font.css" />
     <link rel="stylesheet" href="/CSS/footer.css" />
 </head>
+
 <body>
-    <nav>
+        <nav>
         <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
@@ -102,73 +103,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
     </div>
     <script src="../JS/userMenu.js"></script>
-
-    <form id="logout-form" method="POST" style="display: none;">
-        <input type="hidden" name="logout" value="1" />
-    </form>
-
-    <main>
-        <section class="pedidos">
-            <div class="acompanhar-container">
-                <button class="btn-acompanhar" onclick="window.location.href='../Pages/acompanharPedido.php'">📦 Acompanhar Pedido</button>
-            </div>
-            <div class="titulo-pedidos">
-                <div class="titulo-alinhado">
-                    <label class="custom-checkbox" for="casa">
-                        <input type="checkbox" id="casa" name="tipo_pedido" value="casa" onchange="toggleCheckbox(this)" />
-                        <span class="checkmark"></span>
-                        <h2 class="h2-casa">Pedidos para Entrega em Casa</h2>
-                    </label>
-                </div>
-            </div>
-
-            <?php if (!empty($itens_entrega)): ?>
-                <?php foreach ($itens_entrega as $item): ?>
-                    <div class="pedido-item">
-                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto <?= htmlspecialchars($item['nome_produto']) ?>" class="produto-img" />
-                        <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-                        <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
-                        <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
-                        <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Não há pedidos com entrega em casa.</p>
-            <?php endif; ?>
-
-            <div class="titulo-pedidos">
-                <div class="titulo-alinhado">
-                    <label class="custom-checkbox" for="local">
-                        <input class="baixo" type="checkbox" id="local" name="tipo_pedido" value="local" onchange="toggleCheckbox(this)" />
-                        <span class="checkmark"></span>
-                        <h2 class="h2-local">Pedidos para Retirada no Local</h2>
-                    </label>
-                </div>
-            </div>
-
-            <?php if (!empty($itens_local)): ?>
-                <?php foreach ($itens_local as $item): ?>
-                    <div class="pedido-item">
-                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto <?= htmlspecialchars($item['nome_produto']) ?>" class="produto-img" />
-                        <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-                        <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
-                        <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
-                        <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>Não há pedidos para consumo no local.</p>
-            <?php endif; ?>
-
-            <!-- Formulário sem action (usará fetch do pedidos.js) -->
-            <form id="form-finalizar" method="POST">
-                <input type="hidden" name="tipo_pedido" id="input-entrega" required />
-                <button type="submit" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
-            </form>
-
-        </section>
-        <script src="../JS/pedidos.js"></script>
-    </main>
 
     <footer>
         <div class="footer-container">
@@ -209,6 +143,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 </div>
             </div>
         </div>
-    </footer>
+    </footer> 
 </body>
+
 </html>
