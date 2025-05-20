@@ -6,3 +6,103 @@
 body {
     margin: 8px !important;
 }
+
+section.pedidos {
+    border: 2px solid #ccc;
+    padding: 32px;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.pedidos h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.5rem;
+}
+
+.pedidos input.baixo {
+    margin-top: 32px;
+}
+
+.titulo-alinhado {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.titulo-alinhado h2 {
+    margin: 0;
+}
+
+.pedido-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: #f9f9f9;
+    margin-left: 100px;
+    gap: 1rem;
+}
+
+.pedido-item img.produto-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0;
+}
+
+.pedido-item p {
+    margin: 0.3rem 0;
+}
+
+.custom-checkbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.custom-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.custom-checkbox .checkmark {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #008000;
+    border-radius: 6px;
+    background-color: white;
+    display: flex;               /* Flexbox aqui */
+    align-items: center;         /* Centraliza verticalmente */
+    justify-content: center;     /* Centraliza horizontalmente */
+    font-size: 16px;             /* Tamanho do check */
+    color: white;
+    box-sizing: border-box;
+}
+
+/* Aparece o ✔️ ao marcar */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+    background-color: #28a745;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::before {
+    content: "✔";
+    font-weight: bold;
+}
+
+.h2-casa,
+.h2-local {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.5rem;
+    transition: border-color 0.3s ease;
+}
+
+/* Ativo com JavaScript */
+.h2-active {
+    border-color: #28a745 !important;
+}

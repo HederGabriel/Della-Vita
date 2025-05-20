@@ -14,14 +14,19 @@ if (!isset($_SESSION['id_cliente'])) {
 }
 
 $id_cliente = $_SESSION['id_cliente'];
+
+// Coletando e validando os dados recebidos via POST
 $id_produto = filter_input(INPUT_POST, 'id_produto', FILTER_VALIDATE_INT);
 $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT);
 $preco_unitario = filter_input(INPUT_POST, 'preco_unitario', FILTER_VALIDATE_FLOAT);
 $tipo_entrega = filter_input(INPUT_POST, 'tipo_entrega', FILTER_SANITIZE_STRING);
-$tamanho = filter_input(INPUT_POST, 'tamanho', FILTER_SANITIZE_STRING); // <- Novo campo
+$tamanho = filter_input(INPUT_POST, 'tamanho', FILTER_SANITIZE_STRING);
 
-// Verificação dos parâmetros
-if (!$id_produto || !$quantidade || !$preco_unitario || !$tipo_entrega || !$tamanho) {
+// Log de debug (opcional - remova em produção)
+// file_put_contents('log.txt', print_r($_POST, true), FILE_APPEND);
+
+// Validação final dos dados
+if ($id_produto === false || $quantidade === false || $preco_unitario === false || !$tipo_entrega || !$tamanho) {
     http_response_code(400);
     echo json_encode(['error' => 'Parâmetros inválidos']);
     exit();
@@ -36,12 +41,13 @@ try {
     $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$pedido) {
-        // Cria novo pedido
+        // Obtém nome do cliente
         $stmtNome = $pdo->prepare("SELECT nome FROM clientes WHERE id_cliente = :id_cliente");
         $stmtNome->execute(['id_cliente' => $id_cliente]);
         $clienteDados = $stmtNome->fetch(PDO::FETCH_ASSOC);
         $nome_cliente = $clienteDados['nome'] ?? 'Cliente';
 
+        // Cria novo pedido
         $stmt = $pdo->prepare("INSERT INTO pedidos (nome_cliente, tipo_pedido, status_pedido, data_pedido, valor_total, id_cliente) VALUES (:nome_cliente, 'carrinho', 'em aberto', NOW(), 0, :id_cliente)");
         $stmt->execute([
             'nome_cliente' => $nome_cliente,
@@ -54,7 +60,7 @@ try {
         $valor_total_pedido = (float)$pedido['valor_total'];
     }
 
-    // Insere item no pedido incluindo o tamanho
+    // Insere item no pedido com id_produto correto
     $stmt = $pdo->prepare("
         INSERT INTO itens_pedido (
             quantidade, preco_unitario, total, id_pedido, id_produto, entrega, tamanho, id_cliente
@@ -69,7 +75,7 @@ try {
         'id_pedido' => $id_pedido,
         'id_produto' => $id_produto,
         'entrega' => $tipo_entrega,
-        'tamanho' => $tamanho, // <- Incluído aqui
+        'tamanho' => $tamanho,
         'id_cliente' => $id_cliente
     ]);
 
