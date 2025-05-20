@@ -3,6 +3,7 @@
 
 session_start();
 include_once '../System/db.php';
+require_once '../System/session.php';
 
 header('Content-Type: application/json');
 
@@ -22,9 +23,6 @@ $preco_unitario = filter_input(INPUT_POST, 'preco_unitario', FILTER_VALIDATE_FLO
 $tipo_entrega = filter_input(INPUT_POST, 'tipo_entrega', FILTER_SANITIZE_STRING);
 $tamanho = filter_input(INPUT_POST, 'tamanho', FILTER_SANITIZE_STRING);
 
-// Log de debug (opcional - remova em produção)
-// file_put_contents('log.txt', print_r($_POST, true), FILE_APPEND);
-
 // Validação final dos dados
 if ($id_produto === false || $quantidade === false || $preco_unitario === false || !$tipo_entrega || !$tamanho) {
     http_response_code(400);
@@ -35,62 +33,27 @@ if ($id_produto === false || $quantidade === false || $preco_unitario === false 
 $total = $quantidade * $preco_unitario;
 
 try {
-    // Verifica se há pedido em aberto
-    $stmt = $pdo->prepare("SELECT id_pedido, valor_total FROM pedidos WHERE id_cliente = :id_cliente AND status_pedido = 'em aberto' LIMIT 1");
-    $stmt->execute(['id_cliente' => $id_cliente]);
-    $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$pedido) {
-        // Obtém nome do cliente
-        $stmtNome = $pdo->prepare("SELECT nome FROM clientes WHERE id_cliente = :id_cliente");
-        $stmtNome->execute(['id_cliente' => $id_cliente]);
-        $clienteDados = $stmtNome->fetch(PDO::FETCH_ASSOC);
-        $nome_cliente = $clienteDados['nome'] ?? 'Cliente';
-
-        // Cria novo pedido
-        $stmt = $pdo->prepare("INSERT INTO pedidos (nome_cliente, tipo_pedido, status_pedido, data_pedido, valor_total, id_cliente) VALUES (:nome_cliente, 'carrinho', 'em aberto', NOW(), 0, :id_cliente)");
-        $stmt->execute([
-            'nome_cliente' => $nome_cliente,
-            'id_cliente' => $id_cliente
-        ]);
-        $id_pedido = $pdo->lastInsertId();
-        $valor_total_pedido = 0;
-    } else {
-        $id_pedido = $pedido['id_pedido'];
-        $valor_total_pedido = (float)$pedido['valor_total'];
-    }
-
-    // Insere item no pedido com id_produto correto
+    // Insere diretamente na tabela itens_pedido, sem usar ou consultar a tabela pedidos
     $stmt = $pdo->prepare("
         INSERT INTO itens_pedido (
-            quantidade, preco_unitario, total, id_pedido, id_produto, entrega, tamanho, id_cliente
+            quantidade, preco_unitario, total, id_produto, entrega, tamanho, id_cliente
         ) VALUES (
-            :quantidade, :preco_unitario, :total, :id_pedido, :id_produto, :entrega, :tamanho, :id_cliente
+            :quantidade, :preco_unitario, :total, :id_produto, :entrega, :tamanho, :id_cliente
         )
     ");
     $stmt->execute([
         'quantidade' => $quantidade,
         'preco_unitario' => $preco_unitario,
         'total' => $total,
-        'id_pedido' => $id_pedido,
         'id_produto' => $id_produto,
         'entrega' => $tipo_entrega,
         'tamanho' => $tamanho,
         'id_cliente' => $id_cliente
     ]);
 
-    // Atualiza o valor total do pedido
-    $novo_valor_total = $valor_total_pedido + $total;
-    $stmt = $pdo->prepare("UPDATE pedidos SET valor_total = :valor_total WHERE id_pedido = :id_pedido");
-    $stmt->execute([
-        'valor_total' => $novo_valor_total,
-        'id_pedido' => $id_pedido
-    ]);
-
     echo json_encode([
         'success' => true,
-        'message' => 'Item adicionado ao carrinho',
-        'id_pedido' => $id_pedido
+        'message' => 'Item adicionado com sucesso à tabela itens_pedido'
     ]);
 
 } catch (PDOException $e) {
