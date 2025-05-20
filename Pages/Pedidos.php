@@ -2,36 +2,45 @@
 include_once '../System/session.php';
 include_once '../System/db.php';
 
-if (isset($_SESSION['id_cliente'])) {
-    $id_cliente = $_SESSION['id_cliente'];
-    $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
-    $stmt->execute(['id_cliente' => $id_cliente]);
-    $cliente = $stmt->fetch();
-    if ($cliente) {
-        $_SESSION['nome'] = $cliente['nome'];
-        $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
-    }
+if (!isset($_SESSION['id_cliente'])) {
+    header("Location: Login-Cadastro.php?redirect=Pedidos.php");
+    exit();
+}
 
-    // Buscar itens do pedido com informações do produto
-    $stmt = $pdo->prepare("
-        SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
-        FROM itens_pedido ip
-        INNER JOIN produtos p ON ip.id_produto = p.id_produto
-        WHERE ip.id_cliente = :id_cliente 
-        ORDER BY ip.entrega, ip.id_item_pedido DESC
-    ");
-    $stmt->execute(['id_cliente' => $id_cliente]);
-    $itens = $stmt->fetchAll();
+$id_cliente = $_SESSION['id_cliente'];
 
-    $itens_entrega = [];
-    $itens_local = [];
+$stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
+$stmt->execute(['id_cliente' => $id_cliente]);
+$cliente = $stmt->fetch();
 
-    foreach ($itens as $item) {
-        if ($item['entrega'] === 'casa') {
-            $itens_entrega[] = $item;
-        } elseif ($item['entrega'] === 'local') {
-            $itens_local[] = $item;
-        }
+if ($cliente) {
+    $_SESSION['nome'] = $cliente['nome'];
+    $_SESSION['avatar'] = !empty($cliente['avatar']) ? $cliente['avatar'] : '../IMG/Profile/Default.png';
+} else {
+    session_destroy();
+    header("Location: Login-Cadastro.php");
+    exit();
+}
+
+$stmt = $pdo->prepare("
+    SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
+    FROM itens_pedido ip
+    INNER JOIN produtos p ON ip.id_produto = p.id_produto
+    WHERE ip.id_cliente = :id_cliente 
+    ORDER BY ip.entrega, ip.id_item_pedido DESC
+");
+$stmt->execute(['id_cliente' => $id_cliente]);
+$itens = $stmt->fetchAll();
+
+$itens_entrega = [];
+$itens_local = [];
+
+foreach ($itens as $item) {
+    $entrega_tipo = isset($item['entrega']) ? $item['entrega'] : '';
+    if ($entrega_tipo === 'casa') {
+        $itens_entrega[] = $item;
+    } elseif ($entrega_tipo === 'local') {
+        $itens_local[] = $item;
     }
 }
 
@@ -48,35 +57,35 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Della Vita - Pedidos</title>
-    <link rel="stylesheet" href="../CSS/nav.css">
-    <link rel="stylesheet" href="../CSS/pedido.css">
-    <link rel="stylesheet" href="/CSS/font.css">
-    <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="stylesheet" href="../CSS/nav.css" />
+    <link rel="stylesheet" href="../CSS/pedido.css" />
+    <link rel="stylesheet" href="/CSS/font.css" />
+    <link rel="stylesheet" href="/CSS/footer.css" />
 </head>
 <body>
     <nav>
-        <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
+        <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
             <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
         </div>
         <div class="nav-search">
-            <input type="text" placeholder="Buscar...">
+            <input type="text" placeholder="Buscar..." />
         </div>
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
+                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
             </div>
         <?php else: ?>
             <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
         <?php endif; ?>
     </nav>
 
-    <div id="user-menu">
+    <div id="user-menu" style="display:none;">
         <ul>
             <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
             <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
@@ -84,38 +93,37 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </ul>
     </div>
 
-    <div id="overlay" onclick="hideLogoutModal()"></div>
-    <div id="logout-modal">
+    <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
+    <div id="logout-modal" style="display:none;">
         <p>Tem certeza que deseja sair?</p>
         <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
         <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
     </div>
     <script src="../JS/userMenu.js"></script>
 
-    <?php if (isset($cliente)): ?>
-        <form id="logout-form" method="POST" style="display: none;">
-            <input type="hidden" name="logout" value="1">
-        </form>
-    <?php endif; ?>
+    <form id="logout-form" method="POST" style="display: none;">
+        <input type="hidden" name="logout" value="1" />
+    </form>
 
     <main>
         <section class="pedidos">
             <div class="titulo-pedidos">
                 <div class="titulo-alinhado">
-                    <label class="custom-checkbox">
-                        <input type="checkbox" id="casa" onchange="toggleCheckbox(this)">
+                    <label class="custom-checkbox" for="casa">
+                        <input type="checkbox" id="casa" name="tipo_pedido" value="casa" onchange="toggleCheckbox(this)" />
                         <span class="checkmark"></span>
                         <h2 class="h2-casa">Pedidos para Entrega em Casa</h2>
                     </label>
                 </div>
             </div>
+
             <?php if (!empty($itens_entrega)): ?>
                 <?php foreach ($itens_entrega as $item): ?>
                     <div class="pedido-item">
-                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto" class="produto-img">
+                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto <?= htmlspecialchars($item['nome_produto']) ?>" class="produto-img" />
                         <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-                        <p><strong>Quantidade:</strong> <?= $item['quantidade'] ?></p>
-                        <p><strong>Tamanho:</strong> <?= strtoupper($item['tamanho']) ?></p>
+                        <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
+                        <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
                         <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
                     </div>
                 <?php endforeach; ?>
@@ -125,39 +133,42 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
             <div class="titulo-pedidos">
                 <div class="titulo-alinhado">
-                    <label class="custom-checkbox">
-                        <input class="baixo" type="checkbox" id="local" onchange="toggleCheckbox(this)">
+                    <label class="custom-checkbox" for="local">
+                        <input class="baixo" type="checkbox" id="local" name="tipo_pedido" value="local" onchange="toggleCheckbox(this)" />
                         <span class="checkmark"></span>
                         <h2 class="h2-local">Pedidos para Retirada no Local</h2>
                     </label>
                 </div>
             </div>
+
             <?php if (!empty($itens_local)): ?>
                 <?php foreach ($itens_local as $item): ?>
                     <div class="pedido-item">
-                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto" class="produto-img">
+                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto <?= htmlspecialchars($item['nome_produto']) ?>" class="produto-img" />
                         <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-                        <p><strong>Quantidade:</strong> <?= $item['quantidade'] ?></p>
-                        <p><strong>Tamanho:</strong> <?= strtoupper($item['tamanho']) ?></p>
+                        <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
+                        <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
                         <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>Não há pedidos para consumo no local.</p>
             <?php endif; ?>
-            <div class="finalizar-pedido-container">
-                <button class="finalizarPedido" onclick="window.location.href='..\System\finalizarPedido.php'">
-                    Finalizar Pedido
-                </button>
-            </div>
+
+            <!-- Formulário sem action (usará fetch do pedidos.js) -->
+            <form id="form-finalizar" method="POST">
+                <input type="hidden" name="tipo_pedido" id="input-entrega" required />
+                <button type="submit" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
+            </form>
+
         </section>
-        <script src="..\JS\Pedidos.js"></script>
+        <script src="../JS/pedidos.js"></script>
     </main>
 
     <footer>
         <div class="footer-container">
             <div class="footer-logo">
-                <img src="..\IMG\Logo1.jpg" alt="Logo Della Vita">
+                <img src="../IMG/Logo1.jpg" alt="Logo Della Vita" />
             </div>
             <div class="footer-conteudo">
                 <div class="footer-topo">
@@ -178,24 +189,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <h3>Obrigado pela Preferência!</h3>
                         <label for="t">Número: </label>
                         <p id="t">
-                            <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">
-                            Falar no WhatsApp
+                            <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank" rel="noopener noreferrer">
+                                Falar no WhatsApp
                             </a>
                         </p>
-                        <br>
+                        <br />
                         <label for="e">Gmail: </label>
                         <p>
-                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">
-                            Enviar mensagem via Gmail
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos!" target="_blank" rel="noopener noreferrer">
+                                Dellavitaenterprise@gmail.com
                             </a>
                         </p>
-                    </div>
-                    <div class="social">
-                        <h2>Redes Sociais</h2>
-                        <h3>Siga-Nós</h3>
-                        <a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"><img src="..\IMG\Icons\instagram.svg" alt="Instagram"></a>
-                        <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"><img src="..\IMG\Icons\whatsapp.svg" alt="Whatsapp"></a>
-                        <a href="https://www.facebook.com/share/1APRM1n7BA/" target="_blank"><img src="..\IMG\Icons\facebook.svg" alt="Facebook"></a>
                     </div>
                 </div>
             </div>
