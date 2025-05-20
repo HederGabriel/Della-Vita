@@ -26,9 +26,11 @@ $stmt = $pdo->prepare("
     SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
     FROM itens_pedido ip
     INNER JOIN produtos p ON ip.id_produto = p.id_produto
-    WHERE ip.id_cliente = :id_cliente 
+    WHERE ip.id_cliente = :id_cliente AND ip.id_pedido IS NULL
     ORDER BY ip.entrega, ip.id_item_pedido DESC
 ");
+
+
 $stmt->execute(['id_cliente' => $id_cliente]);
 $itens = $stmt->fetchAll();
 
