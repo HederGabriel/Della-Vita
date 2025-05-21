@@ -1,85 +1,106 @@
-// pedidos.js
+const casa = document.getElementById('casa');
+const local = document.getElementById('local');
+const h2Casa = document.querySelector('.h2-casa');
+const h2Local = document.querySelector('.h2-local');
+const btn = document.getElementById('btnFinalizar');
+const inputEntrega = document.getElementById('input-entrega');
+
+const modalEndereco = document.getElementById('modal-endereco');
+const inputModalEndereco = document.getElementById('input-modal-endereco');
+const btnConfirmarEndereco = document.getElementById('confirmar-endereco');
+
+const formFinalizar = document.getElementById('form-finalizar');
+const hiddenEndereco = document.getElementById('hidden-endereco'); // input hidden do formulário
+
+function reset() {
+  h2Casa.classList.remove('h2-active');
+  h2Local.classList.remove('h2-active');
+  btn.disabled = true;
+  inputEntrega.value = '';
+  casa.checked = false;
+  local.checked = false;
+  hiddenEndereco.value = '';
+}
 
 function toggleCheckbox(clicked) {
-  const casa = document.getElementById('casa');
-  const local = document.getElementById('local');
-  const h2Casa = document.querySelector('.h2-casa');
-  const h2Local = document.querySelector('.h2-local');
-  const btn = document.getElementById('btnFinalizar');
-  const inputEntrega = document.getElementById('input-entrega');
-
-  // Verificar se os elementos essenciais existem
-  if (!casa || !local || !h2Casa || !h2Local || !btn || !inputEntrega) {
-    console.error('Elementos essenciais não encontrados no DOM.');
-    return;
-  }
-
-  // Função auxiliar para resetar estados
-  function reset() {
-    h2Casa.classList.remove('h2-active');
-    h2Local.classList.remove('h2-active');
-    btn.disabled = true;
-    inputEntrega.value = '';
-    casa.checked = false;
-    local.checked = false;
-  }
-
-  if (clicked === casa && casa.checked) {
-    local.checked = false;
-    h2Casa.classList.add('h2-active');
-    h2Local.classList.remove('h2-active');
-    btn.disabled = false;
-    inputEntrega.value = 'casa';
-  } else if (clicked === local && local.checked) {
-    casa.checked = false;
-    h2Local.classList.add('h2-active');
-    h2Casa.classList.remove('h2-active');
-    btn.disabled = false;
-    inputEntrega.value = 'local';
-  } else {
-    reset();
+  if (clicked === casa) {
+    if (casa.checked) {
+      local.checked = false;
+      h2Casa.classList.add('h2-active');
+      h2Local.classList.remove('h2-active');
+      btn.disabled = false;
+      inputEntrega.value = 'casa';
+    } else {
+      reset();
+    }
+  } else if (clicked === local) {
+    if (local.checked) {
+      casa.checked = false;
+      h2Local.classList.add('h2-active');
+      h2Casa.classList.remove('h2-active');
+      btn.disabled = false;
+      inputEntrega.value = 'local';
+    } else {
+      reset();
+    }
   }
 }
 
-// === Finalizar Pedido com fetch (sem redirecionamento) ===
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('form-finalizar');
-
-  if (form) {
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault(); // Impede o envio padrão do formulário
-
-      const tipoPedido = document.getElementById('input-entrega').value;
-
-      if (!tipoPedido) {
-        alert('Selecione uma opção de entrega ou retirada.');
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('tipo_pedido', tipoPedido);
-
-      try {
-        const response = await fetch('../System/finalizarPedido.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          alert(result.message);
-          console.log('ID do pedido:', result.id_pedido);
-
-          // Aqui você pode redirecionar ou resetar o carrinho
-          // window.location.href = "pagina-confirmacao.html";
-        } else {
-          alert('Erro ao finalizar o pedido.');
-        }
-      } catch (error) {
-        console.error('Erro na requisição:', error);
-        alert('Erro ao se conectar com o servidor.');
-      }
+function initAutocompleteModal() {
+  if (inputModalEndereco && window.google) {
+    new google.maps.places.Autocomplete(inputModalEndereco, {
+      types: ['geocode'],
+      componentRestrictions: { country: 'br' }
     });
   }
+}
+
+function abrirModalEndereco() {
+  modalEndereco.style.display = 'flex';
+  inputModalEndereco.value = hiddenEndereco.value || '';
+  inputModalEndereco.focus();
+  initAutocompleteModal();
+}
+
+function fecharModalEndereco() {
+  modalEndereco.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  btn.disabled = true;
+
+  casa.addEventListener('change', () => toggleCheckbox(casa));
+  local.addEventListener('change', () => toggleCheckbox(local));
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const tipoPedido = inputEntrega.value;
+
+    if (!tipoPedido) {
+      alert('Selecione uma opção de entrega ou retirada.');
+      return;
+    }
+
+    if (tipoPedido === 'casa') {
+      abrirModalEndereco();
+    } else {
+      formFinalizar.submit();
+    }
+  });
+
+  btnConfirmarEndereco.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const endereco = inputModalEndereco.value.trim();
+    if (!endereco) {
+      alert('Por favor, informe um endereço válido.');
+      inputModalEndereco.focus();
+      return;
+    }
+
+    hiddenEndereco.value = endereco; // Preenche o input hidden com o endereço completo (string única)
+    fecharModalEndereco();
+    formFinalizar.submit();
+  });
 });

@@ -1,19 +1,15 @@
 <?php
-// finalizarPedido.php
-
-include_once 'session.php'; // session_start() garantido aqui
+include_once 'session.php'; 
 include_once 'db.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-// Verifica se o cliente está autenticado
 if (!isset($_SESSION['id_cliente'], $_SESSION['nome_cliente'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Usuário não autenticado.']);
     exit;
 }
 
-// Validação rígida do id_cliente e nome_cliente
 $id_cliente = filter_var($_SESSION['id_cliente'], FILTER_VALIDATE_INT);
 $nome_cliente = trim($_SESSION['nome_cliente']);
 
@@ -23,7 +19,6 @@ if (!$id_cliente) {
     exit;
 }
 
-// Recebe e valida o tipo de pedido
 $tipo_pedido = filter_input(INPUT_POST, 'tipo_pedido', FILTER_SANITIZE_STRING);
 if (!$tipo_pedido) {
     http_response_code(400);
@@ -41,12 +36,11 @@ if (!in_array($tipo_pedido, $tipos_validos, true)) {
 }
 
 try {
-    // Inicia transação
     $pdo->beginTransaction();
 
     $status_pedido = 'Recebido';
 
-    // Insere o pedido na tabela pedidos
+    // Inserir pedido (sem endereço)
     $stmt = $pdo->prepare("
         INSERT INTO pedidos (id_cliente, nome_cliente, data_pedido, tipo_pedido, status_pedido)
         VALUES (:id_cliente, :nome_cliente, NOW(), :tipo_pedido, :status_pedido)
@@ -58,10 +52,40 @@ try {
         ':status_pedido' => $status_pedido
     ]);
 
-    // Pega o id do pedido recém-inserido
     $id_pedido = $pdo->lastInsertId();
 
-    // Atualiza os itens do cliente que ainda não tem id_pedido associado
+    // Se for pedido para casa, inserir endereço na tabela 'enderecos'
+    if ($tipo_pedido === 'casa') {
+        $rua = filter_input(INPUT_POST, 'rua', FILTER_SANITIZE_STRING);
+        $numero = filter_input(INPUT_POST, 'numero', FILTER_SANITIZE_STRING);
+        $bairro = filter_input(INPUT_POST, 'bairro', FILTER_SANITIZE_STRING);
+        $setor = filter_input(INPUT_POST, 'setor', FILTER_SANITIZE_STRING);
+        $cep = filter_input(INPUT_POST, 'cep', FILTER_SANITIZE_STRING);
+        $complemento = filter_input(INPUT_POST, 'complemento', FILTER_SANITIZE_STRING);
+
+        if (!$rua || !$numero || !$bairro || !$cep) {
+            $pdo->rollBack();
+            http_response_code(400);
+            echo json_encode(['error' => 'Campos obrigatórios do endereço faltando (rua, número, bairro, cep).']);
+            exit;
+        }
+
+        $stmtEndereco = $pdo->prepare("
+            INSERT INTO enderecos (rua, numero, bairro, setor, cep, complemento, id_pedido) 
+            VALUES (:rua, :numero, :bairro, :setor, :cep, :complemento, :id_pedido)
+        ");
+        $stmtEndereco->execute([
+            ':rua' => $rua,
+            ':numero' => $numero,
+            ':bairro' => $bairro,
+            ':setor' => $setor,
+            ':cep' => $cep,
+            ':complemento' => $complemento,
+            ':id_pedido' => $id_pedido
+        ]);
+    }
+
+    // Atualiza itens_pedido para associar ao pedido criado
     $stmt = $pdo->prepare("
         UPDATE itens_pedido
         SET id_pedido = :id_pedido
@@ -72,7 +96,6 @@ try {
         ':id_cliente' => $id_cliente
     ]);
 
-    // Verifica se algum item foi atualizado
     if ($stmt->rowCount() === 0) {
         $pdo->rollBack();
         http_response_code(400);
@@ -80,10 +103,8 @@ try {
         exit;
     }
 
-    // Finaliza a transação
     $pdo->commit();
 
-    // Retorna sucesso com o id do pedido criado
     echo json_encode([
         'success' => true,
         'message' => 'Pedido finalizado com sucesso!',
@@ -92,12 +113,10 @@ try {
     exit;
 
 } catch (Exception $e) {
-    // Em caso de erro, desfaz a transação
     $pdo->rollBack();
-
     error_log('Erro ao finalizar pedido: ' . $e->getMessage());
-
     http_response_code(500);
     echo json_encode(['error' => 'Erro ao finalizar pedido. Tente novamente mais tarde.']);
     exit;
 }
+?>

@@ -1,7 +1,10 @@
 <?php 
+// Arquivo: Pedidos.php
+
 include_once '../System/session.php';
 include_once '../System/db.php';
 
+// Verifica se o usuário está logado
 if (!isset($_SESSION['id_cliente'])) {
     header("Location: Login-Cadastro.php?redirect=Pedidos.php");
     exit();
@@ -9,6 +12,7 @@ if (!isset($_SESSION['id_cliente'])) {
 
 $id_cliente = $_SESSION['id_cliente'];
 
+// Busca dados do cliente para exibir nome e avatar
 $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $cliente = $stmt->fetch();
@@ -22,6 +26,7 @@ if ($cliente) {
     exit();
 }
 
+// Busca os itens do pedido do cliente ainda não finalizados (id_pedido IS NULL)
 $stmt = $pdo->prepare("
     SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
     FROM itens_pedido ip
@@ -29,16 +34,15 @@ $stmt = $pdo->prepare("
     WHERE ip.id_cliente = :id_cliente AND ip.id_pedido IS NULL
     ORDER BY ip.entrega, ip.id_item_pedido DESC
 ");
-
-
 $stmt->execute(['id_cliente' => $id_cliente]);
 $itens = $stmt->fetchAll();
 
+// Separa os itens por tipo de entrega
 $itens_entrega = [];
 $itens_local = [];
 
 foreach ($itens as $item) {
-    $entrega_tipo = isset($item['entrega']) ? $item['entrega'] : '';
+    $entrega_tipo = $item['entrega'] ?? '';
     if ($entrega_tipo === 'casa') {
         $itens_entrega[] = $item;
     } elseif ($entrega_tipo === 'local') {
@@ -46,6 +50,7 @@ foreach ($itens as $item) {
     }
 }
 
+// Processa logout
 if (isset($_POST['logout'])) {
     session_destroy();
     $redirect_url = $_POST['redirect'] ?? 'index.php';
@@ -54,6 +59,38 @@ if (isset($_POST['logout'])) {
 }
 
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Processa o envio do pedido
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pedido'])) {
+    $tipo_pedido = $_POST['tipo_pedido'];
+    $endereco = ($tipo_pedido === 'casa') ? trim($_POST['endereco'] ?? '') : null;
+
+    // Validação para pedidos de entrega
+    if ($tipo_pedido === 'casa' && empty($endereco)) {
+        die("Endereço é obrigatório para pedidos de entrega.");
+    }
+
+    // Insere novo pedido
+    $stmt = $pdo->prepare("INSERT INTO pedidos (id_cliente, tipo_pedido, endereco, status, data_pedido) VALUES (:id_cliente, :tipo_pedido, :endereco, 'pendente', NOW())");
+    $stmt->execute([
+        'id_cliente' => $id_cliente,
+        'tipo_pedido' => $tipo_pedido,
+        'endereco' => $endereco
+    ]);
+
+    $id_pedido = $pdo->lastInsertId();
+
+    // Atualiza itens do pedido para associar ao novo pedido
+    $stmt = $pdo->prepare("UPDATE itens_pedido SET id_pedido = :id_pedido WHERE id_cliente = :id_cliente AND id_pedido IS NULL AND entrega = :tipo_pedido");
+    $stmt->execute([
+        'id_pedido' => $id_pedido,
+        'id_cliente' => $id_cliente,
+        'tipo_pedido' => $tipo_pedido
+    ]);
+
+    header("Location: acompanharPedido.php?pedido=" . $id_pedido);
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -110,22 +147,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <main>
         <section class="pedidos">
             <div class="acompanhar-container">
-                <button class="btn-acompanhar" onclick="window.location.href='../Pages/acompanharPedido.php'">📦 Acompanhar Pedido</button>
+                <button class="btn-acompanhar" onclick="window.location.href='acompanharPedido.php'">📦 Acompanhar Pedido</button>
             </div>
+
+            <!-- Checkbox Pedidos para Entrega em Casa -->
             <div class="titulo-pedidos">
-                <div class="titulo-alinhado">
-                    <label class="custom-checkbox" for="casa">
-                        <input type="checkbox" id="casa" name="tipo_pedido" value="casa" onchange="toggleCheckbox(this)" />
-                        <span class="checkmark"></span>
-                        <h2 class="h2-casa">Pedidos para Entrega em Casa</h2>
-                    </label>
-                </div>
+                <label class="custom-checkbox" for="casa">
+                    <input type="checkbox" id="casa" name="tipo_pedido" value="casa" onchange="toggleCheckbox(this)" />
+                    <span class="checkmark"></span>
+                    <h2 class="h2-casa">Pedidos para Entrega em Casa</h2>
+                </label>
             </div>
 
             <?php if (!empty($itens_entrega)): ?>
                 <?php foreach ($itens_entrega as $item): ?>
                     <div class="pedido-item">
-                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto <?= htmlspecialchars($item['nome_produto']) ?>" class="produto-img" />
+                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
                         <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
                         <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
                         <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
@@ -136,20 +173,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <p>Não há pedidos com entrega em casa.</p>
             <?php endif; ?>
 
+            <!-- Checkbox Pedidos para Retirada no Local -->
             <div class="titulo-pedidos">
-                <div class="titulo-alinhado">
-                    <label class="custom-checkbox" for="local">
-                        <input class="baixo" type="checkbox" id="local" name="tipo_pedido" value="local" onchange="toggleCheckbox(this)" />
-                        <span class="checkmark"></span>
-                        <h2 class="h2-local">Pedidos para Retirada no Local</h2>
-                    </label>
-                </div>
+                <label class="custom-checkbox" for="local">
+                    <input type="checkbox" id="local" name="tipo_pedido" value="local" onchange="toggleCheckbox(this)" />
+                    <span class="checkmark"></span>
+                    <h2 class="h2-local">Pedidos para Retirada no Local</h2>
+                </label>
             </div>
 
             <?php if (!empty($itens_local)): ?>
                 <?php foreach ($itens_local as $item): ?>
                     <div class="pedido-item">
-                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" alt="Imagem do Produto <?= htmlspecialchars($item['nome_produto']) ?>" class="produto-img" />
+                        <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
                         <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
                         <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
                         <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
@@ -160,14 +196,28 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <p>Não há pedidos para consumo no local.</p>
             <?php endif; ?>
 
-            <!-- Formulário sem action (usará fetch do pedidos.js) -->
-            <form id="form-finalizar" method="POST">
+            <!-- Formulário finalização -->
+            <form id="form-finalizar" method="POST" onsubmit="return validarFormulario()">
                 <input type="hidden" name="tipo_pedido" id="input-entrega" required />
+                <input type="hidden" name="endereco" id="hidden-endereco" />
                 <button type="submit" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
             </form>
 
+            <!-- Modal para endereço, só aparece para entrega em casa -->
+            <div id="modal-endereco" class="modal-endereco" style="display: none;">
+                <div class="modal-content">
+                    <h2>Informe o Endereço de Entrega</h2>
+                    <input type="text" id="input-modal-endereco" placeholder="Digite seu endereço" />
+                    <div class="modal-actions">
+                        <button id="confirmar-endereco" type="button" class="btn-salvar">Confirmar</button>
+                        <button type="button" onclick="fecharModalEndereco()" class="btn-cancelar">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Places API para autocomplete -->
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places" async defer></script>
         </section>
-        <script src="../JS/pedidos.js"></script>
     </main>
 
     <footer>
@@ -186,29 +236,36 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <p onclick="window.location.href='Login-Cadastro.php'">Entrar/Cadastro</p>
                         <p onclick="window.location.href='Perfil.php'">Meu Perfil</p>
                         <p onclick="window.location.href='Cardapio.php'">Cardápio</p>
-                        <p><a onclick="window.location.href='Termo.php'">Termos de Uso</a></p>
-                        <p><a onclick="window.location.href='politica.php'">Política de Privacidade</a></p>
+                        <p><a href="Termo.php">Termos de Uso</a></p>
+                        <p><a href="politica.php">Política de Privacidade</a></p>
                     </div>
                     <div class="contato">
                         <h2>Contatos</h2>
                         <h3>Obrigado pela Preferência!</h3>
                         <label for="t">Número: </label>
                         <p id="t">
-                            <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank" rel="noopener noreferrer">
-                                Falar no WhatsApp
-                            </a>
+                            <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank">Falar no WhatsApp</a>
                         </p>
                         <br />
                         <label for="e">Gmail: </label>
                         <p>
-                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos!" target="_blank" rel="noopener noreferrer">
-                                Dellavitaenterprise@gmail.com
-                            </a>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=dellavitaenterprise@gmail.com&su=Olá%20Della+Vita&body=Gostaria%20de%20mais%20informações%20sobre%20seus%20produtos." target="_blank">Enviar mensagem via Gmail</a>
                         </p>
+                    </div>
+                    <div class="social">
+                        <h2>Redes Sociais</h2>
+                        <h3>Siga-Nós</h3>
+                        <a href="https://www.instagram.com/della.vita.enterprise/profilecard/?igsh=aTk2Y2t4cHlwNHN4" target="_blank"><img src="../IMG/Icons/instagram.svg" alt="Instagram" /></a>
+                        <a href="https://wa.me/5562999772544?text=Olá%2C%20gostaria%20de%20mais%20informações" target="_blank"><img src="../IMG/Icons/whatsapp.svg" alt="Whatsapp" /></a>
+                        <a href="https://www.facebook.com/share/1APRM1n7BA/" target="_blank"><img src="../IMG/Icons/facebook.svg" alt="Facebook" /></a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
+
+    <script src="../JS/userMenu.js"></script>
+    <script src="../JS/Pedidos.js"></script>
+
 </body>
 </html>
