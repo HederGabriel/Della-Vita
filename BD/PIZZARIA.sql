@@ -138,31 +138,6 @@ LOCK TABLES `itens_pedido` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `pagamentos`
---
-
-DROP TABLE IF EXISTS `pagamentos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pagamentos` (
-  `id_pagamento` int(11) NOT NULL AUTO_INCREMENT,
-  `status_pagamento` varchar(100) NOT NULL,
-  `tipo_pagamento` varchar(100) NOT NULL,
-  `data_pagamento` date NOT NULL,
-  PRIMARY KEY (`id_pagamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pagamentos`
---
-
-LOCK TABLES `pagamentos` WRITE;
-/*!40000 ALTER TABLE `pagamentos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pagamentos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pedidos`
 --
 
@@ -177,14 +152,11 @@ CREATE TABLE `pedidos` (
   `data_pedido` date NOT NULL,
   `valor_total` double NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
-  `id_pagamento` int(11) DEFAULT NULL,
   `nota` int(11) DEFAULT NULL,
   `comentario` text DEFAULT NULL,
   PRIMARY KEY (`id_pedido`),
   KEY `id_cliente` (`id_cliente`),
-  KEY `id_pagamento` (`id_pagamento`),
-  CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
-  CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`id_pagamento`) REFERENCES `pagamentos` (`id_pagamento`)
+  CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -236,4 +208,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-20 21:31:54
+-- Dump completed on 2025-05-20 21:35:55
