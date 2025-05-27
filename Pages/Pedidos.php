@@ -180,13 +180,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
           <input type="text" id="input-cidade" placeholder="Cidade" required />
-          <input type="text" id="input-estado" placeholder="Estado" required />
+          <input type="text" id="input-cep" placeholder="CEP" required />
           <input type="text" id="input-bairro" placeholder="Bairro" required />
-          <input type="text" id="input-logradouro" placeholder="Rua" required />
+          <input type="text" id="input-setor" placeholder="Setor" required />
           <input type="text" id="input-numero" placeholder="Número" required />
           <input type="text" id="input-complemento" placeholder="Complemento (opcional)" />
 
-          <input type="text" id="input-cep" placeholder="CEP" required />
 
           <div class="modal-actions">
             <button id="confirmar-endereco" type="button" class="btn-salvar">Confirmar</button>

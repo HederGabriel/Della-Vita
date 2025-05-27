@@ -9,12 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalEndereco = document.getElementById('modal-endereco');
   
   // Inputs do modal para os dados completos
-  const inputLogradouroModal = document.getElementById('input-logradouro');
   const inputNumeroModal = document.getElementById('input-numero');
   const inputComplementoModal = document.getElementById('input-complemento');
   const inputBairroModal = document.getElementById('input-bairro');
+  const inputSetorModal = document.getElementById('input-setor');
   const inputCidadeModal = document.getElementById('input-cidade');
-  const inputEstadoModal = document.getElementById('input-estado');
   const inputCepModal = document.getElementById('input-cep');
 
   const btnConfirmarEndereco = document.getElementById('confirmar-endereco');
@@ -55,27 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function initAutocompleteModal() {
-    if (inputLogradouroModal && window.google) {
-      new google.maps.places.Autocomplete(inputLogradouroModal, {
-        types: ['geocode'],
-        componentRestrictions: { country: 'br' }
-      });
-    }
-  }
-
   function abrirModalEndereco() {
     modalEndereco.style.display = 'flex';
-    // Limpa inputs do modal
-    inputLogradouroModal.value = '';
     inputNumeroModal.value = '';
     inputComplementoModal.value = '';
     inputBairroModal.value = '';
+    inputSetorModal.value = '';
     inputCidadeModal.value = '';
-    inputEstadoModal.value = '';
     inputCepModal.value = '';
-    inputLogradouroModal.focus();
-    initAutocompleteModal();
   }
 
   function fecharModalEndereco() {
@@ -105,11 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Validação dos campos obrigatórios
     if (
-      !inputLogradouroModal.value.trim() ||
       !inputNumeroModal.value.trim() ||
       !inputBairroModal.value.trim() ||
+      !inputSetorModal.value.trim() ||
       !inputCidadeModal.value.trim() ||
-      !inputEstadoModal.value.trim() ||
       !inputCepModal.value.trim()
     ) {
       alert('Por favor, preencha todos os campos obrigatórios do endereço.');
@@ -118,14 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Preenche os inputs ocultos do formulário principal com os dados do modal
     preencherInputsEndereco({
-      logradouro: inputLogradouroModal.value.trim(),
       numero: inputNumeroModal.value.trim(),
       complemento: inputComplementoModal.value.trim(),
       bairro: inputBairroModal.value.trim(),
+      setor: inputSetorModal.value.trim(), // ou crie inputSetorModal se separado
       cidade: inputCidadeModal.value.trim(),
-      estado: inputEstadoModal.value.trim(),
-      cep: inputCepModal.value.trim(),
-      id_pedido: null // será setado no backend depois
+      cep: inputCepModal.value.trim()
     });
 
     fecharModalEndereco();
