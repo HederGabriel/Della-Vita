@@ -1,6 +1,6 @@
 <?php
 include_once 'session.php'; 
-include_once 'db.php';
+require_once '../System/db.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -38,7 +38,6 @@ if (!in_array($tipo_pedido, $tipos_validos, true)) {
 try {
     $pdo->beginTransaction();
 
-    // Calcula o valor total dos itens do cliente que ainda não foram associados a um pedido
     $stmt = $pdo->prepare("
         SELECT SUM(preco * quantidade) AS valor_total 
         FROM itens_pedido 
@@ -56,7 +55,6 @@ try {
 
     $status_pedido = 'Recebido';
 
-    // Inserção do pedido
     $stmt = $pdo->prepare("
         INSERT INTO pedidos (id_cliente, nome_cliente, data_pedido, tipo_pedido, status_pedido, valor_total)
         VALUES (:id_cliente, :nome_cliente, NOW(), :tipo_pedido, :status_pedido, :valor_total)
@@ -71,7 +69,6 @@ try {
 
     $id_pedido = $pdo->lastInsertId();
 
-    // Se for pedido para casa, inserir endereço na tabela 'enderecos'
     if ($tipo_pedido === 'casa') {
         $rua = filter_input(INPUT_POST, 'rua', FILTER_SANITIZE_STRING);
         $numero = filter_input(INPUT_POST, 'numero', FILTER_SANITIZE_STRING);
@@ -102,7 +99,6 @@ try {
         ]);
     }
 
-    // Atualiza os itens para associar ao pedido criado
     $stmt = $pdo->prepare("
         UPDATE itens_pedido
         SET id_pedido = :id_pedido

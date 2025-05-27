@@ -82,6 +82,7 @@ section.pedidos {
     font-size: 16px;             /* Tamanho do check */
     color: white;
     box-sizing: border-box;
+    margin-top: 20px;
 }
 
 /* Aparece o ✔️ ao marcar */
@@ -100,6 +101,7 @@ section.pedidos {
     border-bottom: 2px solid #ccc;
     padding-bottom: 0.5rem;
     transition: border-color 0.3s ease;
+    margin-top: 20px;
 }
 
 /* Ativo com JavaScript */
@@ -190,6 +192,12 @@ section.pedidos {
   border-radius: 8px;
   transition: border-color 0.3s ease;
   box-sizing: border-box;
+    margin-bottom: 16px;
+}
+
+.modal-endereco h2 {
+    border: none;
+    margin: top 16px;
 }
 
 .modal-endereco input[type="text"]:focus {

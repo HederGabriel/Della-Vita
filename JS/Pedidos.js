@@ -4,25 +4,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const h2Casa = document.querySelector('.h2-casa');
   const h2Local = document.querySelector('.h2-local');
   const btn = document.getElementById('btnFinalizar');
-  const inputEntrega = document.getElementById('input-entrega');
-  const tipoPedidoInput = document.getElementById('input-tipo-pedido'); // NOVO
+  const tipoPedidoInput = document.getElementById('input-tipo-pedido');
 
   const modalEndereco = document.getElementById('modal-endereco');
-  const inputModalEndereco = document.getElementById('input-modal-endereco');
+  
+  // Inputs do modal para os dados completos
+  const inputLogradouroModal = document.getElementById('input-logradouro');
+  const inputNumeroModal = document.getElementById('input-numero');
+  const inputComplementoModal = document.getElementById('input-complemento');
+  const inputBairroModal = document.getElementById('input-bairro');
+  const inputCidadeModal = document.getElementById('input-cidade');
+  const inputEstadoModal = document.getElementById('input-estado');
+  const inputCepModal = document.getElementById('input-cep');
+
   const btnConfirmarEndereco = document.getElementById('confirmar-endereco');
+  const btnCancelarEndereco = modalEndereco.querySelector('.btn-cancelar');
 
   const formFinalizar = document.getElementById('form-finalizar');
-  const hiddenEndereco = document.getElementById('hidden-endereco');
 
   function reset() {
     h2Casa.classList.remove('h2-active');
     h2Local.classList.remove('h2-active');
     btn.disabled = true;
-    inputEntrega.value = '';
-    tipoPedidoInput.value = ''; // zera o tipo_pedido
+    tipoPedidoInput.value = '';
     casa.checked = false;
     local.checked = false;
-    hiddenEndereco.value = '';
   }
 
   function toggleCheckbox(clicked) {
@@ -32,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
         h2Casa.classList.add('h2-active');
         h2Local.classList.remove('h2-active');
         btn.disabled = false;
-        inputEntrega.value = 'casa';
         tipoPedidoInput.value = 'casa';
       } else {
         reset();
@@ -43,8 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         h2Local.classList.add('h2-active');
         h2Casa.classList.remove('h2-active');
         btn.disabled = false;
-        console.log('Botão habilitado');
-        inputEntrega.value = 'local';
         tipoPedidoInput.value = 'local';
       } else {
         reset();
@@ -53,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function initAutocompleteModal() {
-    if (inputModalEndereco && window.google) {
-      new google.maps.places.Autocomplete(inputModalEndereco, {
+    if (inputLogradouroModal && window.google) {
+      new google.maps.places.Autocomplete(inputLogradouroModal, {
         types: ['geocode'],
         componentRestrictions: { country: 'br' }
       });
@@ -63,8 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function abrirModalEndereco() {
     modalEndereco.style.display = 'flex';
-    inputModalEndereco.value = hiddenEndereco.value || '';
-    inputModalEndereco.focus();
+    // Limpa inputs do modal
+    inputLogradouroModal.value = '';
+    inputNumeroModal.value = '';
+    inputComplementoModal.value = '';
+    inputBairroModal.value = '';
+    inputCidadeModal.value = '';
+    inputEstadoModal.value = '';
+    inputCepModal.value = '';
+    inputLogradouroModal.focus();
     initAutocompleteModal();
   }
 
@@ -72,17 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modalEndereco.style.display = 'none';
   }
 
-  // Desabilita botão inicialmente
-  btn.disabled = true;
-
-  // Eventos de seleção de tipo de entrega
   casa.addEventListener('change', () => toggleCheckbox(casa));
   local.addEventListener('change', () => toggleCheckbox(local));
 
-  // Clique no botão de finalizar
   btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const tipoPedido = inputEntrega.value;
+    const tipoPedido = tipoPedidoInput.value;
 
     if (!tipoPedido) {
       alert('Selecione uma opção de entrega ou retirada.');
@@ -96,28 +100,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Confirmação do endereço
   btnConfirmarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
 
-    const endereco = inputModalEndereco.value.trim();
-    if (!endereco) {
-      alert('Por favor, informe um endereço válido.');
-      inputModalEndereco.focus();
+    // Validação dos campos obrigatórios
+    if (
+      !inputLogradouroModal.value.trim() ||
+      !inputNumeroModal.value.trim() ||
+      !inputBairroModal.value.trim() ||
+      !inputCidadeModal.value.trim() ||
+      !inputEstadoModal.value.trim() ||
+      !inputCepModal.value.trim()
+    ) {
+      alert('Por favor, preencha todos os campos obrigatórios do endereço.');
       return;
     }
 
-    hiddenEndereco.value = endereco;
-
-    // Preenchimento dos campos ocultos para envio (pode ser adaptado com parsing real)
-    document.getElementById('input-rua').value = endereco;
-    document.getElementById('input-numero').value = '123';
-    document.getElementById('input-bairro').value = 'Centro';
-    document.getElementById('input-setor').value = '';
-    document.getElementById('input-cep').value = '74800-000';
-    document.getElementById('input-complemento').value = '';
+    // Preenche os inputs ocultos do formulário principal com os dados do modal
+    preencherInputsEndereco({
+      logradouro: inputLogradouroModal.value.trim(),
+      numero: inputNumeroModal.value.trim(),
+      complemento: inputComplementoModal.value.trim(),
+      bairro: inputBairroModal.value.trim(),
+      cidade: inputCidadeModal.value.trim(),
+      estado: inputEstadoModal.value.trim(),
+      cep: inputCepModal.value.trim(),
+      id_pedido: null // será setado no backend depois
+    });
 
     fecharModalEndereco();
     formFinalizar.submit();
   });
+
+  btnCancelarEndereco.addEventListener('click', (e) => {
+    e.preventDefault();
+    fecharModalEndereco();
+  });
+
+  // Função para criar/atualizar inputs hidden no form principal
+  function preencherInputsEndereco(endereco) {
+    Object.entries(endereco).forEach(([key, value]) => {
+      let inputHidden = formFinalizar.querySelector(`input[name="${key}"]`);
+      if (!inputHidden) {
+        inputHidden = document.createElement('input');
+        inputHidden.type = 'hidden';
+        inputHidden.name = key;
+        formFinalizar.appendChild(inputHidden);
+      }
+      inputHidden.value = value;
+    });
+  }
 });

@@ -2,7 +2,7 @@
 // Arquivo: Pedidos.php
 
 include_once '../System/session.php';
-include_once '../System/db.php';
+require_once '../System/db.php';
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['id_cliente'])) {
@@ -173,19 +173,28 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <input type="hidden" name="complemento" id="input-complemento" />
 
 
-        <button type="submit" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
+        <button type="button" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
       </form>
 
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
-          <input type="text" id="input-modal-endereco" placeholder="Digite seu endereço" />
+          <input type="text" id="input-cidade" placeholder="Cidade" required />
+          <input type="text" id="input-estado" placeholder="Estado" required />
+          <input type="text" id="input-bairro" placeholder="Bairro" required />
+          <input type="text" id="input-logradouro" placeholder="Rua" required />
+          <input type="text" id="input-numero" placeholder="Número" required />
+          <input type="text" id="input-complemento" placeholder="Complemento (opcional)" />
+
+          <input type="text" id="input-cep" placeholder="CEP" required />
+
           <div class="modal-actions">
             <button id="confirmar-endereco" type="button" class="btn-salvar">Confirmar</button>
             <button type="button" onclick="fecharModalEndereco()" class="btn-cancelar">Cancelar</button>
           </div>
         </div>
       </div>
+
 
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places" async defer></script>
     </section>
