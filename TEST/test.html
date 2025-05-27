@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste Botão</title>
+</head>
+<body>
+
+<label><input type="checkbox" id="local"> Retirar no Local</label><br>
+<label><input type="checkbox" id="casa"> Entregar em Casa</label><br>
+
+<button id="btnFinalizar" disabled>Finalizar Pedido</button>
+
+<script>
+  const btn = document.getElementById('btnFinalizar');
+  const casa = document.getElementById('casa');
+  const local = document.getElementById('local');
+
+  function ativarBotao() {
+    btn.disabled = false;
+    console.log('Botão ativado');
+  }
+
+  local.addEventListener('change', () => {
+    if (local.checked) {
+      casa.checked = false;
+      ativarBotao();
+    } else {
+      btn.disabled = true;
+    }
+  });
+
+  casa.addEventListener('change', () => {
+    if (casa.checked) {
+      local.checked = false;
+      // Abrir modal para endereço
+      alert('Abrir modal para endereço');
+      // Simula confirmação e ativa o botão
+      setTimeout(() => {
+        ativarBotao();
+      }, 2000);
+    } else {
+      btn.disabled = true;
+    }
+  });
+</script>
+
+</body>
+</html>

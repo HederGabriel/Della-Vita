@@ -38,18 +38,35 @@ if (!in_array($tipo_pedido, $tipos_validos, true)) {
 try {
     $pdo->beginTransaction();
 
+    // Calcula o valor total dos itens do cliente que ainda não foram associados a um pedido
+    $stmt = $pdo->prepare("
+        SELECT SUM(preco * quantidade) AS valor_total 
+        FROM itens_pedido 
+        WHERE id_cliente = :id_cliente AND id_pedido IS NULL
+    ");
+    $stmt->execute([':id_cliente' => $id_cliente]);
+    $valor_total = $stmt->fetchColumn();
+
+    if (!$valor_total) {
+        $pdo->rollBack();
+        http_response_code(400);
+        echo json_encode(['error' => 'Não há itens para calcular o valor total.']);
+        exit;
+    }
+
     $status_pedido = 'Recebido';
 
-    // Inserir pedido (sem endereço)
+    // Inserção do pedido
     $stmt = $pdo->prepare("
-        INSERT INTO pedidos (id_cliente, nome_cliente, data_pedido, tipo_pedido, status_pedido)
-        VALUES (:id_cliente, :nome_cliente, NOW(), :tipo_pedido, :status_pedido)
+        INSERT INTO pedidos (id_cliente, nome_cliente, data_pedido, tipo_pedido, status_pedido, valor_total)
+        VALUES (:id_cliente, :nome_cliente, NOW(), :tipo_pedido, :status_pedido, :valor_total)
     ");
     $stmt->execute([
         ':id_cliente' => $id_cliente,
         ':nome_cliente' => $nome_cliente,
         ':tipo_pedido' => $tipo_pedido,
-        ':status_pedido' => $status_pedido
+        ':status_pedido' => $status_pedido,
+        ':valor_total' => $valor_total
     ]);
 
     $id_pedido = $pdo->lastInsertId();
@@ -85,7 +102,7 @@ try {
         ]);
     }
 
-    // Atualiza itens_pedido para associar ao pedido criado
+    // Atualiza os itens para associar ao pedido criado
     $stmt = $pdo->prepare("
         UPDATE itens_pedido
         SET id_pedido = :id_pedido
