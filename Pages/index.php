@@ -82,7 +82,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <script src="../JS/userMenu.js"></script>
 
     <Header> 
-        <h1>Sofisticação e sabor, direto à sua porta.</h1>
+        <h1>Sofisticação e sabor, direto na sua porta.</h1>
         <img src="..\IMG\header.jpg" alt="Pizza">
     </Header>
 
