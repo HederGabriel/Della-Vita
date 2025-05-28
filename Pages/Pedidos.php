@@ -179,12 +179,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
-          <input type="text" id="input-cidade" placeholder="Cidade" required />
-          <input type="text" id="input-cep" placeholder="CEP" required />
-          <input type="text" id="input-bairro" placeholder="Bairro" required />
-          <input type="text" id="input-setor" placeholder="Setor" required />
-          <input type="text" id="input-numero" placeholder="Número" required />
-          <input type="text" id="input-complemento" placeholder="Complemento (opcional)" />
+          <input type="text" id="input-endereco-completo" placeholder="Digite seu endereço completo" required />
+          <input type="text" id="input-cidade" placeholder="Cidade" required autocomplete="off" />
+          <input type="text" id="input-cep" placeholder="CEP" required  autocomplete="off"/>
+          <input type="text" id="input-bairro" placeholder="Bairro" required autocomplete="off"/>
+          <input type="text" id="input-setor" placeholder="Setor" required autocomplete="off"/>
+          <input type="text" id="input-numero" placeholder="Número" required autocomplete="off"/>
+          <input type="text" id="input-complemento" placeholder="Complemento (opcional)" autocomplete="off"/>
 
 
           <div class="modal-actions">
@@ -193,9 +194,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </div>
         </div>
       </div>
-
-
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places" async defer></script>
     </section>
   </main>
 
@@ -237,5 +235,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
   </footer>
   <script src="..\JS\Pedidos.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places"></script>
 </body>
 </html>
