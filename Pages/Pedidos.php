@@ -179,7 +179,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
-          <input type="text" id="input-endereco-completo" placeholder="Digite seu endereço completo" required />
+          <input type="text" id="input-endereco-completo" placeholder="Digite seu endereço completo" required autocomplete="off" />
           <input type="text" id="input-cidade" placeholder="Cidade" required autocomplete="off" />
           <input type="text" id="input-cep" placeholder="CEP" required  autocomplete="off"/>
           <input type="text" id="input-bairro" placeholder="Bairro" required autocomplete="off"/>
