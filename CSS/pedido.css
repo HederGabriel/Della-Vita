@@ -1,10 +1,15 @@
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box; /* Importante para dimensionamento consistente */
 }
 
 body {
-    margin: 8px !important;
+    margin: 8px;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
 }
 
 section.pedidos {
@@ -12,12 +17,14 @@ section.pedidos {
     padding: 32px;
     max-width: 1200px;
     margin: 40px auto;
+    background-color: #fafafa;
 }
 
 .pedidos h2 {
     font-size: 1.5rem;
     border-bottom: 2px solid #ccc;
     padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .pedidos input.baixo {
@@ -35,16 +42,17 @@ section.pedidos {
     margin: 0;
 }
 
+/* Itens do pedido */
 .pedido-item {
     display: flex;
     align-items: center;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     margin-top: 1rem;
     background-color: #f9f9f9;
-    margin-left: 100px;
     gap: 1rem;
+    /* Removido margin-left fixo para melhor responsividade */
 }
 
 .pedido-item img.produto-img {
@@ -52,18 +60,20 @@ section.pedidos {
     height: 80px;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 0;
 }
 
 .pedido-item p {
     margin: 0.3rem 0;
+    flex-grow: 1; /* Para textos ocuparem o máximo possível */
 }
 
+/* Checkbox customizada */
 .custom-checkbox {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
     gap: 0.5rem;
+    user-select: none;
 }
 
 .custom-checkbox input[type="checkbox"] {
@@ -76,16 +86,17 @@ section.pedidos {
     border: 2px solid #008000;
     border-radius: 6px;
     background-color: white;
-    display: flex;               /* Flexbox aqui */
-    align-items: center;         /* Centraliza verticalmente */
-    justify-content: center;     /* Centraliza horizontalmente */
-    font-size: 16px;             /* Tamanho do check */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
     color: white;
     box-sizing: border-box;
-    margin-top: 20px;
+    /* Removido margin-top para melhor alinhamento */
+    transition: background-color 0.3s ease;
 }
 
-/* Aparece o ✔️ ao marcar */
+/* Estado marcado */
 .custom-checkbox input[type="checkbox"]:checked + .checkmark {
     background-color: #28a745;
 }
@@ -93,22 +104,25 @@ section.pedidos {
 .custom-checkbox input[type="checkbox"]:checked + .checkmark::before {
     content: "✔";
     font-weight: bold;
+    color: white;
 }
 
+/* Títulos com borda e transição */
 .h2-casa,
 .h2-local {
     font-size: 1.5rem;
     border-bottom: 2px solid #ccc;
     padding-bottom: 0.5rem;
-    transition: border-color 0.3s ease;
     margin-top: 20px;
+    transition: border-color 0.3s ease;
 }
 
-/* Ativo com JavaScript */
+/* Ativo via JS */
 .h2-active {
     border-color: #28a745 !important;
 }
 
+/* Botão finalizar pedido */
 .finalizarPedido {
     background-color: #e63946;
     color: white;
@@ -117,12 +131,12 @@ section.pedidos {
     font-size: 18px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
     display: block;
     margin: 40px auto 0;
 }
 
-.finalizarPedido:hover {
+.finalizarPedido:hover:not(:disabled) {
     background-color: #d62839;
 }
 
@@ -133,6 +147,7 @@ section.pedidos {
     opacity: 0.8;
 }
 
+/* Container para botões de acompanhamento */
 .acompanhar-container {
     display: flex;
     justify-content: center;
@@ -147,89 +162,103 @@ section.pedidos {
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .btn-acompanhar:hover {
     background-color: #c9302c;
 }
 
+/* Modal de endereço */
 .modal-endereco {
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }
 
 .modal-endereco .modal-content {
-  background: white;
-  padding: 1.5rem 2rem;
-  border-radius: 12px;
-  max-width: 480px;
-  width: 90%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.modal-actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-/* Input do modal */
-.modal-endereco input[type="text"] {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border: 1.8px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box;
-    margin-bottom: 16px;
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .modal-endereco h2 {
-    border: none;
-    margin: top 16px;
+    margin-top: 16px; /* Corrigido aqui */
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: none;
+}
+
+/* Inputs do modal */
+.modal-endereco input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1.8px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    margin-bottom: 16px;
 }
 
 .modal-endereco input[type="text"]:focus {
-  border-color: #28a745;
-  outline: none;
+    border-color: #28a745;
+    outline: none;
 }
 
-/* Botões */
+/* Ações do modal */
+.modal-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Botões do modal */
 .modal-actions button {
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .modal-actions .btn-cancelar {
-  background-color: #ccc;
-  color: #333;
+    background-color: #ccc;
+    color: #333;
 }
 
 .modal-actions .btn-cancelar:hover {
-  background-color: #b3b3b3;
+    background-color: #b3b3b3;
 }
 
 .modal-actions .btn-salvar {
-  background-color: #28a745;
-  color: white;
+    background-color: #28a745;
+    color: white;
 }
 
 .modal-actions .btn-salvar:hover {
-  background-color: #218838;
+    background-color: #218838;
+}
+
+.pedido-info {
+    display: flex;
+    align-items: center; /* Alinha verticalmente ao centro */
+    gap: 1rem; /* Espaçamento entre as infos */
+}
+
+#autocomplete {
+  display: none;
 }

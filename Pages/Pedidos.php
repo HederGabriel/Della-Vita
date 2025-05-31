@@ -1,61 +1,58 @@
 <?php 
-// Arquivo: Pedidos.php
-
 include_once '../System/session.php';
 require_once '../System/db.php';
 
-// Verifica se o usuário está logado
+// Verifica se está logado
 if (!isset($_SESSION['id_cliente'])) {
-    header("Location: Login-Cadastro.php?redirect=Pedidos.php");
-    exit();
+  header("Location: Login-Cadastro.php?redirect=Pedidos.php");
+  exit();
 }
 
 $id_cliente = $_SESSION['id_cliente'];
 
-// Busca dados do cliente para exibir nome e avatar
+// Busca dados do cliente para nome e avatar
 $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $cliente = $stmt->fetch();
 
 if ($cliente) {
-    $_SESSION['nome'] = $cliente['nome'];
-    $_SESSION['avatar'] = !empty($cliente['avatar']) ? $cliente['avatar'] : '../IMG/Profile/Default.png';
+  $_SESSION['nome'] = $cliente['nome'];
+  $_SESSION['avatar'] = !empty($cliente['avatar']) ? $cliente['avatar'] : '../IMG/Profile/Default.png';
 } else {
-    session_destroy();
-    header("Location: Login-Cadastro.php");
-    exit();
+  session_destroy();
+  header("Location: Login-Cadastro.php");
+  exit();
 }
 
-// Busca os itens do pedido do cliente ainda não finalizados (id_pedido IS NULL)
+// Busca os itens de pedido pendentes (id_pedido IS NULL)
 $stmt = $pdo->prepare("
-    SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
-    FROM itens_pedido ip
-    INNER JOIN produtos p ON ip.id_produto = p.id_produto
-    WHERE ip.id_cliente = :id_cliente AND ip.id_pedido IS NULL
-    ORDER BY ip.entrega, ip.id_item_pedido DESC
+  SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
+  FROM itens_pedido ip
+  INNER JOIN produtos p ON ip.id_produto = p.id_produto
+  WHERE ip.id_cliente = :id_cliente AND ip.id_pedido IS NULL
+  ORDER BY ip.entrega, ip.id_item_pedido DESC
 ");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $itens = $stmt->fetchAll();
 
-// Separa os itens por tipo de entrega
 $itens_entrega = [];
 $itens_local = [];
 
 foreach ($itens as $item) {
-    $entrega_tipo = $item['entrega'] ?? '';
-    if ($entrega_tipo === 'casa') {
-        $itens_entrega[] = $item;
-    } elseif ($entrega_tipo === 'local') {
-        $itens_local[] = $item;
-    }
+  $entrega_tipo = $item['entrega'] ?? '';
+  if ($entrega_tipo === 'casa') {
+    $itens_entrega[] = $item;
+  } elseif ($entrega_tipo === 'local') {
+    $itens_local[] = $item;
+  }
 }
 
-// Processa logout
+// Logout
 if (isset($_POST['logout'])) {
-    session_destroy();
-    $redirect_url = $_POST['redirect'] ?? 'index.php';
-    header("Location: " . $redirect_url);
-    exit();
+  session_destroy();
+  $redirect_url = $_POST['redirect'] ?? 'index.php';
+  header("Location: " . $redirect_url);
+  exit();
 }
 
 $current_page = basename($_SERVER['PHP_SELF']);
@@ -111,6 +108,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <form id="logout-form" method="POST" style="display: none;">
     <input type="hidden" name="logout" value="1" />
   </form>
+  <script src="..\JS\userMenu.js"></script>
 
   <main>
     <section class="pedidos">
@@ -118,6 +116,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <button class="btn-acompanhar" onclick="window.location.href='acompanharPedido.php'">📦 Acompanhar Pedido</button>
       </div>
 
+      <!-- Checkbox Entrega em Casa -->
       <div class="titulo-pedidos">
         <label class="custom-checkbox" for="casa">
           <input type="checkbox" id="casa" name="tipo_pedido" value="casa" />
@@ -128,18 +127,21 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <?php if (!empty($itens_entrega)): ?>
         <?php foreach ($itens_entrega as $item): ?>
-          <div class="pedido-item">
+          <div class="pedido-item" data-id-item="<?= (int)$item['id_item_pedido'] ?>" data-tipo="casa">
             <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
-            <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-            <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
-            <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
-            <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
+            <div class="pedido-info">
+              <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
+              <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
+              <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
+              <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
+            </div>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
         <p>Não há pedidos com entrega em casa.</p>
       <?php endif; ?>
 
+      <!-- Checkbox Retirada no Local -->
       <div class="titulo-pedidos">
         <label class="custom-checkbox" for="local">
           <input type="checkbox" id="local" name="tipo_pedido" value="local" />
@@ -150,20 +152,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <?php if (!empty($itens_local)): ?>
         <?php foreach ($itens_local as $item): ?>
-          <div class="pedido-item">
+          <div class="pedido-item" data-id-item="<?= (int)$item['id_item_pedido'] ?>" data-tipo="local">
             <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
-            <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-            <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
-            <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
-            <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
+            <div class="pedido-info">
+              <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
+              <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
+              <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
+              <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
+            </div>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
         <p>Não há pedidos para consumo no local.</p>
       <?php endif; ?>
 
-      <form id="form-finalizar" method="POST" action="finalizarPedido.php" onsubmit="return validarFormulario()">
-
+      <!-- FORMULÁRIO FINALIZAR PEDIDO -->
+      <form id="form-finalizar" method="POST" action="../System/finalizarPedido.php" onsubmit="return validarFormulario()">
         <input type="hidden" name="tipo_pedido" id="input-tipo-pedido" />
         <input type="hidden" name="rua" id="input-rua" />
         <input type="hidden" name="numero" id="input-numero" />
@@ -171,38 +175,35 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <input type="hidden" name="cep" id="input-cep" />
         <input type="hidden" name="complemento" id="input-complemento" />
 
+        <!-- Campo oculto para ids dos itens selecionados -->
+        <input type="hidden" name="ids_itens" id="input-ids-itens" />
 
         <button type="button" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
       </form>
 
+      <!-- MODAL ENDEREÇO -->
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
-          
-          <!-- Container para o novo autocomplete -->
-          <div id="autocomplete-container" style="width: 100%; margin-bottom: 12px;"></div>
-          
-          <!-- Campo hidden para o endereço completo (valor do autocomplete) -->
-          <input type="hidden" id="input-endereco-completo" name="enderecoCompleto" />
 
+          <!-- Google Places autocomplete container -->
+          <input id="autocomplete" placeholder="Digite o endereço completo" type="text" style="padding: 10px; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 12px; width: 100%;" />
 
-          
-          <input type="text" id="input-cep-modal" name="cep" placeholder="CEP" autocomplete="postal-code" required />
-          <input type="text" id="input-cidade-modal" name="cidade" placeholder="Cidade" autocomplete="address-level2" required />
-          <input type="text" id="input-rua-modal" name="rua" placeholder="Rua" required autocomplete="address-line1" />
-          <input type="text" id="input-numero-modal" name="numero" placeholder="Número" autocomplete="address-line2" required />
-          <input type="text" id="input-setor-modal" name="setor" placeholder="Setor" autocomplete="address-level2" required />
-          <input type="text" id="input-complemento-modal" name="complemento" placeholder="Complemento (opcional)" autocomplete="off" />
+          <input type="text" id="input-cep-modal" placeholder="CEP" autocomplete="postal-code" required />
+          <input type="text" id="input-cidade-modal" placeholder="Cidade" autocomplete="address-level2" required />
+          <input type="text" id="input-rua-modal" placeholder="Rua" autocomplete="street-address" required />
+          <input type="text" id="input-numero-modal" placeholder="Número" autocomplete="off" required />
+          <input type="text" id="input-setor-modal" placeholder="Bairro" autocomplete="address-level3" required />
+          <input type="text" id="input-complemento-modal" placeholder="Complemento (opcional)" autocomplete="off" />
 
-          <div class="modal-actions">
-            <button id="confirmar-endereco" type="button" class="btn-salvar">Confirmar</button>
-            <button type="button" class="btn-cancelar">Cancelar</button>
-          </div>
+          <button type="button" id="btnConfirmarEndereco">Confirmar Endereço</button>
+          <button type="button" id="btnCancelarEndereco">Cancelar</button>
         </div>
       </div>
 
     </section>
   </main>
+
 
   <footer>
     <div class="footer-container">
