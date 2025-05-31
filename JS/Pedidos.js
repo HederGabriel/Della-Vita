@@ -5,31 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const h2Local = document.querySelector('.h2-local');
   const btn = document.getElementById('btnFinalizar');
   const tipoPedidoInput = document.getElementById('input-tipo-pedido');
-
-  const modalEndereco = document.getElementById('modal-endereco');
-
-  // Inputs do modal
-  const inputEnderecoCompleto = document.getElementById('input-endereco-completo');
-  const inputRuaModal = document.getElementById('input-rua-modal'); // NOVO
-  const inputNumeroModal = document.getElementById('input-numero-modal');
-  const inputSetorModal = document.getElementById('input-setor-modal');
-  const inputCidadeModal = document.getElementById('input-cidade-modal');
-  const inputCepModal = document.getElementById('input-cep-modal');
-  const inputComplementoModal = document.getElementById('input-complemento-modal');
-
-  const btnConfirmarEndereco = document.getElementById('confirmar-endereco');
-  const btnCancelarEndereco = modalEndereco.querySelector('.btn-cancelar');
-
   const formFinalizar = document.getElementById('form-finalizar');
 
-  function reset() {
-    h2Casa.classList.remove('h2-active');
-    h2Local.classList.remove('h2-active');
-    btn.disabled = true;
-    tipoPedidoInput.value = '';
-    casa.checked = false;
-    local.checked = false;
-  }
+  const modalEndereco = document.getElementById('modal-endereco');
+  const btnConfirmarEndereco = document.getElementById('confirmar-endereco');
+  const btnCancelarEndereco = document.querySelector('.btn-cancelar');
+
+  // Inputs do formulário principal
+  const inputRua = document.getElementById('input-rua');
+  const inputNumero = document.getElementById('input-numero');
+  const inputSetor = document.getElementById('input-setor');
+  const inputCep = document.getElementById('input-cep');
+  const inputComplemento = document.getElementById('input-complemento');
+
+  // Inputs do modal
+  const inputRuaModal = document.getElementById('input-rua-modal');
+  const inputNumeroModal = document.getElementById('input-numero-modal');
+  const inputSetorModal = document.getElementById('input-setor-modal');
+  const inputCepModal = document.getElementById('input-cep-modal');
+  const inputComplementoModal = document.getElementById('input-complemento-modal');
+  const inputCidadeModal = document.getElementById('input-cidade-modal');
+  const inputEnderecoCompleto = document.getElementById('input-endereco-completo');
 
   function toggleCheckbox(clicked) {
     if (clicked === casa) {
@@ -37,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         local.checked = false;
         h2Casa.classList.add('h2-active');
         h2Local.classList.remove('h2-active');
-        btn.disabled = false;
         tipoPedidoInput.value = 'casa';
+        btn.disabled = false;
       } else {
         reset();
       }
@@ -47,71 +43,49 @@ document.addEventListener('DOMContentLoaded', () => {
         casa.checked = false;
         h2Local.classList.add('h2-active');
         h2Casa.classList.remove('h2-active');
-        btn.disabled = false;
         tipoPedidoInput.value = 'local';
+        btn.disabled = false;
       } else {
         reset();
       }
     }
   }
 
-  function abrirModalEndereco() {
-    modalEndereco.style.display = 'flex';
-    inputEnderecoCompleto.value = '';
-    inputRuaModal.value = '';
-    inputNumeroModal.value = '';
-    inputComplementoModal.value = '';
-    inputSetorModal.value = '';
-    inputCidadeModal.value = '';
-    inputCepModal.value = '';
-  }
-
-  function fecharModalEndereco() {
-    modalEndereco.style.display = 'none';
-  }
-
   casa.addEventListener('change', () => toggleCheckbox(casa));
   local.addEventListener('change', () => toggleCheckbox(local));
 
-  btn.addEventListener('click', (e) => {
-    const tipoPedido = tipoPedidoInput.value;
+  btn.addEventListener('click', () => {
+    const tipo = tipoPedidoInput.value;
 
-    if (!tipoPedido) {
-      alert('Selecione uma opção de entrega ou retirada.');
+    if (!tipo) {
+      alert('Selecione o tipo de pedido.');
       return;
     }
 
-    if (tipoPedido === 'casa') {
+    if (tipo === 'casa') {
       abrirModalEndereco();
     } else {
       formFinalizar.submit();
     }
   });
 
-  btnConfirmarEndereco.addEventListener('click', (e) => {
-    e.preventDefault();
+  btnConfirmarEndereco.addEventListener('click', () => {
+    const rua = inputRuaModal.value.trim();
+    const numero = inputNumeroModal.value.trim();
+    const setor = inputSetorModal.value.trim();
+    const cep = inputCepModal.value.trim();
 
-    if (
-      !inputEnderecoCompleto.value.trim() ||
-      !inputRuaModal.value.trim() ||
-      !inputNumeroModal.value.trim() ||
-      !inputSetorModal.value.trim() ||
-      !inputCidadeModal.value.trim() ||
-      !inputCepModal.value.trim()
-    ) {
-      alert('Por favor, preencha todos os campos obrigatórios do endereço.');
+    if (!rua || !numero || !setor || !cep) {
+      alert("Preencha todos os campos obrigatórios.");
       return;
     }
 
-    preencherInputsEndereco({
-      enderecoCompleto: inputEnderecoCompleto.value.trim(),
-      rua: inputRuaModal.value.trim(),
-      numero: inputNumeroModal.value.trim(),
-      complemento: inputComplementoModal.value.trim(),
-      setor: inputSetorModal.value.trim(),
-      cidade: inputCidadeModal.value.trim(),
-      cep: inputCepModal.value.trim()
-    });
+    // Passar os valores para os inputs ocultos do formulário
+    inputRua.value = rua;
+    inputNumero.value = numero;
+    inputSetor.value = setor;
+    inputCep.value = cep;
+    inputComplemento.value = inputComplementoModal.value.trim();
 
     fecharModalEndereco();
     formFinalizar.submit();
@@ -122,17 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
     fecharModalEndereco();
   });
 
-  function preencherInputsEndereco(endereco) {
-    Object.entries(endereco).forEach(([key, value]) => {
-      let inputHidden = formFinalizar.querySelector(`input[name="${key}"]`);
-      if (!inputHidden) {
-        inputHidden = document.createElement('input');
-        inputHidden.type = 'hidden';
-        inputHidden.name = key;
-        formFinalizar.appendChild(inputHidden);
-      }
-      inputHidden.value = value;
-    });
+  function abrirModalEndereco() {
+    modalEndereco.style.display = 'flex';
+    inputRuaModal.value = '';
+    inputNumeroModal.value = '';
+    inputSetorModal.value = '';
+    inputCepModal.value = '';
+    inputComplementoModal.value = '';
+  }
+
+  function fecharModalEndereco() {
+    modalEndereco.style.display = 'none';
   }
 
   // ===== Google Places Autocomplete (novo SDK) =====
@@ -179,5 +153,4 @@ document.addEventListener('DOMContentLoaded', () => {
     inputCepModal.value = cep;
     inputEnderecoCompleto.value = enderecoCompleto;
   });
-
 });
