@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inputs do modal
   const inputEnderecoCompleto = document.getElementById('input-endereco-completo');
-  const inputNumeroModal = document.getElementById('input-numero');
-  const inputComplementoModal = document.getElementById('input-complemento');
-  const inputBairroModal = document.getElementById('input-bairro');
-  const inputSetorModal = document.getElementById('input-setor');
-  const inputCidadeModal = document.getElementById('input-cidade');
-  const inputCepModal = document.getElementById('input-cep');
+  const inputRuaModal = document.getElementById('input-rua-modal'); // NOVO
+  const inputNumeroModal = document.getElementById('input-numero-modal');
+  const inputSetorModal = document.getElementById('input-setor-modal');
+  const inputCidadeModal = document.getElementById('input-cidade-modal');
+  const inputCepModal = document.getElementById('input-cep-modal');
+  const inputComplementoModal = document.getElementById('input-complemento-modal');
 
   const btnConfirmarEndereco = document.getElementById('confirmar-endereco');
   const btnCancelarEndereco = modalEndereco.querySelector('.btn-cancelar');
@@ -58,9 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function abrirModalEndereco() {
     modalEndereco.style.display = 'flex';
     inputEnderecoCompleto.value = '';
+    inputRuaModal.value = '';
     inputNumeroModal.value = '';
     inputComplementoModal.value = '';
-    inputBairroModal.value = '';
     inputSetorModal.value = '';
     inputCidadeModal.value = '';
     inputCepModal.value = '';
@@ -92,8 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
 
     if (
+      !inputEnderecoCompleto.value.trim() ||
+      !inputRuaModal.value.trim() ||
       !inputNumeroModal.value.trim() ||
-      !inputBairroModal.value.trim() ||
       !inputSetorModal.value.trim() ||
       !inputCidadeModal.value.trim() ||
       !inputCepModal.value.trim()
@@ -103,9 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     preencherInputsEndereco({
+      enderecoCompleto: inputEnderecoCompleto.value.trim(),
+      rua: inputRuaModal.value.trim(),
       numero: inputNumeroModal.value.trim(),
       complemento: inputComplementoModal.value.trim(),
-      bairro: inputBairroModal.value.trim(),
       setor: inputSetorModal.value.trim(),
       cidade: inputCidadeModal.value.trim(),
       cep: inputCepModal.value.trim()
@@ -133,46 +135,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function inicializarAutocomplete() {
-  const autocomplete = new google.maps.places.Autocomplete(inputEnderecoCompleto, {
-    types: ['address'],
-    componentRestrictions: { country: 'br' }
-  });
+  // ===== Google Places Autocomplete (novo SDK) =====
 
-  autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
+  const autocompleteElement = document.createElement('gmpx-placeautocomplete');
+  autocompleteElement.setAttribute('placeholder', 'Digite seu endereço');
+  autocompleteElement.style.width = '100%';
 
-      if (!place.address_components) {
-        alert('Endereço inválido. Tente novamente.');
-        return;
-      }
-
-      const componentes = {
-        street_number: '',
-        route: '',
-        neighborhood: '',
-        sublocality_level_1: '',
-        administrative_area_level_2: '',
-        postal_code: ''
-      };
-
-      place.address_components.forEach(component => {
-        const tipo = component.types[0];
-        if (componentes.hasOwnProperty(tipo)) {
-          componentes[tipo] = component.long_name;
-        }
-      });
-
-      // Preenche os campos automaticamente
-      inputNumeroModal.value = componentes.street_number || '';
-      inputBairroModal.value = componentes.neighborhood || componentes.sublocality_level_1 || '';
-      inputSetorModal.value = componentes.administrative_area_level_2 || '';
-      inputCidadeModal.value = componentes.administrative_area_level_2 || '';
-      inputCepModal.value = componentes.postal_code || '';
-    });
+  const containerAutocomplete = document.getElementById('autocomplete-container');
+  if (containerAutocomplete) {
+    containerAutocomplete.innerHTML = '';
+    containerAutocomplete.appendChild(autocompleteElement);
+  } else {
+    inputEnderecoCompleto.style.display = 'none';
+    inputEnderecoCompleto.parentElement.appendChild(autocompleteElement);
   }
 
-  // Inicializa após carregar tudo
-  google.maps.event.addDomListener(window, 'load', inicializarAutocomplete);
+  autocompleteElement.addEventListener('gmpx-placeautocomplete-placechange', (event) => {
+    const place = event.detail;
+
+    let rua = '';
+    let numero = '';
+    let bairro = '';
+    let cidade = 'Posse'; // padrão
+    let cep = '';
+    let enderecoCompleto = place.formatted_address || '';
+
+    if (place.address_components) {
+      place.address_components.forEach(component => {
+        if (component.types.includes('route')) rua = component.long_name;
+        if (component.types.includes('street_number')) numero = component.long_name;
+        if (component.types.includes('neighborhood')) bairro = component.long_name;
+        if (component.types.includes('postal_code')) cep = component.long_name;
+        if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+          cidade = component.long_name;
+        }
+      });
+    }
+
+    inputRuaModal.value = rua;
+    inputNumeroModal.value = numero;
+    inputSetorModal.value = bairro;
+    inputCidadeModal.value = cidade;
+    inputCepModal.value = cep;
+    inputEnderecoCompleto.value = enderecoCompleto;
+  });
 
 });

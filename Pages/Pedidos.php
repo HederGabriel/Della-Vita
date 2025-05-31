@@ -167,7 +167,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <input type="hidden" name="tipo_pedido" id="input-tipo-pedido" />
         <input type="hidden" name="rua" id="input-rua" />
         <input type="hidden" name="numero" id="input-numero" />
-        <input type="hidden" name="bairro" id="input-bairro" />
         <input type="hidden" name="setor" id="input-setor" />
         <input type="hidden" name="cep" id="input-cep" />
         <input type="hidden" name="complemento" id="input-complemento" />
@@ -179,21 +178,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
-          <input type="text" id="input-endereco-completo" placeholder="Digite seu endereço completo" required autocomplete="off" />
-          <input type="text" id="input-cidade" placeholder="Cidade" required autocomplete="off" />
-          <input type="text" id="input-cep" placeholder="CEP" required  autocomplete="off"/>
-          <input type="text" id="input-bairro" placeholder="Bairro" required autocomplete="off"/>
-          <input type="text" id="input-setor" placeholder="Setor" required autocomplete="off"/>
-          <input type="text" id="input-numero" placeholder="Número" required autocomplete="off"/>
-          <input type="text" id="input-complemento" placeholder="Complemento (opcional)" autocomplete="off"/>
+          
+          <!-- Container para o novo autocomplete -->
+          <div id="autocomplete-container" style="width: 100%; margin-bottom: 12px;"></div>
+          
+          <!-- Campo hidden para o endereço completo (valor do autocomplete) -->
+          <input type="hidden" id="input-endereco-completo" name="enderecoCompleto" />
 
+
+          
+          <input type="text" id="input-cep-modal" name="cep" placeholder="CEP" autocomplete="postal-code" required />
+          <input type="text" id="input-cidade-modal" name="cidade" placeholder="Cidade" autocomplete="address-level2" required />
+          <input type="text" id="input-rua-modal" name="rua" placeholder="Rua" required autocomplete="address-line1" />
+          <input type="text" id="input-numero-modal" name="numero" placeholder="Número" autocomplete="address-line2" required />
+          <input type="text" id="input-setor-modal" name="setor" placeholder="Setor" autocomplete="address-level2" required />
+          <input type="text" id="input-complemento-modal" name="complemento" placeholder="Complemento (opcional)" autocomplete="off" />
 
           <div class="modal-actions">
             <button id="confirmar-endereco" type="button" class="btn-salvar">Confirmar</button>
-            <button type="button" onclick="fecharModalEndereco()" class="btn-cancelar">Cancelar</button>
+            <button type="button" class="btn-cancelar">Cancelar</button>
           </div>
         </div>
       </div>
+
     </section>
   </main>
 
@@ -235,6 +242,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
   </footer>
   <script src="..\JS\Pedidos.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places" async defer></script>
 </body>
 </html>
