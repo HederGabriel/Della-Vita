@@ -14,16 +14,17 @@ body {
 
 /* Container principal e títulos */
 section.pedidos {
-    border: 2px solid #ccc;
+    border: 2px solid #f27b1a;
     padding: 32px;
     max-width: 1200px;
     margin: 40px auto;
-    background-color: #fafafa;
+    background-color: #fff;
+    border-radius: 16px;
 }
 
 .pedidos h2 {
     font-size: 24px;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #ffbf66;
     padding-bottom: 8px;
     margin-bottom: 16px;
 }
@@ -42,24 +43,24 @@ section.pedidos {
 .h2-casa,
 .h2-local {
     font-size: 24px;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #FFB066;
     padding-bottom: 8px;
     margin-top: 20px;
     transition: border-color 0.3s ease;
 }
 
 .h2-active {
-    border-color: #28a745 !important;
+    border-color: #FF7F11 !important;
 }
 
 /* Itens do pedido */
 .pedido-item {
     display: flex;
     align-items: center;
-    border: 1px solid #ddd;
+    border: 1px solid #f27b1a;
     border-radius: 8px;
     padding: 16px 24px;
-    background-color: #f9f9f9;
+    background-color: #fff;
     gap: 16px;
     margin: 16px 0 0 66px;
     max-width: 88.5%;
@@ -92,7 +93,7 @@ section.pedidos {
 }
 
 .quantidade-container button {
-    background-color: #d9d9d9;
+    background-color: #fca85a;
     border: none;
     padding: 5px 10px;
     font-weight: bold;
@@ -103,7 +104,7 @@ section.pedidos {
 }
 
 .quantidade-container button:hover {
-    background-color: #c4c4c4;
+    background-color: #ff7f11;
 }
 
 /* Checkbox customizada */
@@ -122,7 +123,7 @@ section.pedidos {
 .custom-checkbox .checkmark {
     width: 24px;
     height: 24px;
-    border: 2px solid #008000;
+    border: 2px solid #FF7F11;
     border-radius: 6px;
     background-color: white;
     display: flex;
@@ -135,7 +136,7 @@ section.pedidos {
 }
 
 .custom-checkbox input[type="checkbox"]:checked + .checkmark {
-    background-color: #28a745;
+    background-color: #FF7F11;
 }
 
 .custom-checkbox input[type="checkbox"]:checked + .checkmark::before {
@@ -146,7 +147,7 @@ section.pedidos {
 
 /* Botão finalizar pedido */
 .finalizarPedido {
-    background-color: #e63946;
+    background-color: #FF7F11;
     color: white;
     border: none;
     padding: 15px 30px;
@@ -159,12 +160,12 @@ section.pedidos {
 }
 
 .finalizarPedido:hover:not(:disabled) {
-    background-color: #d62839;
+    background-color: #e66900;
 }
 
 .finalizarPedido:disabled {
-    background-color: #ccc;
-    color: #666;
+    background-color: #ffd4aa;
+    color: #888;
     cursor: not-allowed;
     opacity: 0.8;
 }
@@ -177,7 +178,7 @@ section.pedidos {
 }
 
 .btn-acompanhar {
-    background-color: #d9534f;
+    background-color: #fc9236;
     color: white;
     padding: 12px 24px;
     border: none;
@@ -188,7 +189,7 @@ section.pedidos {
 }
 
 .btn-acompanhar:hover {
-    background-color: #c9302c;
+    background-color: #e66900;
 }
 
 /* Modal de endereço */
@@ -225,14 +226,14 @@ section.pedidos {
     width: 100%;
     padding: 12px 16px;
     font-size: 16px;
-    border: 1.8px solid #ccc;
+    border: 1.8px solid #FFB066;
     border-radius: 8px;
     transition: border-color 0.3s ease;
     margin-bottom: 16px;
 }
 
 .modal-endereco input[type="text"]:focus {
-    border-color: #28a745;
+    border-color: #FF7F11;
     outline: none;
 }
 
@@ -243,33 +244,39 @@ section.pedidos {
     gap: 16px;
 }
 
-.modal-actions button {
-    padding: 10px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+#btnCancelarEndereco,
+#btnConfirmarEndereco {
+  padding: 10px 20px;
+  margin-top: 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.modal-actions .btn-cancelar {
-    background-color: #ccc;
-    color: #333;
+#btnCancelarEndereco {
+  background-color: #fc9236;
+  color: #333;
 }
 
-.modal-actions .btn-cancelar:hover {
-    background-color: #b3b3b3;
+#btnCancelarEndereco:hover {
+  background-color: #ff5b02;
+  transform: scale(1.03);
 }
 
-.modal-actions .btn-salvar {
-    background-color: #28a745;
-    color: white;
+#btnConfirmarEndereco {
+  background-color: #FF7F11;
+  color: white;
 }
 
-.modal-actions .btn-salvar:hover {
-    background-color: #218838;
+#btnConfirmarEndereco:hover {
+  background-color: #af5002;
+  transform: scale(1.03);
 }
+
 
 /* Autocomplete */
 #autocomplete {
@@ -282,7 +289,7 @@ section.pedidos {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ff4d4f;
+    background-color: #FF7F11;
     color: white;
     padding: 16px 32px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
@@ -340,7 +347,7 @@ section.pedidos {
 }
 
 .btn-confirmar {
-    background-color: #d9534f;
+    background-color: #FF7F11;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -352,11 +359,11 @@ section.pedidos {
 }
 
 .btn-confirmar:hover {
-    background-color: #c9302c;
+    background-color: #e66900;
 }
 
 .btn-cancelar {
-    background-color: #6c757d;
+    background-color: #ccc;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -366,7 +373,7 @@ section.pedidos {
 }
 
 .btn-cancelar:hover {
-    background-color: #5a6268;
+    background-color: #aaa;
 }
 
 /* Animações */
@@ -397,6 +404,7 @@ section.pedidos {
     margin-top: 32px;
 }
 
+/* Modal comentário */
 .modal-comentario {
   display: none;
   position: fixed;
@@ -424,7 +432,7 @@ section.pedidos {
   resize: none;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #FFB066;
   font-size: 14px;
 }
 
@@ -440,16 +448,18 @@ section.pedidos {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #FFB066;
+  color: #fff;
 }
 
 .modal-comentario-botoes button:hover {
-  background-color: #f0f0f0;
+  background-color: #FF7F11;
 }
 
 #contador-comentario {
   display: block;
   text-align: right;
   font-size: 0.9em;
-  color: #555;
+  color: #777;
   margin-top: 4px;
 }
