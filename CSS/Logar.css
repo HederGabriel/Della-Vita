@@ -21,7 +21,7 @@ main {
     min-height: 500px;
     background-color: #fff;
     text-align: center;
-    margin: 15vh auto 0;
+    margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
     position: relative;
