@@ -282,8 +282,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="modal-remover-conteudo">
       <p id="texto-modal-remover">Deseja realmente remover este item do pedido?</p>
       <div class="modal-remover-botoes">
-        <button id="btnConfirmarRemover" class="btn-confirmar">Confirmar</button>
         <button id="btnCancelarRemover" class="btn-cancelar">Cancelar</button>
+        <button id="btnConfirmarRemover" class="btn-confirmar">Confirmar</button>
       </div>
     </div>
   </div>
