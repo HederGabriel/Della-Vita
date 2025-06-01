@@ -26,16 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputComplementoModal = document.getElementById('input-complemento-modal');
   const inputCidadeModal = document.getElementById('input-cidade-modal');
 
-  // Modal de confirmação para remoção de item
   const modalRemoverItem = document.getElementById('modal-remover-item');
   const btnConfirmarRemover = document.getElementById('btnConfirmarRemover');
   const btnCancelarRemover = document.getElementById('btnCancelarRemover');
   const textoModalRemover = document.getElementById('texto-modal-remover');
 
-  let itemParaRemoverId = null; // Guarda o id do item que será removido
+  let itemParaRemoverId = null;
 
   function mostrarAlerta(msg) {
-    // Placeholder para seu alert customizado
     console.log('Alerta:', msg);
   }
 
@@ -187,8 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnFinalizar.disabled = true;
 
-  // --- Modal de remoção ---
-
   function abrirModalRemoverItem(idItem) {
     itemParaRemoverId = idItem;
     textoModalRemover.textContent = 'Deseja realmente remover este item do pedido?';
@@ -209,15 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Remove o item do DOM
-        const item = document.querySelector(`.pedido-item[data-id-item="${idItem}"]`);
-        if (item) item.remove();
-
-        // Desabilitar finalizar se não houver mais itens
-        const itensRestantes = document.querySelectorAll('.pedido-item');
-        if (itensRestantes.length === 0) {
-          btnFinalizar.disabled = true;
-        }
+        document.querySelector(`.pedido-item[data-id-item="${idItem}"]`)?.remove();
       } else {
         mostrarAlerta(data.error || 'Erro ao remover item.');
       }
@@ -227,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Controle dos botões de mais/menos quantidade, com confirmação para remoção
   document.addEventListener('click', function (e) {
     if (e.target.classList.contains('btn-mais') || e.target.classList.contains('btn-menos')) {
       const btn = e.target;
@@ -242,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
         atualizarQuantidade(idItem, quantidadeAtual);
       } else if (btn.classList.contains('btn-menos')) {
         if (quantidadeAtual === 1) {
-          // Abrir modal personalizado para confirmar remoção
           abrirModalRemoverItem(idItem);
         } else if (quantidadeAtual > 1) {
           quantidadeAtual--;
@@ -266,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fecharModalRemoverItem();
   });
 
-  // Função para atualizar quantidade via AJAX
   function atualizarQuantidade(idItem, novaQuantidade) {
     const formData = new FormData();
     formData.append('id_item', idItem);
@@ -280,6 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       if (!data.success) {
         mostrarAlerta(data.error || 'Erro ao atualizar quantidade.');
+      } else {
+        // Recarrega a página para atualizar o total e o conteúdo
+        window.location.reload();
       }
     })
     .catch(() => {

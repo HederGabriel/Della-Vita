@@ -119,7 +119,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
 
       <?php if (!empty($itens_entrega)): ?>
-        <?php foreach ($itens_entrega as $item): ?>
+        <?php 
+          $total_entrega = 0;
+          foreach ($itens_entrega as $item): 
+          $subtotal = $item['quantidade'] * $item['preco_unitario'];
+          $total_entrega += $subtotal;
+        ?>
           <div class="pedido-item" data-id-item="<?= (int)$item['id_item_pedido'] ?>" data-tipo="casa">
             <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
             <div class="pedido-info">
@@ -135,6 +140,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
           </div>
         <?php endforeach; ?>
+        <div class="total-container">
+          <p><strong>Total:</strong> R$ <?= number_format($total_entrega, 2, ',', '.') ?></p>
+        </div>
       <?php else: ?>
         <p>Não há pedidos para entrega em casa.</p>
       <?php endif; ?>
@@ -149,7 +157,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
 
       <?php if (!empty($itens_local)): ?>
-        <?php foreach ($itens_local as $item): ?>
+        <?php 
+          $total_local = 0;
+          foreach ($itens_local as $item): 
+          $subtotal = $item['quantidade'] * $item['preco_unitario'];
+          $total_local += $subtotal;
+        ?>
           <div class="pedido-item" data-id-item="<?= (int)$item['id_item_pedido'] ?>" data-tipo="local">
             <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
             <div class="pedido-info">
@@ -165,6 +178,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
           </div>
         <?php endforeach; ?>
+        <div class="total-container">
+          <p><strong>Total:</strong> R$ <?= number_format($total_local, 2, ',', '.') ?></p>
+        </div>
       <?php else: ?>
         <p>Não há pedidos para consumo no local.</p>
       <?php endif; ?>
