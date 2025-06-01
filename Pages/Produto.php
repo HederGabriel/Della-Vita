@@ -238,8 +238,8 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
             <input type="number" id="quantidade" value="1" min="1" onchange="atualizarTotal()" />
             <p>Total: <span id="total-modal">R$ 0,00</span></p>
             <div class="modal-buttons">
-                <button onclick="confirmarAdicionar()">Confirmar</button>
                 <button onclick="fecharModal()">Cancelar</button>
+                <button onclick="confirmarAdicionar()">Confirmar</button>
             </div>
         </div>
     </div>

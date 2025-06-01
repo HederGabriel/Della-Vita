@@ -107,7 +107,7 @@ form button#btn-entrar:hover {
 }
 
 .error-message {
-    color: yellow;
+    color: orange;
     font-size: 14px;
     text-align: center;
     margin: 0; /* Remover margens extras */

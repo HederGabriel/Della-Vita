@@ -12,13 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnConfirmarEndereco = document.getElementById('btnConfirmarEndereco');
   const btnCancelarEndereco = document.getElementById('btnCancelarEndereco');
 
-  const inputRua = document.getElementById('input-rua');
-  const inputNumero = document.getElementById('input-numero');
-  const inputSetor = document.getElementById('input-setor');
-  const inputCep = document.getElementById('input-cep');
-  const inputComplemento = document.getElementById('input-complemento');
-  const inputCidade = document.getElementById('input-cidade');
-
   const inputRuaModal = document.getElementById('input-rua-modal');
   const inputNumeroModal = document.getElementById('input-numero-modal');
   const inputSetorModal = document.getElementById('input-setor-modal');
@@ -26,15 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputComplementoModal = document.getElementById('input-complemento-modal');
   const inputCidadeModal = document.getElementById('input-cidade-modal');
 
+  const modalComentario = document.getElementById('modal-comentario');
+  const btnConfirmarComentario = document.getElementById('btnConfirmarComentario');
+  const btnCancelarComentario = document.getElementById('btnCancelarComentario');
+  const inputComentario = document.getElementById('input-comentario');
+  const contadorComentario = document.getElementById('contador-comentario');
+
   const modalRemoverItem = document.getElementById('modal-remover-item');
   const btnConfirmarRemover = document.getElementById('btnConfirmarRemover');
   const btnCancelarRemover = document.getElementById('btnCancelarRemover');
   const textoModalRemover = document.getElementById('texto-modal-remover');
 
   let itemParaRemoverId = null;
+  let tipoSelecionado = '';
+  let idsSelecionados = [];
 
   function mostrarAlerta(msg) {
     console.log('Alerta:', msg);
+    alert(msg);
   }
 
   function resetSelecao() {
@@ -87,32 +89,81 @@ document.addEventListener('DOMContentLoaded', () => {
     modalEndereco.style.display = 'none';
   }
 
+  function abrirModalComentario() {
+    inputComentario.value = '';
+    contadorComentario.textContent = '0/200';
+    modalComentario.style.display = 'flex';
+  }
+
+  function fecharModalComentario() {
+    modalComentario.style.display = 'none';
+  }
+
+  inputComentario.addEventListener('input', () => {
+    const limite = inputComentario.maxLength;
+    const atual = inputComentario.value.length;
+    contadorComentario.textContent = `${atual}/${limite}`;
+  });
+
+  function validarFormulario() {
+    if (inputTipoPedido.value === 'casa') {
+      if (!inputRuaModal.value.trim()) {
+        mostrarAlerta('Por favor, preencha o campo Rua.');
+        return false;
+      }
+      if (!inputNumeroModal.value.trim()) {
+        mostrarAlerta('Por favor, preencha o campo Número.');
+        return false;
+      }
+      if (!inputCepModal.value.trim()) {
+        mostrarAlerta('Por favor, preencha o campo CEP.');
+        return false;
+      }
+      if (!inputCidadeModal.value.trim()) {
+        mostrarAlerta('Por favor, preencha o campo Cidade.');
+        return false;
+      }
+    }
+    return true;
+  }
+
   function enviarFormularioAjax() {
+    if (!validarFormulario()) return;
+
+    if (tipoSelecionado === 'casa') {
+      document.getElementById('input-rua').value = inputRuaModal.value.trim();
+      document.getElementById('input-numero').value = inputNumeroModal.value.trim();
+      document.getElementById('input-setor').value = inputSetorModal.value.trim();
+      document.getElementById('input-cep').value = inputCepModal.value.trim();
+      document.getElementById('input-complemento').value = inputComplementoModal.value.trim();
+      document.getElementById('input-cidade').value = inputCidadeModal.value.trim();
+    }
+
     const formData = new FormData(formFinalizar);
 
     fetch('../System/finalizarPedido.php', {
       method: 'POST',
       body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        window.location.href = data.redirect;
-      } else {
-        mostrarAlerta(data.error || 'Erro ao finalizar pedido.');
-      }
-    })
-    .catch(error => {
-      console.error('Erro na requisição:', error);
-      mostrarAlerta('Erro inesperado ao enviar pedido.');
-    });
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = data.redirect;
+        } else {
+          mostrarAlerta(data.error || 'Erro ao finalizar pedido.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro na requisição:', error);
+        mostrarAlerta('Erro inesperado ao enviar pedido.');
+      });
   }
 
   btnFinalizar.addEventListener('click', (e) => {
     e.preventDefault();
 
-    const tipo = inputTipoPedido.value.trim().toLowerCase();
-    if (!tipo) {
+    tipoSelecionado = inputTipoPedido.value.trim().toLowerCase();
+    if (!tipoSelecionado) {
       mostrarAlerta('Por favor, selecione um tipo de pedido.');
       return;
     }
@@ -123,9 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const idsSelecionados = [];
+    idsSelecionados = [];
     itensPedido.forEach(item => {
-      if (item.dataset.tipo && item.dataset.tipo.toLowerCase() === tipo) {
+      if (item.dataset.tipo && item.dataset.tipo.toLowerCase() === tipoSelecionado) {
         if (item.dataset.idItem) {
           idsSelecionados.push(item.dataset.idItem);
         }
@@ -133,9 +184,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (idsSelecionados.length === 0) {
-      mostrarAlerta(`Nenhum item encontrado para o tipo "${tipo}".`);
+      mostrarAlerta(`Nenhum item encontrado para o tipo "${tipoSelecionado}".`);
       return;
     }
+
+    abrirModalComentario();
+  });
+
+  btnConfirmarComentario.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    let comentario = inputComentario.value.trim();
+    if (!comentario) comentario = 'Sem Comentários';
+
+    let inputComentarioForm = formFinalizar.querySelector('input[name="comentario"]');
+    if (!inputComentarioForm) {
+      inputComentarioForm = document.createElement('input');
+      inputComentarioForm.type = 'hidden';
+      inputComentarioForm.name = 'comentario';
+      formFinalizar.appendChild(inputComentarioForm);
+    }
+    inputComentarioForm.value = comentario;
 
     let inputIds = formFinalizar.querySelector('input[name="ids_itens"]');
     if (!inputIds) {
@@ -146,33 +215,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     inputIds.value = idsSelecionados.join(',');
 
-    if (tipo === 'casa') {
+    fecharModalComentario();
+
+    if (tipoSelecionado === 'casa') {
       abrirModalEndereco();
     } else {
       enviarFormularioAjax();
     }
   });
 
+  btnCancelarComentario.addEventListener('click', (e) => {
+    e.preventDefault();
+    fecharModalComentario();
+    enviarFormularioAjax();
+  });
+
   btnConfirmarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (
-      !inputRuaModal.value.trim() ||
-      !inputNumeroModal.value.trim() ||
-      !inputSetorModal.value.trim() ||
-      !inputCepModal.value.trim() ||
-      !inputCidadeModal.value.trim()
-    ) {
-      mostrarAlerta('Por favor, preencha todos os campos obrigatórios do endereço.');
-      return;
-    }
+    if (!validarFormulario()) return;
 
-    inputRua.value = inputRuaModal.value.trim();
-    inputNumero.value = inputNumeroModal.value.trim();
-    inputSetor.value = inputSetorModal.value.trim();
-    inputCep.value = inputCepModal.value.trim();
-    inputComplemento.value = inputComplementoModal.value.trim();
-    if (inputCidade) inputCidade.value = inputCidadeModal.value.trim();
+    document.getElementById('input-rua').value = inputRuaModal.value.trim();
+    document.getElementById('input-numero').value = inputNumeroModal.value.trim();
+    document.getElementById('input-cep').value = inputCepModal.value.trim();
+    document.getElementById('input-setor').value = inputSetorModal.value.trim();
+    document.getElementById('input-complemento').value = inputComplementoModal.value.trim();
+    document.getElementById('input-cidade').value = inputCidadeModal.value.trim();
 
     fecharModalEndereco();
     enviarFormularioAjax();
@@ -181,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnCancelarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
     fecharModalEndereco();
+    enviarFormularioAjax();
   });
 
   btnFinalizar.disabled = true;
@@ -202,17 +271,17 @@ document.addEventListener('DOMContentLoaded', () => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `id_item=${encodeURIComponent(idItem)}`
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        document.querySelector(`.pedido-item[data-id-item="${idItem}"]`)?.remove();
-      } else {
-        mostrarAlerta(data.error || 'Erro ao remover item.');
-      }
-    })
-    .catch(() => {
-      mostrarAlerta('Erro ao comunicar com o servidor para remover item.');
-    });
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.querySelector(`.pedido-item[data-id-item="${idItem}"]`)?.remove();
+        } else {
+          mostrarAlerta(data.error || 'Erro ao remover item.');
+        }
+      })
+      .catch(() => {
+        mostrarAlerta('Erro ao comunicar com o servidor para remover item.');
+      });
   }
 
   document.addEventListener('click', function (e) {
@@ -261,17 +330,16 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-      if (!data.success) {
-        mostrarAlerta(data.error || 'Erro ao atualizar quantidade.');
-      } else {
-        // Recarrega a página para atualizar o total e o conteúdo
-        window.location.reload();
-      }
-    })
-    .catch(() => {
-      mostrarAlerta('Erro ao comunicar com o servidor.');
-    });
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success) {
+          mostrarAlerta(data.error || 'Erro ao atualizar quantidade.');
+        } else {
+          window.location.reload();
+        }
+      })
+      .catch(() => {
+        mostrarAlerta('Erro ao comunicar com o servidor.');
+      });
   }
 });

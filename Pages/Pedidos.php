@@ -187,15 +187,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <!-- Formulário Finalizar -->
       <form id="form-finalizar" method="POST" action="../System/finalizarPedido.php" onsubmit="return validarFormulario()">
+        <input type="hidden" id="input-comentario-form" name="comentario">
         <input type="hidden" name="tipo_pedido" id="input-tipo-pedido" />
         <input type="hidden" name="rua" id="input-rua" />
         <input type="hidden" name="numero" id="input-numero" />
         <input type="hidden" name="setor" id="input-setor" />
         <input type="hidden" name="cep" id="input-cep" />
         <input type="hidden" name="complemento" id="input-complemento" />
-        <input type="hidden" name="ids_itens" id="input-ids-itens" />
+        <input type="hidden" name="cidade" id="input-cidade" /> <!-- ADICIONADO -->
+
         <button type="button" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
-      </form>
+    </form>
+
 
       <!-- Modal Endereço -->
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
@@ -208,8 +211,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <input type="text" id="input-numero-modal" placeholder="Número" required />
           <input type="text" id="input-setor-modal" placeholder="Bairro" required />
           <input type="text" id="input-complemento-modal" placeholder="Complemento (opcional)" />
-          <button type="button" id="btnConfirmarEndereco">Confirmar Endereço</button>
           <button type="button" id="btnCancelarEndereco">Cancelar</button>
+          <button type="button" id="btnConfirmarEndereco">Confirmar Endereço</button>
         </div>
       </div>
     </section>
@@ -252,6 +255,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
+
+  <div id="modal-comentario" class="modal-comentario">
+    <div class="modal-comentario-conteudo">
+      <h3>Comentário</h3>
+      
+      <!-- Textarea com maxlength -->
+      <textarea
+        id="input-comentario"
+        placeholder="Digite um comentário (opcional)"
+        rows="4"
+        maxlength="200"
+      ></textarea>
+      
+      <!-- Contador de caracteres -->
+      <small id="contador-comentario">0/200</small>
+      
+      <div class="modal-comentario-botoes">
+        <button id="btnCancelarComentario" type="button">Cancelar</button>
+        <button id="btnConfirmarComentario" type="button">Enviar</button>
+      </div>
+    </div>
+  </div>
+
   <div id="modal-remover-item" class="modal-remover">
     <div class="modal-remover-conteudo">
       <p id="texto-modal-remover">Deseja realmente remover este item do pedido?</p>

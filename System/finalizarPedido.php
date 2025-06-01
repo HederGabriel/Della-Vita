@@ -35,6 +35,10 @@ if (!in_array($tipo_pedido, $tipos_validos, true)) {
     exit;
 }
 
+// Recebe comentário do cliente
+$comentario = filter_input(INPUT_POST, 'comentario', FILTER_SANITIZE_STRING);
+$comentario = $comentario ? trim($comentario) : null;
+
 // Recebe e valida IDs dos itens
 $ids_itens_str = filter_input(INPUT_POST, 'ids_itens', FILTER_SANITIZE_STRING);
 if (!$ids_itens_str) {
@@ -113,15 +117,16 @@ try {
     // Insere pedido
     $status_pedido = 'Recebido';
     $stmtInsertPedido = $pdo->prepare("
-        INSERT INTO pedidos (id_cliente, nome_cliente, data_pedido, tipo_pedido, status_pedido, valor_total)
-        VALUES (:id_cliente, :nome_cliente, NOW(), :tipo_pedido, :status_pedido, :valor_total)
+        INSERT INTO pedidos (id_cliente, nome_cliente, data_pedido, tipo_pedido, status_pedido, valor_total, comentario)
+        VALUES (:id_cliente, :nome_cliente, NOW(), :tipo_pedido, :status_pedido, :valor_total, :comentario)
     ");
     $stmtInsertPedido->execute([
         ':id_cliente' => $id_cliente,
         ':nome_cliente' => $nome_cliente,
         ':tipo_pedido' => $tipo_pedido,
         ':status_pedido' => $status_pedido,
-        ':valor_total' => $valor_total
+        ':valor_total' => $valor_total,
+        ':comentario' => $comentario
     ]);
     $id_pedido = $pdo->lastInsertId();
 
@@ -179,7 +184,6 @@ try {
 
     $pdo->commit();
 
-    // Sucesso
     echo json_encode([
         'success' => true,
         'message' => 'Pedido finalizado com sucesso!',
