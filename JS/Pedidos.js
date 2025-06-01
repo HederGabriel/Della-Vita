@@ -153,10 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
           mostrarAlerta(data.error || 'Erro ao finalizar pedido.');
         }
       })
-      .catch(error => {
-        console.error('Erro na requisição:', error);
-        mostrarAlerta('Erro inesperado ao enviar pedido.');
-      });
   }
 
   btnFinalizar.addEventListener('click', (e) => {

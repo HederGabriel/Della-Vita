@@ -43,7 +43,6 @@ $comentario = $comentario ? trim($comentario) : null;
 $ids_itens_str = filter_input(INPUT_POST, 'ids_itens', FILTER_SANITIZE_STRING);
 if (!$ids_itens_str) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'IDs dos itens não fornecidos.']);
     exit;
 }
 
