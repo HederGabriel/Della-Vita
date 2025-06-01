@@ -223,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
   btnCancelarComentario.addEventListener('click', (e) => {
     e.preventDefault();
     fecharModalComentario();
-    enviarFormularioAjax();
   });
 
   btnConfirmarEndereco.addEventListener('click', (e) => {
@@ -245,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnCancelarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
     fecharModalEndereco();
-    enviarFormularioAjax();
+
   });
 
   btnFinalizar.disabled = true;
