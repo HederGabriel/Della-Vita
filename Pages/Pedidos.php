@@ -2,7 +2,6 @@
 include_once '../System/session.php';
 require_once '../System/db.php';
 
-// Verifica se está logado
 if (!isset($_SESSION['id_cliente'])) {
   header("Location: Login-Cadastro.php?redirect=Pedidos.php");
   exit();
@@ -10,7 +9,6 @@ if (!isset($_SESSION['id_cliente'])) {
 
 $id_cliente = $_SESSION['id_cliente'];
 
-// Busca dados do cliente para nome e avatar
 $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $cliente = $stmt->fetch();
@@ -24,7 +22,6 @@ if ($cliente) {
   exit();
 }
 
-// Busca os itens de pedido pendentes (id_pedido IS NULL)
 $stmt = $pdo->prepare("
   SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
   FROM itens_pedido ip
@@ -47,7 +44,6 @@ foreach ($itens as $item) {
   }
 }
 
-// Logout
 if (isset($_POST['logout'])) {
   session_destroy();
   $redirect_url = $_POST['redirect'] ?? 'index.php';
@@ -103,12 +99,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
     <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
   </div>
-  <script src="../JS/userMenu.js"></script>
-
   <form id="logout-form" method="POST" style="display: none;">
     <input type="hidden" name="logout" value="1" />
   </form>
-  <script src="..\JS\userMenu.js"></script>
 
   <main>
     <section class="pedidos">
@@ -116,7 +109,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <button class="btn-acompanhar" onclick="window.location.href='acompanharPedido.php'">📦 Acompanhar Pedido</button>
       </div>
 
-      <!-- Checkbox Entrega em Casa -->
+      <!-- Entrega em Casa -->
       <div class="titulo-pedidos">
         <label class="custom-checkbox" for="casa">
           <input type="checkbox" id="casa" name="tipo_pedido" value="casa" />
@@ -131,17 +124,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
             <div class="pedido-info">
               <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-              <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
               <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
               <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
+              <div class="quantidade-container">
+                <strong>Quantidade:</strong>
+                <button type="button" class="btn-menos" data-id="<?= $item['id_item_pedido'] ?>">-</button>
+                <span class="quantidade"><?= (int)$item['quantidade'] ?></span>
+                <button type="button" class="btn-mais" data-id="<?= $item['id_item_pedido'] ?>">+</button>
+              </div>
             </div>
           </div>
         <?php endforeach; ?>
       <?php else: ?>
-        <p>Não há pedidos com entrega em casa.</p>
+        <p>Não há pedidos para entrega em casa.</p>
       <?php endif; ?>
 
-      <!-- Checkbox Retirada no Local -->
+      <!-- Retirada no Local -->
       <div class="titulo-pedidos">
         <label class="custom-checkbox" for="local">
           <input type="checkbox" id="local" name="tipo_pedido" value="local" />
@@ -156,9 +154,14 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <img src="<?= htmlspecialchars($item['imagem_produto']) ?>" class="produto-img" alt="Imagem Produto" />
             <div class="pedido-info">
               <p><strong>Produto:</strong> <?= htmlspecialchars($item['nome_produto']) ?></p>
-              <p><strong>Quantidade:</strong> <?= (int)$item['quantidade'] ?></p>
               <p><strong>Tamanho:</strong> <?= strtoupper(htmlspecialchars($item['tamanho'])) ?></p>
               <p><strong>Preço Unitário:</strong> R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></p>
+              <div class="quantidade-container">
+                <strong>Quantidade:</strong>
+                <button type="button" class="btn-menos" data-id="<?= $item['id_item_pedido'] ?>">-</button>
+                <span class="quantidade"><?= (int)$item['quantidade'] ?></span>
+                <button type="button" class="btn-mais" data-id="<?= $item['id_item_pedido'] ?>">+</button>
+              </div>
             </div>
           </div>
         <?php endforeach; ?>
@@ -166,7 +169,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <p>Não há pedidos para consumo no local.</p>
       <?php endif; ?>
 
-      <!-- FORMULÁRIO FINALIZAR PEDIDO -->
+      <!-- Formulário Finalizar -->
       <form id="form-finalizar" method="POST" action="../System/finalizarPedido.php" onsubmit="return validarFormulario()">
         <input type="hidden" name="tipo_pedido" id="input-tipo-pedido" />
         <input type="hidden" name="rua" id="input-rua" />
@@ -174,36 +177,27 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <input type="hidden" name="setor" id="input-setor" />
         <input type="hidden" name="cep" id="input-cep" />
         <input type="hidden" name="complemento" id="input-complemento" />
-
-        <!-- Campo oculto para ids dos itens selecionados -->
         <input type="hidden" name="ids_itens" id="input-ids-itens" />
-
         <button type="button" class="finalizarPedido" id="btnFinalizar" disabled>Finalizar Pedido</button>
       </form>
 
-      <!-- MODAL ENDEREÇO -->
+      <!-- Modal Endereço -->
       <div id="modal-endereco" class="modal-endereco" style="display: none;">
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
-
-          <!-- Google Places autocomplete container -->
-          <input id="autocomplete" placeholder="Digite o endereço completo" type="text" style="padding: 10px; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 12px; width: 100%;" />
-
-          <input type="text" id="input-cep-modal" placeholder="CEP" autocomplete="postal-code" required />
-          <input type="text" id="input-cidade-modal" placeholder="Cidade" autocomplete="address-level2" required />
-          <input type="text" id="input-rua-modal" placeholder="Rua" autocomplete="street-address" required />
-          <input type="text" id="input-numero-modal" placeholder="Número" autocomplete="off" required />
-          <input type="text" id="input-setor-modal" placeholder="Bairro" autocomplete="address-level3" required />
-          <input type="text" id="input-complemento-modal" placeholder="Complemento (opcional)" autocomplete="off" />
-
+          <input id="autocomplete" placeholder="Digite o endereço completo" type="text" />
+          <input type="text" id="input-cep-modal" placeholder="CEP" required />
+          <input type="text" id="input-cidade-modal" placeholder="Cidade" required />
+          <input type="text" id="input-rua-modal" placeholder="Rua" required />
+          <input type="text" id="input-numero-modal" placeholder="Número" required />
+          <input type="text" id="input-setor-modal" placeholder="Bairro" required />
+          <input type="text" id="input-complemento-modal" placeholder="Complemento (opcional)" />
           <button type="button" id="btnConfirmarEndereco">Confirmar Endereço</button>
           <button type="button" id="btnCancelarEndereco">Cancelar</button>
         </div>
       </div>
-
     </section>
   </main>
-
 
   <footer>
     <div class="footer-container">
@@ -242,7 +236,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
-  <script src="..\JS\Pedidos.js"></script>
+  <div id="modal-remover-item" class="modal-remover">
+    <div class="modal-remover-conteudo">
+      <p id="texto-modal-remover">Deseja realmente remover este item do pedido?</p>
+      <div class="modal-remover-botoes">
+        <button id="btnConfirmarRemover" class="btn-confirmar">Confirmar</button>
+        <button id="btnCancelarRemover" class="btn-cancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../JS/userMenu.js"></script>
+  <script src="../JS/Pedidos.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places" async defer></script>
 </body>
 </html>

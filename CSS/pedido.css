@@ -262,3 +262,149 @@ section.pedidos {
 #autocomplete {
   display: none;
 }
+
+.quantidade-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantidade-container button {
+  background-color: #d9d9d9;
+  border: none;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.quantidade-container button:hover {
+  background-color: #c4c4c4;
+}
+
+/* alerta.css */
+
+.custom-alert {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4d4f; /* vermelho alerta */
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 300px;
+  max-width: 90%;
+  animation: slideDown 0.3s ease forwards;
+}
+
+.custom-alert button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Modal remover item - oculto por padrão */
+.modal-remover {
+  display: none; /* invisível inicialmente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: flex-start; /* topo da tela */
+  padding-top: 50px; /* distância do topo */
+  z-index: 10000;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Conteúdo do modal */
+.modal-remover-conteudo {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px 30px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transform: translateY(-20px);
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Botões alinhados */
+.modal-remover-botoes {
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* Estilos dos botões */
+.btn-confirmar {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.btn-confirmar:hover {
+  background-color: #c9302c;
+}
+
+.btn-cancelar {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #5a6268;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

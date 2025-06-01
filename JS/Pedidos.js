@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputSetor = document.getElementById('input-setor');
   const inputCep = document.getElementById('input-cep');
   const inputComplemento = document.getElementById('input-complemento');
+  const inputCidade = document.getElementById('input-cidade');
 
   const inputRuaModal = document.getElementById('input-rua-modal');
   const inputNumeroModal = document.getElementById('input-numero-modal');
@@ -24,6 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputCepModal = document.getElementById('input-cep-modal');
   const inputComplementoModal = document.getElementById('input-complemento-modal');
   const inputCidadeModal = document.getElementById('input-cidade-modal');
+
+  // Modal de confirmação para remoção de item
+  const modalRemoverItem = document.getElementById('modal-remover-item');
+  const btnConfirmarRemover = document.getElementById('btnConfirmarRemover');
+  const btnCancelarRemover = document.getElementById('btnCancelarRemover');
+  const textoModalRemover = document.getElementById('texto-modal-remover');
+
+  let itemParaRemoverId = null; // Guarda o id do item que será removido
+
+  function mostrarAlerta(msg) {
+    // Placeholder para seu alert customizado
+    console.log('Alerta:', msg);
+  }
 
   function resetSelecao() {
     btnFinalizar.disabled = true;
@@ -87,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success) {
         window.location.href = data.redirect;
       } else {
-        alert(data.error || 'Erro ao finalizar pedido.');
+        mostrarAlerta(data.error || 'Erro ao finalizar pedido.');
       }
     })
     .catch(error => {
       console.error('Erro na requisição:', error);
-      alert('Erro inesperado ao enviar pedido.');
+      mostrarAlerta('Erro inesperado ao enviar pedido.');
     });
   }
 
@@ -101,13 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tipo = inputTipoPedido.value.trim().toLowerCase();
     if (!tipo) {
-      alert('Por favor, selecione um tipo de pedido.');
+      mostrarAlerta('Por favor, selecione um tipo de pedido.');
       return;
     }
 
     const itensPedido = document.querySelectorAll('.pedido-item');
     if (itensPedido.length === 0) {
-      alert('Não há itens no pedido.');
+      mostrarAlerta('Não há itens no pedido.');
       return;
     }
 
@@ -121,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (idsSelecionados.length === 0) {
-      alert(`Nenhum item encontrado para o tipo "${tipo}".`);
+      mostrarAlerta(`Nenhum item encontrado para o tipo "${tipo}".`);
       return;
     }
 
@@ -148,9 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
       !inputRuaModal.value.trim() ||
       !inputNumeroModal.value.trim() ||
       !inputSetorModal.value.trim() ||
-      !inputCepModal.value.trim()
+      !inputCepModal.value.trim() ||
+      !inputCidadeModal.value.trim()
     ) {
-      alert('Por favor, preencha todos os campos obrigatórios do endereço.');
+      mostrarAlerta('Por favor, preencha todos os campos obrigatórios do endereço.');
       return;
     }
 
@@ -159,13 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputSetor.value = inputSetorModal.value.trim();
     inputCep.value = inputCepModal.value.trim();
     inputComplemento.value = inputComplementoModal.value.trim();
-
-    if (inputCidadeModal) {
-      const inputCidade = document.getElementById('input-cidade');
-      if (inputCidade) {
-        inputCidade.value = inputCidadeModal.value.trim();
-      }
-    }
+    if (inputCidade) inputCidade.value = inputCidadeModal.value.trim();
 
     fecharModalEndereco();
     enviarFormularioAjax();
@@ -177,4 +186,104 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnFinalizar.disabled = true;
+
+  // --- Modal de remoção ---
+
+  function abrirModalRemoverItem(idItem) {
+    itemParaRemoverId = idItem;
+    textoModalRemover.textContent = 'Deseja realmente remover este item do pedido?';
+    modalRemoverItem.style.display = 'flex';
+  }
+
+  function fecharModalRemoverItem() {
+    modalRemoverItem.style.display = 'none';
+    itemParaRemoverId = null;
+  }
+
+  function removerItem(idItem) {
+    fetch('../System/removerItem.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `id_item=${encodeURIComponent(idItem)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Remove o item do DOM
+        const item = document.querySelector(`.pedido-item[data-id-item="${idItem}"]`);
+        if (item) item.remove();
+
+        // Desabilitar finalizar se não houver mais itens
+        const itensRestantes = document.querySelectorAll('.pedido-item');
+        if (itensRestantes.length === 0) {
+          btnFinalizar.disabled = true;
+        }
+      } else {
+        mostrarAlerta(data.error || 'Erro ao remover item.');
+      }
+    })
+    .catch(() => {
+      mostrarAlerta('Erro ao comunicar com o servidor para remover item.');
+    });
+  }
+
+  // Controle dos botões de mais/menos quantidade, com confirmação para remoção
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('btn-mais') || e.target.classList.contains('btn-menos')) {
+      const btn = e.target;
+      const container = btn.closest('.quantidade-container');
+      const spanQuantidade = container.querySelector('.quantidade');
+      const idItem = btn.dataset.id;
+      let quantidadeAtual = parseInt(spanQuantidade.textContent, 10);
+
+      if (btn.classList.contains('btn-mais')) {
+        quantidadeAtual++;
+        spanQuantidade.textContent = quantidadeAtual;
+        atualizarQuantidade(idItem, quantidadeAtual);
+      } else if (btn.classList.contains('btn-menos')) {
+        if (quantidadeAtual === 1) {
+          // Abrir modal personalizado para confirmar remoção
+          abrirModalRemoverItem(idItem);
+        } else if (quantidadeAtual > 1) {
+          quantidadeAtual--;
+          spanQuantidade.textContent = quantidadeAtual;
+          atualizarQuantidade(idItem, quantidadeAtual);
+        }
+      }
+    }
+  });
+
+  btnConfirmarRemover.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (itemParaRemoverId) {
+      removerItem(itemParaRemoverId);
+      fecharModalRemoverItem();
+    }
+  });
+
+  btnCancelarRemover.addEventListener('click', (e) => {
+    e.preventDefault();
+    fecharModalRemoverItem();
+  });
+
+  // Função para atualizar quantidade via AJAX
+  function atualizarQuantidade(idItem, novaQuantidade) {
+    const formData = new FormData();
+    formData.append('id_item', idItem);
+    formData.append('quantidade', novaQuantidade);
+
+    fetch('../System/atualizarQuantidade.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.success) {
+        mostrarAlerta(data.error || 'Erro ao atualizar quantidade.');
+      }
+    })
+    .catch(() => {
+      mostrarAlerta('Erro ao comunicar com o servidor.');
+    });
+  }
 });
