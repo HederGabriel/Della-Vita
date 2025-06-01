@@ -2,7 +2,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* Importante para dimensionamento consistente */
+    box-sizing: border-box;
 }
 
 body {
@@ -12,6 +12,7 @@ body {
     color: #333;
 }
 
+/* Container principal e títulos */
 section.pedidos {
     border: 2px solid #ccc;
     padding: 32px;
@@ -21,25 +22,34 @@ section.pedidos {
 }
 
 .pedidos h2 {
-    font-size: 1.5rem;
+    font-size: 24px;
     border-bottom: 2px solid #ccc;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.pedidos input.baixo {
-    margin-top: 32px;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
 }
 
 .titulo-alinhado {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 1rem;
+    margin-top: 16px;
 }
 
 .titulo-alinhado h2 {
     margin: 0;
+}
+
+.h2-casa,
+.h2-local {
+    font-size: 24px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+    margin-top: 20px;
+    transition: border-color 0.3s ease;
+}
+
+.h2-active {
+    border-color: #28a745 !important;
 }
 
 /* Itens do pedido */
@@ -48,11 +58,11 @@ section.pedidos {
     align-items: center;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 1rem 1.5rem;
-    margin-top: 1rem;
+    padding: 16px 24px;
     background-color: #f9f9f9;
-    gap: 1rem;
-    /* Removido margin-left fixo para melhor responsividade */
+    gap: 16px;
+    margin: 16px 0 0 66px;
+    max-width: 88.5%;
 }
 
 .pedido-item img.produto-img {
@@ -63,8 +73,37 @@ section.pedidos {
 }
 
 .pedido-item p {
-    margin: 0.3rem 0;
-    flex-grow: 1; /* Para textos ocuparem o máximo possível */
+    margin: 5px 0;
+    flex-grow: 1;
+}
+
+/* Informações do pedido */
+.pedido-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Quantidade */
+.quantidade-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantidade-container button {
+    background-color: #d9d9d9;
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.quantidade-container button:hover {
+    background-color: #c4c4c4;
 }
 
 /* Checkbox customizada */
@@ -72,7 +111,7 @@ section.pedidos {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
-    gap: 0.5rem;
+    gap: 8px;
     user-select: none;
 }
 
@@ -92,11 +131,9 @@ section.pedidos {
     font-size: 16px;
     color: white;
     box-sizing: border-box;
-    /* Removido margin-top para melhor alinhamento */
     transition: background-color 0.3s ease;
 }
 
-/* Estado marcado */
 .custom-checkbox input[type="checkbox"]:checked + .checkmark {
     background-color: #28a745;
 }
@@ -105,21 +142,6 @@ section.pedidos {
     content: "✔";
     font-weight: bold;
     color: white;
-}
-
-/* Títulos com borda e transição */
-.h2-casa,
-.h2-local {
-    font-size: 1.5rem;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 0.5rem;
-    margin-top: 20px;
-    transition: border-color 0.3s ease;
-}
-
-/* Ativo via JS */
-.h2-active {
-    border-color: #28a745 !important;
 }
 
 /* Botão finalizar pedido */
@@ -133,7 +155,7 @@ section.pedidos {
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: block;
-    margin: 40px auto 0;
+    margin: 20px auto 0;
 }
 
 .finalizarPedido:hover:not(:disabled) {
@@ -160,7 +182,7 @@ section.pedidos {
     padding: 12px 24px;
     border: none;
     border-radius: 10px;
-    font-size: 1rem;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -181,12 +203,12 @@ section.pedidos {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    padding: 16px;
 }
 
 .modal-endereco .modal-content {
     background: white;
-    padding: 1.5rem 2rem;
+    padding: 24px 32px;
     border-radius: 12px;
     max-width: 480px;
     width: 100%;
@@ -194,17 +216,15 @@ section.pedidos {
 }
 
 .modal-endereco h2 {
-    margin-top: 16px; /* Corrigido aqui */
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    border-bottom: none;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: 24px;
 }
 
-/* Inputs do modal */
 .modal-endereco input[type="text"] {
     width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
+    padding: 12px 16px;
+    font-size: 16px;
     border: 1.8px solid #ccc;
     border-radius: 8px;
     transition: border-color 0.3s ease;
@@ -216,18 +236,16 @@ section.pedidos {
     outline: none;
 }
 
-/* Ações do modal */
 .modal-actions {
-    margin-top: 1rem;
+    margin-top: 16px;
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: 16px;
 }
 
-/* Botões do modal */
 .modal-actions button {
-    padding: 0.6rem 1.5rem;
-    font-size: 1rem;
+    padding: 10px 24px;
+    font-size: 16px;
     font-weight: 600;
     border: none;
     border-radius: 8px;
@@ -253,158 +271,128 @@ section.pedidos {
     background-color: #218838;
 }
 
-.pedido-info {
-    display: flex;
-    align-items: center; /* Alinha verticalmente ao centro */
-    gap: 1rem; /* Espaçamento entre as infos */
-}
-
+/* Autocomplete */
 #autocomplete {
-  display: none;
+    display: none;
 }
 
-.quantidade-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.quantidade-container button {
-  background-color: #d9d9d9;
-  border: none;
-  padding: 5px 10px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.quantidade-container button:hover {
-  background-color: #c4c4c4;
-}
-
-/* alerta.css */
-
+/* Alertas customizados */
 .custom-alert {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ff4d4f; /* vermelho alerta */
-  color: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  border-radius: 0 0 8px 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 300px;
-  max-width: 90%;
-  animation: slideDown 0.3s ease forwards;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4d4f;
+    color: white;
+    padding: 16px 32px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    border-radius: 0 0 8px 8px;
+    font-weight: 600;
+    font-size: 16px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    max-width: 90%;
+    animation: slideDown 0.3s ease forwards;
 }
 
 .custom-alert button {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateX(-50%) translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Modal remover item - oculto por padrão */
+/* Modal remover item */
 .modal-remover {
-  display: none; /* invisível inicialmente */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: flex-start; /* topo da tela */
-  padding-top: 50px; /* distância do topo */
-  z-index: 10000;
-  animation: fadeIn 0.3s ease forwards;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease forwards;
 }
 
-/* Conteúdo do modal */
 .modal-remover-conteudo {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px 30px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transform: translateY(-20px);
-  animation: slideDown 0.3s ease forwards;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform: translateY(-20px);
+    animation: slideDown 0.3s ease forwards;
 }
 
-/* Botões alinhados */
 .modal-remover-botoes {
-  margin-top: 20px;
-  text-align: right;
+    margin-top: 20px;
+    text-align: right;
 }
 
-/* Estilos dos botões */
 .btn-confirmar {
-  background-color: #d9534f;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  margin-right: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
 }
 
 .btn-confirmar:hover {
-  background-color: #c9302c;
+    background-color: #c9302c;
 }
 
 .btn-cancelar {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .btn-cancelar:hover {
-  background-color: #5a6268;
+    background-color: #5a6268;
 }
 
 /* Animações */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Container total */
+.total-container {
+    margin-top: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.pedidos input.baixo {
+    margin-top: 32px;
 }
