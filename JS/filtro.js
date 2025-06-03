@@ -86,10 +86,11 @@ document.getElementById('input-cidade-modal').addEventListener('blur', function 
   const cidade = this.value.trim().toLowerCase();
   const msgC = document.getElementById('cidade-msg');
 
-  if (cidade === 'posse') {
-    msg.textContent = '';
-  } else {
+  if (cidade != 'posse') {
     msgC.textContent = `Só atendemos na cidade de Posse`;
     msgC.style.color = 'red';
+
+  } else {
+    msgC.textContent = '';
   }
 });

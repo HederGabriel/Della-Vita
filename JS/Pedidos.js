@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const inputRuaModal = document.getElementById('input-rua-modal');
   const inputNumeroModal = document.getElementById('input-numero-modal');
+  const checkboxSemNumero = document.getElementById('checkbox-sem-numero');
   const inputSetorModal = document.getElementById('input-setor-modal');
   const inputCepModal = document.getElementById('input-cep-modal');
   const inputComplementoModal = document.getElementById('input-complemento-modal');
@@ -33,6 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let itemParaRemoverId = null;
   let tipoSelecionado = '';
   let idsSelecionados = [];
+
+  checkboxSemNumero.addEventListener('change', () => {
+    if (checkboxSemNumero.checked) {
+      inputNumeroModal.value = 'S/N';
+      inputNumeroModal.disabled = true;
+    } else {
+      inputNumeroModal.value = '';
+      inputNumeroModal.disabled = false;
+      inputNumeroModal.focus();
+    }
+  });
 
   function mostrarAlerta(msg) {
     console.log('Alerta:', msg);
@@ -105,42 +117,28 @@ document.addEventListener('DOMContentLoaded', () => {
     contadorComentario.textContent = `${atual}/${limite}`;
   });
 
-  function validarFormulario() {
-    if (inputTipoPedido.value === 'casa') {
-      if (!inputRuaModal.value.trim()) {
-        mostrarAlerta('Por favor, preencha o campo Rua.');
-        return false;
-      }
-      if (!inputNumeroModal.value.trim()) {
-        mostrarAlerta('Por favor, preencha o campo Número.');
-        return false;
-      }
-      if (!inputCepModal.value.trim()) {
-        mostrarAlerta('Por favor, preencha o campo CEP.');
-        return false;
-      }
-      if (!inputCidadeModal.value.trim()) {
-        mostrarAlerta('Por favor, preencha o campo Cidade.');
-        return false;
-      }
+  function validarCamposEnderecoModal() {
+    if (!inputRuaModal.value.trim()) {
+      mostrarAlerta('Por favor, preencha o campo Rua.');
+      return false;
+    }
+    if (!inputNumeroModal.value.trim()) {
+      mostrarAlerta('Por favor, preencha o campo Número.');
+      return false;
+    }
+    if (!inputCepModal.value.trim()) {
+      mostrarAlerta('Por favor, preencha o campo CEP.');
+      return false;
+    }
+    if (!inputCidadeModal.value.trim()) {
+      mostrarAlerta('Por favor, preencha o campo Cidade.');
+      return false;
     }
     return true;
   }
 
   function enviarFormularioAjax() {
-    if (!validarFormulario()) return;
-
-    if (tipoSelecionado === 'casa') {
-      document.getElementById('input-rua').value = inputRuaModal.value.trim();
-      document.getElementById('input-numero').value = inputNumeroModal.value.trim();
-      document.getElementById('input-setor').value = inputSetorModal.value.trim();
-      document.getElementById('input-cep').value = inputCepModal.value.trim();
-      document.getElementById('input-complemento').value = inputComplementoModal.value.trim();
-      document.getElementById('input-cidade').value = inputCidadeModal.value.trim();
-    }
-
     const formData = new FormData(formFinalizar);
-
     fetch('../System/finalizarPedido.php', {
       method: 'POST',
       body: formData
@@ -152,12 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           mostrarAlerta(data.error || 'Erro ao finalizar pedido.');
         }
-      })
+      });
   }
 
   btnFinalizar.addEventListener('click', (e) => {
     e.preventDefault();
-
     tipoSelecionado = inputTipoPedido.value.trim().toLowerCase();
     if (!tipoSelecionado) {
       mostrarAlerta('Por favor, selecione um tipo de pedido.');
@@ -227,8 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnConfirmarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
-
-    // Use a função de validação personalizada
     if (validarCamposEnderecoModal()) {
       document.getElementById('input-rua').value = inputRuaModal.value.trim();
       document.getElementById('input-numero').value = inputNumeroModal.value.trim();
@@ -239,16 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       fecharModalEndereco();
       enviarFormularioAjax();
-    } else {
-      console.log("Campos de endereço inválidos. Pedido não será finalizado.");
     }
   });
-
 
   btnCancelarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
     fecharModalEndereco();
-
   });
 
   btnFinalizar.disabled = true;

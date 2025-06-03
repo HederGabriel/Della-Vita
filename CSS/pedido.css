@@ -632,3 +632,27 @@ section.pedidos {
     gap: 10px;
   }
 }
+
+.input-com-checkbox {
+  position: relative;
+  width: 100%;
+}
+
+#input-numero-modal {
+  width: 100%;
+  padding-right: 120px; /* espaço para o checkbox dentro do input */
+  box-sizing: border-box;
+}
+
+.checkbox-inside {
+  position: absolute;
+  right: 10px;
+  top: 36%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: white;
+  padding-left: 5px;
+}

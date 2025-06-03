@@ -210,7 +210,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <input type="text" id="input-cidade-modal" placeholder="Cidade" required />
           <small id="cidade-msg"></small>
           <input type="text" id="input-rua-modal" placeholder="Rua" required />
-          <input type="text" id="input-numero-modal" placeholder="Número" required />
+          <div class="input-com-checkbox">
+            <input type="text" id="input-numero-modal" placeholder="Número" />
+            <label class="checkbox-inside">
+              <input type="checkbox" id="checkbox-sem-numero" />
+              Sem número
+            </label>
+          </div>
           <input type="text" id="input-setor-modal" placeholder="Bairro" required />
           <input type="text" id="input-complemento-modal" placeholder="Complemento (opcional)" />
           <button type="button" id="btnCancelarEndereco">Cancelar</button>
