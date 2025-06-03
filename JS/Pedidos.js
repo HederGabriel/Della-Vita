@@ -228,18 +228,22 @@ document.addEventListener('DOMContentLoaded', () => {
   btnConfirmarEndereco.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (!validarFormulario()) return;
+    // Use a função de validação personalizada
+    if (validarCamposEnderecoModal()) {
+      document.getElementById('input-rua').value = inputRuaModal.value.trim();
+      document.getElementById('input-numero').value = inputNumeroModal.value.trim();
+      document.getElementById('input-cep').value = inputCepModal.value.trim();
+      document.getElementById('input-setor').value = inputSetorModal.value.trim();
+      document.getElementById('input-complemento').value = inputComplementoModal.value.trim();
+      document.getElementById('input-cidade').value = inputCidadeModal.value.trim();
 
-    document.getElementById('input-rua').value = inputRuaModal.value.trim();
-    document.getElementById('input-numero').value = inputNumeroModal.value.trim();
-    document.getElementById('input-cep').value = inputCepModal.value.trim();
-    document.getElementById('input-setor').value = inputSetorModal.value.trim();
-    document.getElementById('input-complemento').value = inputComplementoModal.value.trim();
-    document.getElementById('input-cidade').value = inputCidadeModal.value.trim();
-
-    fecharModalEndereco();
-    enviarFormularioAjax();
+      fecharModalEndereco();
+      enviarFormularioAjax();
+    } else {
+      console.log("Campos de endereço inválidos. Pedido não será finalizado.");
+    }
   });
+
 
   btnCancelarEndereco.addEventListener('click', (e) => {
     e.preventDefault();

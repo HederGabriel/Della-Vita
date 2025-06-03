@@ -205,7 +205,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="modal-content">
           <h2>Informe o Endereço de Entrega</h2>
           <input id="autocomplete" placeholder="Digite o endereço completo" type="text" />
-          <input type="text" id="input-cep-modal" placeholder="CEP" required />
+          <input id="input-cep-modal" type="text" maxlength="9" placeholder="73900-000" required>
+          <small id="cep-msg"></small>
           <input type="text" id="input-cidade-modal" placeholder="Cidade" required />
           <input type="text" id="input-rua-modal" placeholder="Rua" required />
           <input type="text" id="input-numero-modal" placeholder="Número" required />
@@ -289,7 +290,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </div>
 
   <script src="../JS/userMenu.js"></script>
+  <script src="../JS/filtro.js"></script>
   <script src="../JS/Pedidos.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGn0vqgAS22ZHzFENXQtDj1AqjgPUVjTo&libraries=places" async defer></script>
 </body>
 </html>
