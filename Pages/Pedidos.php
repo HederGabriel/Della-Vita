@@ -296,6 +296,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
   </div>
 
+  <!-- Toast de Alerta no Topo -->
+  <div id="toast-alerta" class="toast-alerta" style="display: none;">
+    <p id="toast-alerta-texto"></p>
+  </div>
+
+
   <script src="../JS/userMenu.js"></script>
   <script src="../JS/filtro.js"></script>
   <script src="../JS/Pedidos.js"></script>

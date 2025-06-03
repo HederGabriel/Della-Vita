@@ -47,8 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function mostrarAlerta(msg) {
-    console.log('Alerta:', msg);
-    alert(msg);
+    const toast = document.getElementById('toast-alerta');
+    const texto = document.getElementById('toast-alerta-texto');
+
+    texto.textContent = msg;
+    toast.style.display = 'block';
+
+    // Ocultar após 3 segundos
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
   }
 
   function resetSelecao() {
@@ -118,20 +126,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function validarCamposEnderecoModal() {
-    if (!inputRuaModal.value.trim()) {
-      mostrarAlerta('Por favor, preencha o campo Rua.');
-      return false;
-    }
-    if (!inputNumeroModal.value.trim()) {
-      mostrarAlerta('Por favor, preencha o campo Número.');
-      return false;
-    }
     if (!inputCepModal.value.trim()) {
       mostrarAlerta('Por favor, preencha o campo CEP.');
       return false;
     }
     if (!inputCidadeModal.value.trim()) {
       mostrarAlerta('Por favor, preencha o campo Cidade.');
+      return false;
+    }
+    if (!inputRuaModal.value.trim()) {
+      mostrarAlerta('Por favor, preencha o campo Rua.');
+      return false;
+    }
+    if (!inputNumeroModal.value.trim()) {
+      mostrarAlerta('Por favor, preencha o campo Número.');
       return false;
     }
     return true;
