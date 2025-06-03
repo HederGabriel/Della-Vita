@@ -57,12 +57,10 @@ function validarCamposEnderecoModal() {
   const cepValido = cepValidoPosse(cep);
 
   if (!cidadeValida) {
-    alert('A cidade deve ser "Posse".');
     return false;
   }
 
   if (!cepValido) {
-    alert('O CEP informado não pertence à cidade de Posse-GO.');
     return false;
   }
 
@@ -76,9 +74,22 @@ document.getElementById('input-cep-modal').addEventListener('blur', function () 
   const msg = document.getElementById('cep-msg');
 
   if (cep.length === 8 && !cepValidoPosse(cep)) {
-    msg.textContent = `❌ O CEP ${cep} NÃO pertence a Posse (GO).`;
+    msg.textContent = `Não fazemos entrega fora da região de Posse.`;
     msg.style.color = 'red';
   } else {
     msg.textContent = '';
+  }
+});
+
+// Feedback visual ao sair do campo CIDADE
+document.getElementById('input-cidade-modal').addEventListener('blur', function () {
+  const cidade = this.value.trim().toLowerCase();
+  const msgC = document.getElementById('cidade-msg');
+
+  if (cidade === 'posse') {
+    msg.textContent = '';
+  } else {
+    msgC.textContent = `Só atendemos na cidade de Posse`;
+    msgC.style.color = 'red';
   }
 });

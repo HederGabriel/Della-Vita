@@ -208,6 +208,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
           <input id="input-cep-modal" type="text" maxlength="9" placeholder="73900-000" required>
           <small id="cep-msg"></small>
           <input type="text" id="input-cidade-modal" placeholder="Cidade" required />
+          <small id="cidade-msg"></small>
           <input type="text" id="input-rua-modal" placeholder="Rua" required />
           <input type="text" id="input-numero-modal" placeholder="Número" required />
           <input type="text" id="input-setor-modal" placeholder="Bairro" required />
