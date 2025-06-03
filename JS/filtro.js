@@ -51,28 +51,24 @@ function cepValidoPosse(cepStr) {
 
 function validarCamposEnderecoModal() {
   const cep = document.getElementById('input-cep-modal').value.replace(/\D/g, '');
-  const cidade = document.getElementById('input-cidade-modal').value.trim();
-  const msg = document.getElementById('cep-msg');
-  let valido = true;
+  const cidade = document.getElementById('input-cidade-modal').value.trim().toLowerCase();
 
-  msg.textContent = '';
-  msg.style.color = '';
+  const cidadeValida = cidade === 'posse';
+  const cepValido = cepValidoPosse(cep);
 
-  if (cep === '' || cep.length !== 8 || isNaN(cep)) {
-    alert('CEP inválido. Digite um CEP com 8 dígitos numéricos.');
-    valido = false;
-  } else if (!cepValidoPosse(cep)) {
-    alert('O CEP informado NÃO pertence a Posse (GO). Verifique e tente novamente.');
-    valido = false;
+  if (!cidadeValida) {
+    alert('A cidade deve ser "Posse".');
+    return false;
   }
 
-  if (cidade === '') {
-    alert('Cidade é obrigatória.');
-    valido = false;
+  if (!cepValido) {
+    alert('O CEP informado não pertence à cidade de Posse-GO.');
+    return false;
   }
 
-  return valido;
+  return true;
 }
+
 
 // Feedback visual ao sair do campo CEP
 document.getElementById('input-cep-modal').addEventListener('blur', function () {
@@ -84,12 +80,5 @@ document.getElementById('input-cep-modal').addEventListener('blur', function () 
     msg.style.color = 'red';
   } else {
     msg.textContent = '';
-  }
-});
-
-// Validação ao tentar finalizar
-document.getElementById('btn-finalizar').addEventListener('click', function (e) {
-  if (!validarCamposEnderecoModal()) {
-    e.preventDefault();
   }
 });
