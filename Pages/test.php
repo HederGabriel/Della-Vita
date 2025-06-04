@@ -3,7 +3,7 @@ include_once '../System/session.php';
 include_once '../System/db.php';
 
 if (!isset($_SESSION['id_cliente'])) {
-    header("Location: Login-Cadastro.php?redirect=retirarPedido.php");
+    header("Location: Login-Cadastro.php?redirect=acompanharPedido.php");
     exit();
 }
 
@@ -61,7 +61,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Della Vita - Retirar</title>
+    <title>Della Vita - Acompanhar</title>
     <link rel="stylesheet" href="../CSS/nav.css" />
     <link rel="stylesheet" href="../CSS/acompanhar.css" />
     <link rel="stylesheet" href="/CSS/font.css" />
@@ -69,63 +69,64 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 
 <body>
-        <nav>
-        <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
-        <div class="nav-links">
-            <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
-            <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
-            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
-        </div>
-        <div class="nav-search">
-            <input type="text" placeholder="Buscar..." />
-        </div>
-        <?php if (isset($_SESSION['id_cliente'])): ?>
-            <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
-            </div>
-        <?php else: ?>
-            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
-        <?php endif; ?>
-    </nav>
-
-    <div id="user-menu" style="display:none;">
-        <ul>
-            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
-            <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
-            <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
-        </ul>
+  <nav>
+    <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
+    <div class="nav-links">
+        <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
+        <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
+        <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
     </div>
-
-    <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
-    <div id="logout-modal" style="display:none;">
-        <p>Tem certeza que deseja sair?</p>
-        <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
-        <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+    <div class="nav-search">
+        <input type="text" placeholder="Buscar..." />
     </div>
-    <script src="../JS/userMenu.js"></script>
+    <?php if (isset($_SESSION['id_cliente'])): ?>
+        <div class="user-profile" onclick="toggleMenu(event)">
+            <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
+        </div>
+    <?php else: ?>
+        <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
+    <?php endif; ?>
+  </nav>
+
+  <div id="user-menu" style="display:none;">
+      <ul>
+          <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
+          <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
+          <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
+      </ul>
+  </div>
+
+  <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
+  <div id="logout-modal" style="display:none;">
+      <p>Tem certeza que deseja sair?</p>
+      <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
+      <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+  </div>
+  <script src="../JS/userMenu.js"></script>
 
   <main>
     <div class="conteiner">
 
       <div class="escolha">
-        <a href="acompanharPedido.php">Acompanhar</a>
-        <a class="ativo" href="retirarPedido.php">Retirar</a>
+        <a class="ativo" href="acompanharPedido.php">Acompanhar</a>
+        <a href="retirarPedido.php">Retirar</a>
       </div>
-      <h1 class="titulo">Retirada</h1>
+      <h1 class="titulo">Acompanhar</h1>
 
 
       <div class="status">
         <div class="etapas">
           <div class="etapa ativo">Recebido</div>
           <div class="etapa">Em Preparo</div>
-          <div class="etapa">Aguardando Retirada</div>
+          <div class="etapa">Enviado</div>
+          <div class="etapa">Entregue</div>
         </div>
       </div>
 
       <div class="pedido">
-        <div class="avatar"></div>
+        <img class="avatar" src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
         <div class="info">
-          <p><strong>Cliente</strong></p>
+          <p><strong>Cliente:</strong> <?= htmlspecialchars($_SESSION['nome']) ?></p>
           <p>Endereço Endereço<br>Endereço Endereço</p>
         </div>
         <div class="resumo">
@@ -144,16 +145,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
       </div>
 
-      <div class="local-retirada">
-        <h2>Local de Retirada</h2>
-        <div class="retirada-info"></div>
-      </div>
+      <!-- Repita os blocos .pedido conforme necessário -->
 
       <div class="acoes">
         <button class="cancelar">Cancelar</button>
+        <button class="confirmar">Confirmar Entrega</button>
       </div>
     </div>
   </main>
+
 
   <footer>
     <div class="footer-container">
@@ -194,4 +194,4 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </footer>
 </body>
 
-</html>
+</html> 
