@@ -86,9 +86,11 @@ h1.titulo {
 }
 
 .etapa.ativo {
-  background-color: orange;
-  color: white;
+  background-color: orange !important;
+  color: white !important;
+  border-right: none !important;
 }
+
 
 /* Cartão do Pedido */
 .pedido {
@@ -165,4 +167,16 @@ h1.titulo {
   background-color: #ddd;
   height: 150px;
   border-radius: 8px;
+}
+
+.pedido-selecionado {
+  border: 2px solid orange; 
+  background-color: rgba(255, 166, 0, 0.199); 
+  box-shadow: 0 0 8px rgba(255, 194, 26, 0.5); /* sombra azul */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.pedido {
+  cursor: pointer;
+  transition: background-color 0.3s, border 0.3s;
 }

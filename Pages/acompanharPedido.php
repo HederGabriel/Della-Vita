@@ -22,9 +22,10 @@ if ($cliente) {
     exit();
 }
 
-$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente ORDER BY data_pedido DESC");
+$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente AND tipo_pedido = 'casa' ORDER BY data_pedido DESC");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $pedidos = $stmt->fetchAll();
+
 
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -60,6 +61,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
     <?php endif; ?>
   </nav>
+    <div id="user-menu" style="display:none;">
+    <ul>
+      <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
+      <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
+      <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
+    </ul>
+  </div>
+
+  <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
+  <div id="logout-modal" style="display:none;">
+    <p>Tem certeza que deseja sair?</p>
+    <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
+    <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+  </div>
+  <form id="logout-form" method="POST" style="display: none;">
+    <input type="hidden" name="logout" value="1" />
+  </form>
+  <script src="..\JS\userMenu.js"></script>
 
   <main>
     <div class="conteiner">
@@ -78,6 +97,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
       </div>
 
+
       <?php foreach ($pedidos as $pedido): ?>
         <?php
         $stmt = $pdo->prepare("SELECT COUNT(*) as total_itens FROM itens_pedido WHERE id_pedido = :id_pedido");
@@ -92,7 +112,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             ? $endereco['rua'] . ', ' . $endereco['numero'] . ' - ' . $endereco['setor'] . ', ' . $endereco['cidade'] . ' - CEP: ' . $endereco['cep']
             : 'Retirada no local';
         ?>
-        <div class="pedido">
+        <div class="pedido" data-id-pedido="<?= $pedido['id_pedido'] ?>">
           <img class="avatar" src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
           <div class="info">
             <p><strong>Cliente:</strong> <?= htmlspecialchars($_SESSION['nome']) ?></p>
@@ -104,9 +124,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
       <?php endforeach; ?>
 
-      <div class="acoes">
-        <button class="cancelar">Cancelar</button>
-        <button class="confirmar">Confirmar Entrega</button>
+      <div class="acoes" style="display: none;">
+        <button class="cancelar" disabled>Cancelar</button>
+        <button class="confirmar" disabled>Confirmar Entrega</button>
       </div>
     </div>
   </main>
@@ -148,6 +168,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
-  <script src="../JS/userMenu.js"></script>
+  <script src="../JS/acompanharPedido.js"></script>
 </body>
 </html>
