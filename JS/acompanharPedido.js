@@ -5,9 +5,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCancelar = acoesDiv.querySelector(".cancelar");
   const btnConfirmar = acoesDiv.querySelector(".confirmar");
 
+  let pedidoSelecionado = null;
+
   acoesDiv.style.display = "none";
   btnCancelar.disabled = true;
   btnConfirmar.disabled = true;
+
+  function mostrarAlerta(msg) {
+    const toast = document.getElementById('toast-alerta');
+    const texto = document.getElementById('toast-alerta-texto');
+
+    texto.textContent = msg;
+    toast.style.display = 'block';
+
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
+  }
+
+  function customConfirm(message) {
+      return new Promise((resolve) => {
+          const modal = document.getElementById('custom-confirm-modal');
+          const messageEl = document.getElementById('custom-confirm-message');
+          const btnYes = document.getElementById('custom-confirm-yes');
+          const btnNo = document.getElementById('custom-confirm-no');
+
+          messageEl.textContent = message;
+
+          modal.style.display = 'flex';  // Aparece com as animações CSS
+
+          function cleanup() {
+              modal.style.display = 'none';
+              btnYes.removeEventListener('click', onYes);
+              btnNo.removeEventListener('click', onNo);
+          }
+
+          function onYes() {
+              cleanup();
+              resolve(true);
+          }
+
+          function onNo() {
+              cleanup();
+              resolve(false);
+          }
+
+          btnYes.addEventListener('click', onYes);
+          btnNo.addEventListener('click', onNo);
+      });
+  }
 
   function resetarStatusEtapas() {
     etapas.forEach((etapa) => etapa.classList.remove("ativo"));
@@ -28,9 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function atualizarBotoes(status) {
     btnCancelar.disabled = ["Enviado", "Entregue"].includes(status);
-    btnConfirmar.disabled = ["Recebido", "Em Preparo", "Entregue"].includes(
-      status
-    );
+    btnConfirmar.disabled = ["Recebido", "Em Preparo", "Entregue"].includes(status);
   }
 
   function limparSelecaoPedidos() {
@@ -49,13 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       limparSelecaoPedidos();
       pedido.classList.add("pedido-selecionado");
+      pedidoSelecionado = pedido;
+
       acoesDiv.style.display = "block";
       btnCancelar.disabled = true;
       btnConfirmar.disabled = true;
 
-      fetch(
-        `../System/statusPedido.php?id_pedido=${encodeURIComponent(idPedido)}`
-      )
+      fetch(`../System/statusPedido.php?id_pedido=${encodeURIComponent(idPedido)}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Erro HTTP! Status: ${response.status}`);
@@ -76,6 +120,47 @@ document.addEventListener("DOMContentLoaded", () => {
           resetarStatusEtapas();
         });
     });
+  });
+
+  btnCancelar.addEventListener("click", async () => {
+    if (!pedidoSelecionado) {
+      return;
+    }
+
+    const idPedido = pedidoSelecionado.dataset.idPedido;
+
+    const confirmado = await customConfirm("Tem certeza que deseja cancelar este pedido?");
+    if (!confirmado) {
+      return;
+    }
+
+    fetch("../System/cancelarPedido.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `id_pedido=${encodeURIComponent(idPedido)}`
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          pedidoSelecionado.remove();
+          pedidoSelecionado = null;
+          acoesDiv.style.display = "none";
+          resetarStatusEtapas();
+          location.reload();  // <-- reload só após o pedido ser cancelado com sucesso
+        } else {
+          mostrarAlerta(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao cancelar pedido:", error);
+        mostrarAlerta("Erro ao cancelar pedido. Tente novamente.");
+      });
+  });
+
+  btnConfirmar.addEventListener("click", () => {
+    mostrarAlerta("Função de confirmação de entrega ainda não implementada.");
   });
 
   if (pedidos.length > 0) {

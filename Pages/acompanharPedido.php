@@ -168,6 +168,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
+  <div id="custom-confirm-modal" class="custom-confirm-modal">
+    <div class="custom-confirm-conteudo">
+      <p id="custom-confirm-message" class="custom-confirm-mensagem">Tem certeza?</p>
+      <div class="custom-confirm-botoes">
+        <button id="custom-confirm-no">Não</button>
+        <button id="custom-confirm-yes">Sim</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast-alerta" style="display:none; position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 10px 20px; border-radius: 5px; z-index: 10000;">
+    <span id="toast-alerta-texto"></span>
+  </div>
   <script src="../JS/acompanharPedido.js"></script>
 </body>
 </html>
