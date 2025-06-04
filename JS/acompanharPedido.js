@@ -10,15 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
   btnConfirmar.disabled = true;
 
   function resetarStatusEtapas() {
-    etapas.forEach(etapa => etapa.classList.remove("ativo"));
+    etapas.forEach((etapa) => etapa.classList.remove("ativo"));
   }
 
   function destacarEtapa(status) {
     const mapaStatus = {
-      "Recebido": 0,
+      Recebido: 0,
       "Em Preparo": 1,
-      "Enviado": 2,
-      "Entregue": 3
+      Enviado: 2,
+      Entregue: 3,
     };
     const index = mapaStatus[status];
     if (index !== undefined && etapas[index]) {
@@ -26,11 +26,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function limparSelecaoPedidos() {
-    pedidos.forEach(pedido => pedido.classList.remove("pedido-selecionado"));
+  function atualizarBotoes(status) {
+    btnCancelar.disabled = ["Enviado", "Entregue"].includes(status);
+    btnConfirmar.disabled = ["Recebido", "Em Preparo", "Entregue"].includes(
+      status
+    );
   }
 
-  pedidos.forEach(pedido => {
+  function limparSelecaoPedidos() {
+    pedidos.forEach((pedido) => pedido.classList.remove("pedido-selecionado"));
+  }
+
+  pedidos.forEach((pedido) => {
     pedido.style.cursor = "pointer";
 
     pedido.addEventListener("click", () => {
@@ -42,36 +49,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
       limparSelecaoPedidos();
       pedido.classList.add("pedido-selecionado");
-
       acoesDiv.style.display = "block";
-      btnCancelar.disabled = false;
-      btnConfirmar.disabled = false;
+      btnCancelar.disabled = true;
+      btnConfirmar.disabled = true;
 
-      fetch(`../System/statusPedido.php?id_pedido=${encodeURIComponent(idPedido)}`)
-        .then(response => {
+      fetch(
+        `../System/statusPedido.php?id_pedido=${encodeURIComponent(idPedido)}`
+      )
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Erro HTTP! Status: ${response.status}`);
           }
           return response.json();
         })
-        .then(data => {
-          console.log("Status recebido:", data.status);
+        .then((data) => {
           if (data.status) {
             resetarStatusEtapas();
             destacarEtapa(data.status);
+            atualizarBotoes(data.status);
           } else {
-            console.warn("Status não retornado ou é nulo.");
             resetarStatusEtapas();
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Erro ao buscar status:", error);
           resetarStatusEtapas();
         });
     });
   });
 
-  // 🔰 Selecionar o primeiro pedido automaticamente ao carregar
   if (pedidos.length > 0) {
     pedidos[0].click();
   }

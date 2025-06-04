@@ -137,6 +137,7 @@ h1.titulo {
   padding: 12px 20px;
   font-size: 16px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .confirmar {
@@ -146,6 +147,7 @@ h1.titulo {
   padding: 12px 20px;
   font-size: 16px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .local-retirada {
@@ -179,4 +181,12 @@ h1.titulo {
 .pedido {
   cursor: pointer;
   transition: background-color 0.3s, border 0.3s;
+}
+
+.acoes button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  border: none;
+  opacity: 0.8;
 }
