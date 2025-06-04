@@ -640,7 +640,7 @@ section.pedidos {
 
 #input-numero-modal {
   width: 100%;
-  padding-right: 120px; /* espaço para o checkbox dentro do input */
+  padding-right: 120px;
   box-sizing: border-box;
 }
 
@@ -654,6 +654,7 @@ section.pedidos {
   align-items: center;
   gap: 5px;
   background-color: white;
+  color: #f77206;
   padding-left: 5px;
 }
 
@@ -662,7 +663,7 @@ section.pedidos {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #f44336; /* Vermelho alerta */
+  background-color: #ff7f11;
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
