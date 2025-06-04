@@ -5,17 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnCancelar = acoesDiv.querySelector(".cancelar");
   const btnConfirmar = acoesDiv.querySelector(".confirmar");
 
-  // Inicializa: oculta os botões e deixa desabilitados
   acoesDiv.style.display = "none";
   btnCancelar.disabled = true;
   btnConfirmar.disabled = true;
 
-  // Resetar visual dos blocos de status
   function resetarStatusEtapas() {
     etapas.forEach(etapa => etapa.classList.remove("ativo"));
   }
 
-  // Marcar a etapa correspondente como ativa
   function destacarEtapa(status) {
     const mapaStatus = {
       "Recebido": 0,
@@ -29,12 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Resetar destaque visual dos pedidos
   function limparSelecaoPedidos() {
     pedidos.forEach(pedido => pedido.classList.remove("pedido-selecionado"));
   }
 
-  // Torna os pedidos clicáveis
   pedidos.forEach(pedido => {
     pedido.style.cursor = "pointer";
 
@@ -48,12 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
       limparSelecaoPedidos();
       pedido.classList.add("pedido-selecionado");
 
-      // Exibir e habilitar botões ao selecionar um pedido
       acoesDiv.style.display = "block";
       btnCancelar.disabled = false;
       btnConfirmar.disabled = false;
 
-      // → AQUI ESTÁ A CORREÇÃO: usar "../System/…"
       fetch(`../System/statusPedido.php?id_pedido=${encodeURIComponent(idPedido)}`)
         .then(response => {
           if (!response.ok) {
@@ -77,4 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   });
+
+  // 🔰 Selecionar o primeiro pedido automaticamente ao carregar
+  if (pedidos.length > 0) {
+    pedidos[0].click();
+  }
 });
