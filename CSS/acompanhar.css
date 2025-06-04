@@ -123,12 +123,15 @@ h1.titulo {
   text-align: right;
 }
 
-/* Botões */
 .acoes {
   display: flex;
-  justify-content: space-between;
-  margin: 25px 125px;
+  justify-content: flex-end;   
+  gap: 15px;              
+  padding: 0 25px 25px 395px;        
+  width: 100%;      
+  box-sizing: border-box;      
 }
+
 
 .cancelar {
   background-color: red;
@@ -157,7 +160,7 @@ h1.titulo {
   max-width: 550px;
   margin: 30px auto;
   padding: 20px;
-  text-align: center;
+
 }
 
 .local-retirada h2 {

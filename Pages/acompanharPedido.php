@@ -124,7 +124,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
       <?php endforeach; ?>
 
-      <div class="acoes" style="display: none;">
+      <div class="acoes">
         <button class="cancelar" disabled>Cancelar</button>
         <button class="confirmar" disabled>Confirmar Entrega</button>
       </div>
