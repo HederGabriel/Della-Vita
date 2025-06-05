@@ -159,9 +159,40 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  btnConfirmar.addEventListener("click", () => {
-    mostrarAlerta("Função de confirmação de entrega ainda não implementada.");
+  btnConfirmar.addEventListener("click", async () => {
+    if (!pedidoSelecionado) return;
+
+    const idPedido = pedidoSelecionado.dataset.idPedido;
+    const confirmado = await customConfirm("Deseja confirmar a entrega deste pedido?");
+
+    if (!confirmado) return;
+
+    fetch("../System/atualizarStatus.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        id_pedido: idPedido,
+        status: "Entregue"
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          mostrarAlerta("Status atualizado para 'Entregue'");
+          resetarStatusEtapas();
+          destacarEtapa("Entregue");
+          atualizarBotoes("Entregue");
+        } else {
+          mostrarAlerta("Erro ao atualizar status.");
+          console.error(data.message || "Erro desconhecido.");
+        }
+      })
+      .catch(error => {
+        mostrarAlerta("Erro de conexão com o servidor.");
+        console.error("Erro:", error);
+      });
   });
+
 
   if (pedidos.length > 0) {
     pedidos[0].click();
