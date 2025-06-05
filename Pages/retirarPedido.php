@@ -22,36 +22,9 @@ if ($cliente) {
     exit();
 }
 
-$stmt = $pdo->prepare("
-    SELECT ip.*, p.nome AS nome_produto, p.imagem AS imagem_produto 
-    FROM itens_pedido ip
-    INNER JOIN produtos p ON ip.id_produto = p.id_produto
-    WHERE ip.id_cliente = :id_cliente AND ip.id_pedido IS NULL
-    ORDER BY ip.entrega, ip.id_item_pedido DESC
-");
-
-
+$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente AND tipo_pedido = 'local' ORDER BY data_pedido DESC");
 $stmt->execute(['id_cliente' => $id_cliente]);
-$itens = $stmt->fetchAll();
-
-$itens_entrega = [];
-$itens_local = [];
-
-foreach ($itens as $item) {
-    $entrega_tipo = isset($item['entrega']) ? $item['entrega'] : '';
-    if ($entrega_tipo === 'casa') {
-        $itens_entrega[] = $item;
-    } elseif ($entrega_tipo === 'local') {
-        $itens_local[] = $item;
-    }
-}
-
-if (isset($_POST['logout'])) {
-    session_destroy();
-    $redirect_url = $_POST['redirect'] ?? 'index.php';
-    header("Location: " . $redirect_url);
-    exit();
-}
+$pedidos = $stmt->fetchAll();
 
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -59,60 +32,63 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Della Vita - Retirar</title>
-    <link rel="stylesheet" href="../CSS/nav.css" />
-    <link rel="stylesheet" href="../CSS/acompanhar.css" />
-    <link rel="stylesheet" href="/CSS/font.css" />
-    <link rel="stylesheet" href="/CSS/footer.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Della Vita - Retirar</title>
+  <link rel="stylesheet" href="../CSS/nav.css" />
+  <link rel="stylesheet" href="../CSS/acompanhar.css" />
+  <link rel="stylesheet" href="/CSS/font.css" />
+  <link rel="stylesheet" href="/CSS/footer.css" />
+  <style>
+    button.cancelar{
+      margin-left: 175px;
+    }
+  </style>
 </head>
-
 <body>
-        <nav>
-        <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
-        <div class="nav-links">
-            <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
-            <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
-            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
-        </div>
-        <div class="nav-search">
-            <input type="text" placeholder="Buscar..." />
-        </div>
-        <?php if (isset($_SESSION['id_cliente'])): ?>
-            <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
-            </div>
-        <?php else: ?>
-            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
-        <?php endif; ?>
-    </nav>
-
-    <div id="user-menu" style="display:none;">
-        <ul>
-            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
-            <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
-            <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
-        </ul>
+  <nav>
+    <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
+    <div class="nav-links">
+      <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
+      <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
+      <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
     </div>
-
-    <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
-    <div id="logout-modal" style="display:none;">
-        <p>Tem certeza que deseja sair?</p>
-        <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
-        <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+    <div class="nav-search">
+      <input type="text" placeholder="Buscar..." />
     </div>
-    <script src="../JS/userMenu.js"></script>
+    <?php if (isset($_SESSION['id_cliente'])): ?>
+      <div class="user-profile" onclick="toggleMenu(event)">
+        <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
+      </div>
+    <?php else: ?>
+      <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
+    <?php endif; ?>
+  </nav>
+  <div id="user-menu" style="display:none;">
+    <ul>
+      <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
+      <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
+      <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
+    </ul>
+  </div>
+  <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
+  <div id="logout-modal" style="display:none;">
+    <p>Tem certeza que deseja sair?</p>
+    <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
+    <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
+  </div>
+  <form id="logout-form" method="POST" style="display: none;">
+    <input type="hidden" name="logout" value="1" />
+  </form>
+  <script src="../JS/userMenu.js"></script>
 
   <main>
     <div class="conteiner">
-
       <div class="escolha">
         <a href="acompanharPedido.php">Acompanhar</a>
         <a class="ativo" href="retirarPedido.php">Retirar</a>
       </div>
-      <h1 class="titulo">Retirada</h1>
-
+      <h1 class="titulo">Retirar</h1>
 
       <div class="status">
         <div class="etapas">
@@ -122,35 +98,26 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
       </div>
 
-      <div class="pedido">
-        <div class="avatar"></div>
-        <div class="info">
-          <p><strong>Cliente</strong></p>
-          <p>Endereço Endereço<br>Endereço Endereço</p>
+      <?php foreach ($pedidos as $pedido): ?>
+        <?php
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM itens_pedido WHERE id_pedido = :id_pedido");
+        $stmt->execute(['id_pedido' => $pedido['id_pedido']]);
+        $total_itens = $stmt->fetchColumn();
+        ?>
+        <div class="pedido" data-id-pedido="<?= $pedido['id_pedido'] ?>">
+          <img class="avatar" src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
+          <div class="info">
+            <p><strong>Cliente:</strong> <?= htmlspecialchars($_SESSION['nome']) ?></p>
+            <p>Retirada no local</p>
+          </div>
+          <div class="resumo">
+            <p><?= $total_itens ?> Itens<br>+<br>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></p>
+          </div>
         </div>
-        <div class="resumo">
-          <p>Quant de Itens<br>+<br>Valor Total</p>
-        </div>
-      </div>
-
-      <div class="pedido">
-        <div class="avatar"></div>
-        <div class="info">
-          <p><strong>Cliente</strong></p>
-          <p>Endereço Endereço<br>Endereço Endereço</p>
-        </div>
-        <div class="resumo">
-          <p>Quant de Itens<br>+<br>Valor Total</p>
-        </div>
-      </div>
-
-      <div class="local-retirada">
-        <h2>Local de Retirada</h2>
-        <div class="retirada-info"></div>
-      </div>
+      <?php endforeach; ?>
 
       <div class="acoes">
-        <button class="cancelar">Cancelar</button>
+        <button class="cancelar" disabled>Cancelar</button>
       </div>
     </div>
   </main>
@@ -192,6 +159,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
+  <div id="custom-confirm-modal" class="custom-confirm-modal">
+    <div class="custom-confirm-conteudo">
+      <p id="custom-confirm-message" class="custom-confirm-mensagem">Tem certeza?</p>
+      <div class="custom-confirm-botoes">
+        <button id="custom-confirm-no">Não</button>
+        <button id="custom-confirm-yes">Sim</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast-alerta" style="display:none; position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 10px 20px; border-radius: 5px; z-index: 10000;">
+    <span id="toast-alerta-texto"></span>
+  </div>
+  <script src="../JS/retirarPedido.js"></script>
 </body>
-
 </html>
