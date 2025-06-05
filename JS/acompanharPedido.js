@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!pedidoSelecionado) return;
 
     const idPedido = pedidoSelecionado.dataset.idPedido;
-    const confirmado = await customConfirm("Deseja confirmar a entrega deste pedido?");
+    const confirmado = await customConfirm("Deseja confirmar que recebeu esse pedido?");
 
     if (!confirmado) return;
 
