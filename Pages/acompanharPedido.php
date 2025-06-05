@@ -22,7 +22,7 @@ if ($cliente) {
     exit();
 }
 
-$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente AND tipo_pedido = 'casa' ORDER BY data_pedido DESC");
+$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente AND tipo_pedido = 'casa' AND status_pedido != 'archive' ORDER BY data_pedido DESC");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $pedidos = $stmt->fetchAll();
 

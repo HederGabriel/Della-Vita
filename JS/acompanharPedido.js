@@ -24,35 +24,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function customConfirm(message) {
-      return new Promise((resolve) => {
-          const modal = document.getElementById('custom-confirm-modal');
-          const messageEl = document.getElementById('custom-confirm-message');
-          const btnYes = document.getElementById('custom-confirm-yes');
-          const btnNo = document.getElementById('custom-confirm-no');
+    return new Promise((resolve) => {
+      const modal = document.getElementById('custom-confirm-modal');
+      const messageEl = document.getElementById('custom-confirm-message');
+      const btnYes = document.getElementById('custom-confirm-yes');
+      const btnNo = document.getElementById('custom-confirm-no');
 
-          messageEl.textContent = message;
+      messageEl.textContent = message;
 
-          modal.style.display = 'flex';  // Aparece com as animações CSS
+      modal.style.display = 'flex';  // Aparece com as animações CSS
 
-          function cleanup() {
-              modal.style.display = 'none';
-              btnYes.removeEventListener('click', onYes);
-              btnNo.removeEventListener('click', onNo);
-          }
+      function cleanup() {
+        modal.style.display = 'none';
+        btnYes.removeEventListener('click', onYes);
+        btnNo.removeEventListener('click', onNo);
+      }
 
-          function onYes() {
-              cleanup();
-              resolve(true);
-          }
+      function onYes() {
+        cleanup();
+        resolve(true);
+      }
 
-          function onNo() {
-              cleanup();
-              resolve(false);
-          }
+      function onNo() {
+        cleanup();
+        resolve(false);
+      }
 
-          btnYes.addEventListener('click', onYes);
-          btnNo.addEventListener('click', onNo);
-      });
+      btnYes.addEventListener('click', onYes);
+      btnNo.addEventListener('click', onNo);
+    });
   }
 
   function resetarStatusEtapas() {
@@ -61,10 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function destacarEtapa(status) {
     const mapaStatus = {
-      Recebido: 0,
+      "Recebido": 0,
       "Em Preparo": 1,
-      Enviado: 2,
-      Entregue: 3,
+      "Enviado": 2,
+      "Entregue": 3,
     };
     const index = mapaStatus[status];
     if (index !== undefined && etapas[index]) {
@@ -73,8 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function atualizarBotoes(status) {
-    btnCancelar.disabled = ["Enviado", "Entregue"].includes(status);
-    btnConfirmar.disabled = ["Recebido", "Em Preparo", "Entregue"].includes(status);
+    btnCancelar.disabled = ["Enviado", "Entregue", "archive"].includes(status);
+    btnConfirmar.disabled = ["Recebido", "Em Preparo", "Entregue", "archive"].includes(status);
   }
 
   function limparSelecaoPedidos() {
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
           pedidoSelecionado = null;
           acoesDiv.style.display = "none";
           resetarStatusEtapas();
-          location.reload();  // <-- reload só após o pedido ser cancelado com sucesso
+          location.reload();  // reload só após o pedido ser cancelado com sucesso
         } else {
           mostrarAlerta(data.message);
         }
@@ -193,8 +193,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-
   if (pedidos.length > 0) {
     pedidos[0].click();
   }
+
+  // NOVO: Arquivar pedidos com status "Entregue" ao sair da página
+  window.addEventListener("beforeunload", () => {
+    navigator.sendBeacon('../System/archivePedidos.php');
+  });
 });
