@@ -231,7 +231,6 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
         </div>
     </footer>
 
-    <script src="../JS/Produto.js"></script>
     <div id="modal-quantidade" class="modal" style="display: none;">
         <div class="modal-content">
             <h2>Selecionar Quantidade</h2>
@@ -253,5 +252,6 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
             </div>
         </div>
     </div>
+    <script src="../JS/Produto.js"></script>
 </body>
 </html>
