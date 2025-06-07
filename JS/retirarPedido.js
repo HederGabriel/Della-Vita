@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => { 
   const pedidos = document.querySelectorAll(".pedido");
   const etapas = document.querySelectorAll(".etapas .etapa");
   const acoesDiv = document.querySelector(".acoes");

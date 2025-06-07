@@ -1,0 +1,12 @@
+2025-06-07 20:15:08 POST: Array
+(
+    [id_pedido] => 68
+    [nota] => 3
+)
+
+2025-06-07 20:15:08 POST: Array
+(
+    [id_pedido] => 68
+    [status] => archive
+)
+
