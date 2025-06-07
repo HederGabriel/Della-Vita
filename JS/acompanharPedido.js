@@ -146,57 +146,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btnEnviarNota").addEventListener("click", async () => {
     const modal = document.getElementById("modalAvaliacao");
-    if (notaSelecionada === 0) {
-      mostrarAlerta("Por favor, selecione uma nota.");
-      return;
-    }
-
-    modal.style.display = "none";
     const idPedido = pedidoSelecionado.dataset.idPedido;
 
+    modal.style.display = "none";
+
+    // Tenta salvar a nota, mesmo que não tenha sido selecionada
     try {
-      const respostaNotaRaw = await fetch("../System/salvarNota.php", {
+      await fetch("../System/salvarNota.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          id_pedido: idPedido,
-          nota: notaSelecionada
-        })
+        body: `id_pedido=${encodeURIComponent(idPedido)}&nota=${encodeURIComponent(notaSelecionada || '')}`
       });
-
-      const respostaNota = await respostaNotaRaw.json();
-      if (!respostaNota.success) {
-        mostrarAlerta("Erro ao salvar a nota.");
-        return;
-      }
-
     } catch {
-      mostrarAlerta("Erro na comunicação ao salvar nota.");
-      return;
+      // Mesmo se falhar o envio da nota, segue com status archive
     }
 
+    // Atualiza status para archive
     try {
-      const respostaStatusRaw = await fetch("../System/atualizarStatus.php", {
+      const resStatus = await fetch("../System/atualizarStatus.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          id_pedido: idPedido,
-          status: "Entregue"
-        })
+        body: `id_pedido=${encodeURIComponent(idPedido)}&status=archive`
       });
-
-      const respostaStatus = await respostaStatusRaw.json();
-      if (respostaStatus.success) {
-        mostrarAlerta("Pedido entregue e avaliado com sucesso!");
-        resetarStatusEtapas();
-        destacarEtapa("Entregue");
-        atualizarBotoes("Entregue");
+      const jsonStatus = await resStatus.json();
+      if (jsonStatus.success) {
+        mostrarAlerta("Pedido finalizado e arquivado com sucesso!");
       } else {
         mostrarAlerta("Erro ao atualizar status.");
       }
     } catch {
       mostrarAlerta("Erro na comunicação ao atualizar status.");
     }
+
+    // Sempre recarrega a página no final
+    location.reload();
   });
 
   btnConfirmar.addEventListener("click", async () => {

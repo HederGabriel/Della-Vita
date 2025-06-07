@@ -40,8 +40,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <link rel="stylesheet" href="/CSS/font.css" />
   <link rel="stylesheet" href="/CSS/footer.css" />
   <style>
-    button.cancelar{
-      margin-left: 175px;
+    .acoes{
+      margin-left: 82px;
     }
   </style>
 </head>
@@ -92,9 +92,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <div class="status">
         <div class="etapas">
-          <div class="etapa ativo">Recebido</div>
+          <div class="etapa">Recebido</div>
           <div class="etapa">Em Preparo</div>
           <div class="etapa">Aguardando Retirada</div>
+          <div class="etapa">Retirado</div>
         </div>
       </div>
 
@@ -118,6 +119,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <div class="acoes">
         <button class="cancelar" disabled>Cancelar</button>
+        <button class="confirmar" disabled>Avaliar</button>
       </div>
     </div>
   </main>
@@ -171,6 +173,21 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <div id="toast-alerta" style="display:none; position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 10px 20px; border-radius: 5px; z-index: 10000;">
     <span id="toast-alerta-texto"></span>
   </div>
+  
+  <div id="modalAvaliacao" class="modal" style="display:none;">
+    <div class="modal-content-nota">
+      <h3>Avalie seu pedido</h3>
+      <div id="estrelas">
+        <span data-valor="1">★</span>
+        <span data-valor="2">★</span>
+        <span data-valor="3">★</span>
+        <span data-valor="4">★</span>
+        <span data-valor="5">★</span>
+      </div>
+      <button id="btnEnviarNota">Enviar Avaliação</button>
+    </div>
+  </div>
+
   <script src="../JS/retirarPedido.js"></script>
 </body>
 </html>
