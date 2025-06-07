@@ -170,4 +170,27 @@ document.addEventListener("DOMContentLoaded", () => {
   if (pedidos.length > 0) {
     pedidos[0].click();
   }
+
+  const btnAcompanhar = document.getElementById("btnAcompanhar");
+  if (btnAcompanhar) {
+    btnAcompanhar.addEventListener("click", function (event) {
+      event.preventDefault(); // impede o redirecionamento automático do <a>
+
+      fetch("../System/verificarPedidosCasa.php")
+        .then(response => {
+          if (!response.ok) throw new Error("Erro na resposta da API");
+          return response.json();
+        })
+        .then(data => {
+          if (data && (data.temPedido === true || data.temPedido === "true" || data.temPedido == 1)) {
+            window.location.href = "acompanharPedido.php";
+          } else {
+            mostrarAlerta("Não há pedidos para acompanhamento.");
+          }
+        })
+        .catch(() => {
+          mostrarAlerta("Erro ao verificar pedidos para acompanhamento.");
+        });
+    });
+  }
 });
