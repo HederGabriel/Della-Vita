@@ -231,7 +231,6 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
         </div>
     </footer>
 
-    <script src="../JS/Produto.js"></script>
     <div id="modal-quantidade" class="modal" style="display: none;">
         <div class="modal-content">
             <h2>Selecionar Quantidade</h2>
@@ -243,5 +242,16 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
             </div>
         </div>
     </div>
+    <div id="modal-confirmacao" class="modal-pedido" style="display: none;">
+        <div class="modal-content-pedido">
+            <h2>Produto adicionado com sucesso!</h2>
+            <p>Deseja continuar comprando ou ir para seu pedido?</p>
+            <div class="modal-buttons-pedido">
+                <button onclick="fecharModalConfirmacao()">Continuar Comprando</button>
+                <button onclick="window.location.href='Pedidos.php'">Ir ao Pedido</button>
+            </div>
+        </div>
+    </div>
+    <script src="../JS/Produto.js"></script>
 </body>
 </html>

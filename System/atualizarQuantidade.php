@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// DEBUG: Ativar erros para desenvolvimento (remover em produção)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Cabeçalhos para JSON e desabilitar cache
 header('Content-Type: application/json');
 header('Cache-Control: no-cache, no-store, must-revalidate');

@@ -1,9 +1,9 @@
-<?php
+<?php 
 include_once '../System/session.php';
-require_once '../System/db.php';
+include_once '../System/db.php';
 
 if (!isset($_SESSION['id_cliente'])) {
-    header("Location: Login-Cadastro.php?redirect=acompanharPedido.php");
+    header("Location: Login-Cadastro.php?redirect=retirarPedido.php");
     exit();
 }
 
@@ -22,10 +22,9 @@ if ($cliente) {
     exit();
 }
 
-$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente AND tipo_pedido = 'casa' AND status_pedido != 'archive' ORDER BY data_pedido DESC");
+$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id_cliente = :id_cliente AND tipo_pedido = 'local' AND status_pedido != 'archive' ORDER BY data_pedido DESC");
 $stmt->execute(['id_cliente' => $id_cliente]);
 $pedidos = $stmt->fetchAll();
-
 
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -35,13 +34,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Della Vita - Acompanhar</title>
+  <title>Della Vita - Retirar</title>
   <link rel="stylesheet" href="../CSS/nav.css" />
   <link rel="stylesheet" href="../CSS/acompanhar.css" />
   <link rel="stylesheet" href="/CSS/font.css" />
   <link rel="stylesheet" href="/CSS/footer.css" />
+  <style>
+    .acoes{
+      margin-left: 82px;
+    }
+  </style>
 </head>
-
 <body>
   <nav>
     <img src="../IMG/Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'" />
@@ -61,14 +64,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
     <?php endif; ?>
   </nav>
-    <div id="user-menu" style="display:none;">
+  <div id="user-menu" style="display:none;">
     <ul>
       <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
       <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
       <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
     </ul>
   </div>
-
   <div id="overlay" onclick="hideLogoutModal()" style="display:none;"></div>
   <div id="logout-modal" style="display:none;">
     <p>Tem certeza que deseja sair?</p>
@@ -78,45 +80,36 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <form id="logout-form" method="POST" style="display: none;">
     <input type="hidden" name="logout" value="1" />
   </form>
-  <script src="..\JS\userMenu.js"></script>
+  <script src="../JS/userMenu.js"></script>
 
   <main>
     <div class="conteiner">
       <div class="escolha">
-        <a class="ativo" href="acompanharPedido.php">Acompanhar</a>
-        <a href="retirarPedido.php" id="btnRetirar">Retirar</a>
+        <a href="acompanharPedido.php" id="btnAcompanhar">Acompanhar</a>
+        <a class="ativo" href="retirarPedido.php">Retirar</a>
       </div>
-      <h1 class="titulo">Acompanhar</h1>
+      <h1 class="titulo">Retirar</h1>
 
       <div class="status">
         <div class="etapas">
-          <div class="etapa ativo">Recebido</div>
+          <div class="etapa">Recebido</div>
           <div class="etapa">Em Preparo</div>
-          <div class="etapa">Enviado</div>
-          <div class="etapa">Entregue</div>
+          <div class="etapa">Aguardando Retirada</div>
+          <div class="etapa">Retirado</div>
         </div>
       </div>
 
-
       <?php foreach ($pedidos as $pedido): ?>
         <?php
-        $stmt = $pdo->prepare("SELECT COUNT(*) as total_itens FROM itens_pedido WHERE id_pedido = :id_pedido");
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM itens_pedido WHERE id_pedido = :id_pedido");
         $stmt->execute(['id_pedido' => $pedido['id_pedido']]);
         $total_itens = $stmt->fetchColumn();
-
-        $stmt = $pdo->prepare("SELECT * FROM enderecos WHERE id_pedido = :id_pedido");
-        $stmt->execute(['id_pedido' => $pedido['id_pedido']]);
-        $endereco = $stmt->fetch();
-
-        $endereco_formatado = $endereco
-            ? $endereco['rua'] . ', ' . $endereco['numero'] . ' - ' . $endereco['setor'] . ', ' . $endereco['cidade'] . ' - CEP: ' . $endereco['cep']
-            : 'Retirada no local';
         ?>
         <div class="pedido" data-id-pedido="<?= $pedido['id_pedido'] ?>">
           <img class="avatar" src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
           <div class="info">
             <p><strong>Cliente:</strong> <?= htmlspecialchars($_SESSION['nome']) ?></p>
-            <p><?= $endereco_formatado ?></p>
+            <p>Retirada no local</p>
           </div>
           <div class="resumo">
             <p><?= $total_itens ?> Itens<br>+<br>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></p>
@@ -126,7 +119,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <div class="acoes">
         <button class="cancelar" disabled>Cancelar</button>
-        <button class="confirmar" disabled>Confirmar Entrega</button>
+        <button class="confirmar" disabled>Avaliar</button>
       </div>
     </div>
   </main>
@@ -168,7 +161,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
-
   <div id="custom-confirm-modal" class="custom-confirm-modal">
     <div class="custom-confirm-conteudo">
       <p id="custom-confirm-message" class="custom-confirm-mensagem">Tem certeza?</p>
@@ -178,11 +170,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </div>
-
   <div id="toast-alerta" style="display:none; position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 10px 20px; border-radius: 5px; z-index: 10000;">
     <span id="toast-alerta-texto"></span>
   </div>
-
+  
   <div id="modalAvaliacao" class="modal" style="display:none;">
     <div class="modal-content-nota">
       <h3>Avalie seu pedido</h3>
@@ -197,6 +188,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
   </div>
 
-  <script src="../JS/acompanharPedido.js"></script>
+  <script src="../JS/retirarPedido.js"></script>
 </body>
 </html>

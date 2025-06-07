@@ -121,6 +121,7 @@ function confirmarAdicionar() {
     .then(data => {
         if (data.success) {
             fecharModal();
+            abrirModalConfirmacao(); // <- Só abre se adicionar com sucesso
         } else {
             alert('Erro: ' + (data.error || 'Erro desconhecido'));
         }
@@ -161,3 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
         inputQuantidade.addEventListener('input', atualizarTotal);
     }
 });
+
+function abrirModalConfirmacao() {
+    document.getElementById("modal-confirmacao").style.display = "flex";
+}
+
+function fecharModalConfirmacao() {
+    document.getElementById("modal-confirmacao").style.display = "none";
+}

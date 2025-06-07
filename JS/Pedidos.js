@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCancelarRemover = document.getElementById('btnCancelarRemover');
   const textoModalRemover = document.getElementById('texto-modal-remover');
 
+    const btnAcompanhar = document.querySelector('.btn-acompanhar');
+
+
   let itemParaRemoverId = null;
   let tipoSelecionado = '';
   let idsSelecionados = [];
@@ -340,4 +343,28 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarAlerta('Erro ao comunicar com o servidor.');
       });
   }
+
+  btnAcompanhar.addEventListener('click', e => {
+    e.preventDefault();
+
+    fetch('../System/verificarPedidosCasa.php')  // plural "Pedidos"
+      .then(res => res.json())
+      .then(data => {
+        if (data.temPedido) {
+          window.location.href = 'acompanharPedido.php';
+        } else {
+          fetch('../System/verificarPedidosLocal.php')  // plural "Pedidos"
+            .then(res => res.json())
+            .then(data => {
+              if (data.temPedido) {
+                window.location.href = 'retirarPedido.php';
+              } else {
+                mostrarAlerta('Nenhum pedido encontrado.');
+              }
+            })
+            .catch(() => mostrarAlerta('Erro ao verificar pedido local.'));
+        }
+      })
+      .catch(() => mostrarAlerta('Erro ao verificar pedido para entrega.'));
+  });
 });
