@@ -84,7 +84,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="conteiner">
       <div class="escolha">
         <a class="ativo" href="acompanharPedido.php">Acompanhar</a>
-        <a href="retirarPedido.php">Retirar</a>
+        <a href="retirarPedido.php" id="btnRetirar">Retirar</a>
       </div>
       <h1 class="titulo">Acompanhar</h1>
 

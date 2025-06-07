@@ -208,9 +208,28 @@ document.addEventListener("DOMContentLoaded", () => {
     pedidos[0].click();
   }
 
-  /*
-  window.addEventListener("beforeunload", () => {
-    navigator.sendBeacon('../System/archivePedidos.php');
-  });
-  */
+  const btnRetirar = document.getElementById("btnRetirar");
+  if (btnRetirar) {
+    btnRetirar.addEventListener("click", function (event) {
+      event.preventDefault(); // impede o redirecionamento automático do <a>
+
+      fetch("../System/verificarPedidosLocal.php")
+        .then(response => {
+          if (!response.ok) throw new Error("Erro na resposta da API");
+          return response.json();
+        })
+        .then(data => {
+          // Checa vários tipos possíveis para garantir coerência
+          if (data && (data.temPedido === true || data.temPedido === "true" || data.temPedido == 1)) {
+            window.location.href = "retirarPedido.php";
+          } else {
+            mostrarAlerta("Não há pedidos disponíveis para retirada.");
+            // NÃO redireciona aqui
+          }
+        })
+        .catch(() => {
+          mostrarAlerta("Erro ao verificar pedidos para retirada.");
+        });
+    });
+  }
 });
