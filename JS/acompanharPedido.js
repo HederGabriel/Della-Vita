@@ -197,8 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pedidos[0].click();
   }
 
-  // NOVO: Arquivar pedidos com status "Entregue" ao sair da página
-  window.addEventListener("beforeunload", () => {
+  /*window.addEventListener("beforeunload", () => {
     navigator.sendBeacon('../System/archivePedidos.php');
-  });
+  });*/
 });

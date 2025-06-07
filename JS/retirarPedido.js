@@ -155,4 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (pedidos.length > 0) {
     pedidos[0].click();
   }
+
+    /*window.addEventListener("beforeunload", () => {
+      navigator.sendBeacon('../System/archivePedidos.php');
+    });*/
 });
