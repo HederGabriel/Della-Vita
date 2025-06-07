@@ -1,0 +1,24 @@
+2025-06-07 18:59:48 POST: Array
+(
+    [id_pedido] => 62
+    [nota] => 2
+)
+
+2025-06-07 18:59:48 POST: Array
+(
+    [id_pedido] => 62
+    [status] => Entregue
+)
+
+2025-06-07 19:01:49 POST: Array
+(
+    [id_pedido] => 64
+    [nota] => 3
+)
+
+2025-06-07 19:01:49 POST: Array
+(
+    [id_pedido] => 64
+    [status] => Entregue
+)
+

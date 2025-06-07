@@ -297,3 +297,35 @@ h1.titulo {
     from { transform: translateY(-25px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content-nota {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 10%;
+  margin: 30px auto;
+}
+
+#estrelas span {
+  font-size: 30px;
+  cursor: pointer;
+  color: gray;
+}
+
+#estrelas span.selecionada {
+  color: gold;
+}

@@ -14,10 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function mostrarAlerta(msg) {
     const toast = document.getElementById('toast-alerta');
     const texto = document.getElementById('toast-alerta-texto');
-
     texto.textContent = msg;
     toast.style.display = 'block';
-
     setTimeout(() => {
       toast.style.display = 'none';
     }, 3000);
@@ -31,8 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const btnNo = document.getElementById('custom-confirm-no');
 
       messageEl.textContent = message;
-
-      modal.style.display = 'flex';  // Aparece com as animações CSS
+      modal.style.display = 'flex';
 
       function cleanup() {
         modal.style.display = 'none';
@@ -86,10 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     pedido.addEventListener("click", () => {
       const idPedido = pedido.dataset.idPedido;
-      if (!idPedido) {
-        console.error("ID do pedido não encontrado no elemento.");
-        return;
-      }
+      if (!idPedido) return;
 
       limparSelecaoPedidos();
       pedido.classList.add("pedido-selecionado");
@@ -101,9 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       fetch(`../System/statusPedido.php?id_pedido=${encodeURIComponent(idPedido)}`)
         .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-          }
+          if (!response.ok) throw new Error();
           return response.json();
         })
         .then((data) => {
@@ -115,30 +107,22 @@ document.addEventListener("DOMContentLoaded", () => {
             resetarStatusEtapas();
           }
         })
-        .catch((error) => {
-          console.error("Erro ao buscar status:", error);
+        .catch(() => {
           resetarStatusEtapas();
         });
     });
   });
 
   btnCancelar.addEventListener("click", async () => {
-    if (!pedidoSelecionado) {
-      return;
-    }
+    if (!pedidoSelecionado) return;
 
     const idPedido = pedidoSelecionado.dataset.idPedido;
-
     const confirmado = await customConfirm("Tem certeza que deseja cancelar este pedido?");
-    if (!confirmado) {
-      return;
-    }
+    if (!confirmado) return;
 
     fetch("../System/cancelarPedido.php", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `id_pedido=${encodeURIComponent(idPedido)}`
     })
       .then((response) => response.json())
@@ -148,56 +132,102 @@ document.addEventListener("DOMContentLoaded", () => {
           pedidoSelecionado = null;
           acoesDiv.style.display = "none";
           resetarStatusEtapas();
-          location.reload();  // reload só após o pedido ser cancelado com sucesso
+          location.reload();
         } else {
           mostrarAlerta(data.message);
         }
       })
-      .catch((error) => {
-        console.error("Erro ao cancelar pedido:", error);
+      .catch(() => {
         mostrarAlerta("Erro ao cancelar pedido. Tente novamente.");
       });
+  });
+
+  let notaSelecionada = 0;
+
+  document.getElementById("btnEnviarNota").addEventListener("click", async () => {
+    const modal = document.getElementById("modalAvaliacao");
+    if (notaSelecionada === 0) {
+      mostrarAlerta("Por favor, selecione uma nota.");
+      return;
+    }
+
+    modal.style.display = "none";
+    const idPedido = pedidoSelecionado.dataset.idPedido;
+
+    try {
+      const respostaNotaRaw = await fetch("../System/salvarNota.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          id_pedido: idPedido,
+          nota: notaSelecionada
+        })
+      });
+
+      const respostaNota = await respostaNotaRaw.json();
+      if (!respostaNota.success) {
+        mostrarAlerta("Erro ao salvar a nota.");
+        return;
+      }
+
+    } catch {
+      mostrarAlerta("Erro na comunicação ao salvar nota.");
+      return;
+    }
+
+    try {
+      const respostaStatusRaw = await fetch("../System/atualizarStatus.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          id_pedido: idPedido,
+          status: "Entregue"
+        })
+      });
+
+      const respostaStatus = await respostaStatusRaw.json();
+      if (respostaStatus.success) {
+        mostrarAlerta("Pedido entregue e avaliado com sucesso!");
+        resetarStatusEtapas();
+        destacarEtapa("Entregue");
+        atualizarBotoes("Entregue");
+      } else {
+        mostrarAlerta("Erro ao atualizar status.");
+      }
+    } catch {
+      mostrarAlerta("Erro na comunicação ao atualizar status.");
+    }
   });
 
   btnConfirmar.addEventListener("click", async () => {
     if (!pedidoSelecionado) return;
 
-    const idPedido = pedidoSelecionado.dataset.idPedido;
     const confirmado = await customConfirm("Deseja confirmar que recebeu esse pedido?");
-
     if (!confirmado) return;
 
-    fetch("../System/atualizarStatus.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        id_pedido: idPedido,
-        status: "Entregue"
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          mostrarAlerta("Status atualizado para 'Entregue'");
-          resetarStatusEtapas();
-          destacarEtapa("Entregue");
-          atualizarBotoes("Entregue");
-        } else {
-          mostrarAlerta("Erro ao atualizar status.");
-          console.error(data.message || "Erro desconhecido.");
-        }
-      })
-      .catch(error => {
-        mostrarAlerta("Erro de conexão com o servidor.");
-        console.error("Erro:", error);
-      });
+    const modal = document.getElementById("modalAvaliacao");
+    notaSelecionada = 0;
+
+    document.querySelectorAll("#estrelas span").forEach(estrela => {
+      estrela.classList.remove("selecionada");
+      estrela.onclick = () => {
+        notaSelecionada = parseInt(estrela.dataset.valor);
+        document.querySelectorAll("#estrelas span").forEach((e, index) => {
+          e.classList.toggle("selecionada", index < notaSelecionada);
+        });
+      };
+    });
+
+    modal.style.display = "block";
   });
 
   if (pedidos.length > 0) {
     pedidos[0].click();
   }
 
-  /*window.addEventListener("beforeunload", () => {
+  /*
+  window.addEventListener("beforeunload", () => {
     navigator.sendBeacon('../System/archivePedidos.php');
-  });*/
+  });
+  */
 });

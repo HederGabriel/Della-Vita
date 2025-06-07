@@ -168,6 +168,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </footer>
+
   <div id="custom-confirm-modal" class="custom-confirm-modal">
     <div class="custom-confirm-conteudo">
       <p id="custom-confirm-message" class="custom-confirm-mensagem">Tem certeza?</p>
@@ -177,9 +178,25 @@ $current_page = basename($_SERVER['PHP_SELF']);
       </div>
     </div>
   </div>
+
   <div id="toast-alerta" style="display:none; position: fixed; bottom: 20px; right: 20px; background: #333; color: #fff; padding: 10px 20px; border-radius: 5px; z-index: 10000;">
     <span id="toast-alerta-texto"></span>
   </div>
+
+  <div id="modalAvaliacao" class="modal" style="display:none;">
+    <div class="modal-content-nota">
+      <h3>Avalie seu pedido</h3>
+      <div id="estrelas">
+        <span data-valor="1">★</span>
+        <span data-valor="2">★</span>
+        <span data-valor="3">★</span>
+        <span data-valor="4">★</span>
+        <span data-valor="5">★</span>
+      </div>
+      <button id="btnEnviarNota">Enviar Avaliação</button>
+    </div>
+  </div>
+
   <script src="../JS/acompanharPedido.js"></script>
 </body>
 </html>
