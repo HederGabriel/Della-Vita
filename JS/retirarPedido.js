@@ -125,7 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `id_pedido=${encodeURIComponent(idPedido)}&nota=${encodeURIComponent(notaSelecionada || '')}`
       });
-    } catch {
+    } catch (e) {
+      console.error("Erro ao salvar nota:", e);
       mostrarAlerta("Erro ao salvar a nota.");
       return;
     }
@@ -136,14 +137,45 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `id_pedido=${encodeURIComponent(idPedido)}&status=archive`
       });
+
       const jsonStatus = await resStatus.json();
-      if (jsonStatus.success) {
+      console.log("Resposta atualizarStatus:", jsonStatus);
+
+      if (jsonStatus.success === true || jsonStatus.success === "true") {
         mostrarAlerta("Pedido finalizado e arquivado com sucesso!");
-        location.reload(); 
+
+        // Aguarda 1 segundo antes de continuar
+        setTimeout(async () => {
+          try {
+            const resLocal = await fetch("../System/verificarPedidosLocal.php");
+            const jsonLocal = await resLocal.json();
+
+            if (jsonLocal.temPedido) {
+              // Se ainda houver pedido local, permanece em retirarPedido.php
+              window.location.href = "retirarPedido.php";
+            } else {
+              const resCasa = await fetch("../System/verificarPedidosCasa.php");
+              const jsonCasa = await resCasa.json();
+
+              if (jsonCasa.temPedido) {
+                // Se houver pedido para entrega em casa, vai para acompanharPedido.php
+                window.location.href = "acompanharPedido.php";
+              } else {
+                // Caso contrário, redireciona para a página inicial
+                window.location.href = "index.php";
+              }
+            }
+          } catch (e) {
+            console.error("Erro ao verificar próximos pedidos:", e);
+            mostrarAlerta("Erro ao verificar os próximos pedidos.");
+          }
+        }, 1000);
       } else {
         mostrarAlerta("Erro ao atualizar status.");
+        console.error("Erro no retorno do status:", jsonStatus);
       }
-    } catch {
+    } catch (e) {
+      console.error("Erro na comunicação ao atualizar status:", e);
       mostrarAlerta("Erro na comunicação ao atualizar status.");
     }
   });

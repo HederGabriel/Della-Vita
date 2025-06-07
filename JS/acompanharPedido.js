@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modal.style.display = "none";
 
-    // Tenta salvar a nota, mesmo que não tenha sido selecionada
+    // Tenta salvar a nota
     try {
       await fetch("../System/salvarNota.php", {
         method: "POST",
@@ -158,10 +158,10 @@ document.addEventListener("DOMContentLoaded", () => {
         body: `id_pedido=${encodeURIComponent(idPedido)}&nota=${encodeURIComponent(notaSelecionada || '')}`
       });
     } catch {
-      // Mesmo se falhar o envio da nota, segue com status archive
+      // Continua mesmo em caso de erro
     }
 
-    // Atualiza status para archive
+    // Atualiza status para "archive"
     try {
       const resStatus = await fetch("../System/atualizarStatus.php", {
         method: "POST",
@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: `id_pedido=${encodeURIComponent(idPedido)}&status=archive`
       });
       const jsonStatus = await resStatus.json();
+
       if (jsonStatus.success) {
         mostrarAlerta("Pedido finalizado e arquivado com sucesso!");
       } else {
@@ -178,8 +179,30 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarAlerta("Erro na comunicação ao atualizar status.");
     }
 
-    // Sempre recarrega a página no final
-    location.reload();
+    // Verifica se ainda há pedidos em casa
+    try {
+      const resCasa = await fetch("../System/verificarPedidosCasa.php");
+      const dataCasa = await resCasa.json();
+
+      if (dataCasa && (dataCasa.temPedido === true || dataCasa.temPedido === "true" || dataCasa.temPedido == 1)) {
+        window.location.href = "acompanharPedido.php";
+        return;
+      }
+
+      // Se não houver em casa, verifica local
+      const resLocal = await fetch("../System/verificarPedidosLocal.php");
+      const dataLocal = await resLocal.json();
+
+      if (dataLocal && (dataLocal.temPedido === true || dataLocal.temPedido === "true" || dataLocal.temPedido == 1)) {
+        window.location.href = "retirarPedido.php";
+      } else {
+        window.location.href = "index.php";
+      }
+
+    } catch {
+      // Se erro na verificação, redireciona para index como fallback
+      window.location.href = "index.php";
+    }
   });
 
   btnConfirmar.addEventListener("click", async () => {

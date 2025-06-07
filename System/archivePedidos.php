@@ -1,3 +1,4 @@
+<?php
 include_once 'session.php';
 require_once 'db.php';
 
