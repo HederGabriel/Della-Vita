@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 require_once __DIR__ . '/db.php';
 
 try {
-    $stmt = $pdo->prepare("SELECT COUNT(*) AS total FROM pedidos WHERE tipo_pedido = 'local' AND status != 'archive'");
+    $stmt = $pdo->prepare("SELECT COUNT(*) AS total FROM pedidos WHERE tipo_pedido = 'local' AND status_pedido != 'archive'");
     $stmt->execute();
     $row = $stmt->fetch();
 

@@ -219,12 +219,10 @@ document.addEventListener("DOMContentLoaded", () => {
           return response.json();
         })
         .then(data => {
-          // Checa vários tipos possíveis para garantir coerência
           if (data && (data.temPedido === true || data.temPedido === "true" || data.temPedido == 1)) {
             window.location.href = "retirarPedido.php";
           } else {
             mostrarAlerta("Não há pedidos disponíveis para retirada.");
-            // NÃO redireciona aqui
           }
         })
         .catch(() => {
