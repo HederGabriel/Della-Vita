@@ -106,7 +106,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <main>
     <section class="pedidos">
       <div class="acompanhar-container">
-        <button class="btn-acompanhar" onclick="window.location.href='acompanharPedido.php'">📦 Acompanhar Pedido</button>
+        <button class="btn-acompanhar">📦 Acompanhar Pedido</button>
       </div>
 
       <!-- Entrega em Casa -->
