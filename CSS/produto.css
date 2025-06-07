@@ -378,3 +378,51 @@ div.modal-content p span{
         padding: 8px 14px;
     }
 }
+
+.modal-pedido {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha o conteúdo ao topo */
+    z-index: 9999;
+    overflow-y: auto; /* Caso o modal seja alto */
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content-pedido {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 5vh; /* Distância do topo */
+    animation: slideDown 0.4s ease-out;
+}
+
+.modal-buttons-pedidos button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

@@ -161,3 +161,17 @@ document.addEventListener('DOMContentLoaded', () => {
         inputQuantidade.addEventListener('input', atualizarTotal);
     }
 });
+
+function confirmarAdicionar() {
+
+    fecharModal();
+    abrirModalConfirmacao();
+}
+
+function abrirModalConfirmacao() {
+    document.getElementById("modal-confirmacao").style.display = "flex";
+}
+
+function fecharModalConfirmacao() {
+    document.getElementById("modal-confirmacao").style.display = "none";
+}
