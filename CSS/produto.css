@@ -385,32 +385,69 @@ div.modal-content p span{
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(15, 15, 15, 0.7); 
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Alinha o conteúdo ao topo */
+    align-items: flex-start;
     z-index: 9999;
-    overflow-y: auto; /* Caso o modal seja alto */
+    overflow-y: auto;
     animation: fadeIn 0.3s ease-out;
 }
 
+
 .modal-content-pedido {
-    background: white;
+    background-color: #fff4ec; 
     padding: 2rem;
-    border-radius: 10px;
+    border-radius: 14px;
     text-align: center;
-    margin-top: 5vh; /* Distância do topo */
+    margin-top: 8vh;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     animation: slideDown 0.4s ease-out;
+    border: 2px solid #feb382; 
 }
 
-.modal-buttons-pedidos button {
-    margin: 10px;
-    padding: 10px 20px;
+
+.modal-content-pedido h2 {
+    color: #ff7f11; 
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.modal-content-pedido p {
+    color: #000;
     font-size: 1rem;
-    cursor: pointer;
+    margin-bottom: 1.5rem;
 }
 
-/* Animações */
+
+.modal-buttons-pedido button {
+    margin: 8px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-buttons-pedido button:first-child {
+    background-color: #f9a347;
+    color: #fff;
+}
+
+.modal-buttons-pedido button:last-child {
+    background-color: #f9a347; 
+    color: white;
+}
+
+.modal-buttons-pedido button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -418,7 +455,7 @@ div.modal-content p span{
 
 @keyframes slideDown {
     from {
-        transform: translateY(-30px);
+        transform: translateY(-40px);
         opacity: 0;
     }
     to {
