@@ -1,63 +1,55 @@
-/* Reset básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 8px;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    color: #333;
+  margin: 8px;
+  font-family: Arial, sans-serif;
+  background-color: #fff6f0;
+  color: #040404;
 }
 
 main {
-    max-width: 1200px;
-    min-height: 500px;
-
-    margin: 25px auto;
-
-    border: #333 solid 1px;
-    background-color: rgb(206, 206, 206);
+  max-width: 1200px;
+  min-height: 500px;
+  margin: 25px auto;
 }
 
 div.conteiner {
-    background-color: white;
-    border-radius: 5px;
-    max-width: 800px;
-    min-height: 340px;
-    margin: 50px auto;
-    border: #333 solid 1px;
+  background-color: #fac185;
+  border-radius: 5px;
+  max-width: 800px;
+  min-height: 340px;
+  margin: 50px auto;
+  border: 1px solid #f48240;
 }
 
 div.escolha {
-    font-size: 20px;
-    width: 191px;
-    height: 26px;
-    display: flex;
-    gap: 16px;
-    margin: 40px 0 0 40px;
+  font-size: 20px;
+  display: flex;
+  gap: 16px;
+  margin: 40px 0 0 40px;
+  flex-wrap: wrap;
 }
 
 div.escolha a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: #ed3a08;
 }
 
 div.escolha .ativo {
-    border-bottom: 2px solid orange;
+  border-bottom: 2px solid #f65d0b;
 }
 
 h1.titulo {
-    font-size: 48px;
-    width: 100%;
-    height: 55px;
-    text-align: center;
-    margin: -50px 0 0 97px;
+  font-size: 48px;
+  text-align: center;
+  margin: -50px 0 0 0;
+  color: #ed3a08;
 }
 
-/* Barra de Status */
 .status {
   margin: 30px 0;
   display: flex;
@@ -66,19 +58,21 @@ h1.titulo {
 
 .etapas {
   display: flex;
-  background-color: white;
+  background-color: #fff;
   border-radius: 30px;
   overflow: hidden;
-  border: 1px solid #333;
+  border: 1px solid #fac698;
+  flex-wrap: wrap;
 }
 
 .etapa {
   padding: 10px 20px;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid #d3c6c3;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 100px;
+  color: #000;
 }
 
 .etapa:last-child {
@@ -86,55 +80,55 @@ h1.titulo {
 }
 
 .etapa.ativo {
-  background-color: orange !important;
-  color: white !important;
-  border-right: none !important;
+  background-color: #f9953e;
+  color: #fff;
 }
 
-
-/* Cartão do Pedido */
 .pedido {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #333;
+  border: 1px solid #d4a373;
   border-radius: 5px;
   padding: 10px 15px;
-  margin-bottom: 20px;
+  margin: 25px auto;
   background-color: #fff;
   max-width: 550px;
-  max-height: 110px;
-  margin: 25px auto;
+  cursor: pointer;
+  transition: background-color 0.3s, border 0.3s;
+  flex-wrap: wrap;
 }
 
 .avatar {
   width: 50px;
   height: 50px;
-  background-color: #bbb;
+  background-color: #ff7f11;
   border-radius: 50%;
   margin-right: 15px;
 }
 
 .info {
   flex-grow: 1;
+  margin-bottom: 10px;
 }
 
 .resumo {
   text-align: right;
+  min-width: 100px;
 }
 
 .acoes {
   display: flex;
-  justify-content: flex-end;   
-  gap: 15px;              
-  padding: 0 25px 25px 395px;        
-  width: 100%;      
-  box-sizing: border-box;      
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 0 25px 25px 395px;
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
-
-.cancelar {
-  background-color: red;
+.cancelar, .confirmar {
+  background-color: #f9953e;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -143,52 +137,21 @@ h1.titulo {
   cursor: pointer;
 }
 
-.confirmar {
-  background-color: green;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.local-retirada {
-  border: 1px solid #333;
-  border-radius: 5px;
-  background-color: #fff;
-  max-width: 550px;
-  margin: 30px auto;
-  padding: 20px;
-
-}
-
-.local-retirada h2 {
-  font-size: 28px;
-  margin-bottom: 15px;
-}
-
-.retirada-info {
-  background-color: #ddd;
-  height: 150px;
-  border-radius: 8px;
+.cancelar:hover,
+.confirmar:hover {
+  background-color: rgb(210, 93, 4);
+  transition: 0.5s ease;
 }
 
 .pedido-selecionado {
-  border: 2px solid orange; 
-  background-color: rgba(255, 166, 0, 0.199); 
-  box-shadow: 0 0 8px rgba(255, 194, 26, 0.5); /* sombra azul */
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.pedido {
-  cursor: pointer;
-  transition: background-color 0.3s, border 0.3s;
+  border: 2px solid #ffc531;
+  background-color: rgb(251, 251, 250);
+  box-shadow: 0 0 8px rgba(255, 141, 26, 0.56);
 }
 
 .acoes button:disabled {
-  background-color: #ccc;
-  color: #666;
+  background-color: #f9953e;
+  color: #fff;
   cursor: not-allowed;
   border: none;
   opacity: 0.8;
@@ -199,11 +162,11 @@ h1.titulo {
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #f44336; /* Vermelho alerta */
+  background-color: #ff5c11;
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   font-weight: bold;
   z-index: 9999;
   animation: slideDown 0.4s ease;
@@ -220,112 +183,127 @@ h1.titulo {
   }
 }
 
-/* Custom Confirm Modal */
 .custom-confirm-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 60px;
-    z-index: 10000;
-    animation: fadeIn 0.3s ease forwards;
-}
-
-.custom-confirm-conteudo {
-    background: #fff;
-    border-radius: 10px;
-    padding: 25px 35px;
-    max-width: 420px;
-    width: 90%;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-    transform: translateY(-25px);
-    animation: slideDown 0.3s ease forwards;
-    text-align: center;
-}
-
-.custom-confirm-mensagem {
-    margin-bottom: 25px;
-    font-size: 16px;
-    color: #333;
-}
-
-.custom-confirm-botoes {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.custom-confirm-botoes button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-}
-
-.custom-confirm-botoes button#custom-confirm-yes {
-    background-color: #28a745;
-    color: #fff;
-}
-
-.custom-confirm-botoes button#custom-confirm-yes:hover {
-    background-color: #218838;
-}
-
-.custom-confirm-botoes button#custom-confirm-no {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-.custom-confirm-botoes button#custom-confirm-no:hover {
-    background-color: #c82333;
-}
-
-/* Animações baseadas no remover */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-25px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.modal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+  z-index: 10000;
+}
+
+.custom-confirm-conteudo {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px 35px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-25px);
+  animation: slideDown 0.3s ease forwards;
+  text-align: center;
+}
+
+.custom-confirm-mensagem {
+  margin-bottom: 25px;
+  font-size: 16px;
+  color: #5e3023;
+}
+
+.custom-confirm-botoes {
   display: flex;
   justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  gap: 20px;
 }
 
-.modal-content-nota {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  width: 10%;
-  margin: 30px auto;
-}
-
-#estrelas span {
-  font-size: 30px;
+.custom-confirm-botoes button {
+  background-color: #ff7f11;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  color: gray;
+  transition: background-color 0.3s;
 }
 
-#estrelas span.selecionada {
-  color: gold;
+.custom-confirm-botoes button:hover {
+  background-color: #9f3608;
+}
+
+
+@media (max-width: 768px) {
+  main {
+    margin: 15px 10px;
+  }
+
+  h1.titulo {
+    font-size: 36px;
+    margin-top: -30px;
+  }
+
+  div.conteiner {
+    margin: 30px 10px;
+    max-width: 95%;
+  }
+
+  div.escolha {
+    font-size: 16px;
+    margin: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .etapas {
+    flex-direction: column;
+    border-radius: 10px;
+  }
+
+  .pedido {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .acoes {
+    padding: 15px;
+    justify-content: center;
+  }
+
+  .cancelar, .confirmar {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  h1.titulo {
+    font-size: 28px;
+  }
+
+  .custom-confirm-conteudo {
+    padding: 15px 20px;
+  }
+
+  .custom-confirm-mensagem {
+    font-size: 14px;
+  }
+
+  .custom-confirm-botoes {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .custom-confirm-botoes button {
+    width: 100%;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
 }
