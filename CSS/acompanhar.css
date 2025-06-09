@@ -95,12 +95,13 @@ h1.titulo {
   border: 1px solid #d4a373;
   border-radius: 5px;
   padding: 10px 15px;
-  margin: 25px auto;
   background-color: #fff;
   max-width: 550px;
+  max-height: 110px;
+  margin: 25px auto;
   cursor: pointer;
   transition: background-color 0.3s, border 0.3s;
-  flex-wrap: wrap;
+  
 }
 
 .avatar {
