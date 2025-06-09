@@ -345,8 +345,10 @@ h1.titulo {
   margin-bottom: 20px;
 }
 
-#estrelas{
-  direction: rtl;
+#estrelas {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
 }
 
 #estrelas span {
@@ -360,9 +362,8 @@ h1.titulo {
 #estrelas span.selecionada,
 #estrelas span:hover,
 #estrelas span:hover ~ span {
-  color: #ffc107; 
+  color: #ffc107;
 }
-
 
 #btnEnviarNota {
   margin-top: 20px;

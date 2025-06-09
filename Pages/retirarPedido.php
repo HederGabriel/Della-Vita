@@ -178,11 +178,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="modal-content-nota">
       <h3>Avalie seu pedido</h3>
       <div id="estrelas">
-        <span data-valor="1">★</span>
-        <span data-valor="2">★</span>
-        <span data-valor="3">★</span>
-        <span data-valor="4">★</span>
         <span data-valor="5">★</span>
+        <span data-valor="4">★</span>
+        <span data-valor="3">★</span>
+        <span data-valor="2">★</span>
+        <span data-valor="1">★</span>
       </div>
       <button id="btnEnviarNota">Enviar Avaliação</button>
     </div>

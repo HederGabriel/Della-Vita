@@ -190,11 +190,13 @@ document.addEventListener("DOMContentLoaded", () => {
       estrela.classList.remove("selecionada");
       estrela.onclick = () => {
         notaSelecionada = parseInt(estrela.dataset.valor);
-        document.querySelectorAll("#estrelas span").forEach((e, index) => {
-          e.classList.toggle("selecionada", index < notaSelecionada);
+        document.querySelectorAll("#estrelas span").forEach((e) => {
+          const valor = parseInt(e.dataset.valor);
+          e.classList.toggle("selecionada", valor <= notaSelecionada);
         });
       };
     });
+
 
     modal.style.display = "block";
   });
