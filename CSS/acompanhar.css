@@ -155,7 +155,7 @@ h1.titulo {
 }
 
 .acoes button:disabled {
-  background-color: #f9953e;
+  background-color: #ccc;
   color: #fff;
   cursor: not-allowed;
   border: none;
