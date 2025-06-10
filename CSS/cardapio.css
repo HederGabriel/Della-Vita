@@ -29,9 +29,10 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start;
+    justify-content: center; /* ← alterado */
     margin: 0 auto;
 }
+
 
 .pizza-card {
     width: 230px;

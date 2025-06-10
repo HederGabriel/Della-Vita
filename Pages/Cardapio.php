@@ -49,7 +49,35 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
         <div class="nav-search">
             <input type="text" placeholder="Buscar...">
+            <div class="filter-container" style="position: relative; display: inline-block;">
+                <img class="filter" src="..\IMG\filter.svg" alt="Filtro">
+
+                <div id="filter-modal" class="hidden">
+                    <form id="filter-form">
+                        <label>
+                            <input type="checkbox" name="sabor" value="trad"> Tradicionais
+                        </label><br>
+                        <label>
+                            <input type="checkbox" name="sabor" value="doce"> Doces
+                        </label><br>
+                        <label>
+                            <input type="checkbox" name="sabor" value="esp"> Especiais
+                        </label><br>
+
+                        <label for="ordem">Ordenar por:</label>
+                        <select id="ordem" name="ordem">
+                            <option value="asc">A-Z</option>
+                            <option value="desc">Z-A</option>
+                        </select>
+
+                        <button type="submit">Aplicar Filtros</button>
+                    </form>
+                </div>
+            </div>
         </div>
+        <script src="..\JS\filter.js"></script>
+
+
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
             <div class="user-profile" onclick="toggleMenu(event)">
