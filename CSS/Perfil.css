@@ -99,6 +99,8 @@ nav {
     font-family: 'Material Symbols Outlined', sans-serif;
     pointer-events: none;
     z-index: 1;
+    width: 30px;
+    height: 36px;
 }
 
 #avatar-options {
@@ -312,7 +314,7 @@ nav {
 }
 
 .profile-option-btn.delete-account-btn:hover .material-symbols-outlined {
-    color: #f44336;
+    filter: invert(28%) sepia(85%) saturate(4043%) hue-rotate(344deg) brightness(99%) contrast(102%);
 }
 
 .profile-option-btn .material-symbols-outlined.icon-left {
@@ -320,12 +322,8 @@ nav {
     color: #f48236;
     margin-right: 10px;
     transition: none;
-}
-
-.profile-option-btn:hover .material-symbols-outlined.icon-left {
-    font-size: 22px !important;
-    color: #f48236;
-    transform: none;
+    height: 26px;
+    width: 26px;
 }
 
 .profile-option-btn.delete-account-btn .material-symbols-outlined.icon-left {
@@ -333,10 +331,6 @@ nav {
     color: #000;
     margin-right: 10px;
     transition: color 0.3s ease;
-}
-
-.profile-option-btn.delete-account-btn:hover .material-symbols-outlined.icon-left {
-    color: #f44336;
 }
 
 .profile-option-btn.delete-account-btn:hover .material-symbols-outlined.icon-left {

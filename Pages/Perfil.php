@@ -79,7 +79,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title>Perfil</title>
     <link rel="stylesheet" href="../CSS/nav.css"> <!-- Estilo do nav -->
     <link rel="stylesheet" href="../CSS/Perfil.css"> <!-- Estilo específico do perfil -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"> <!-- Google Material Symbols -->
     <script src="../JS/Perfil.js"></script> <!-- Script externo -->
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
@@ -128,7 +127,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="client-name">
                 <?= htmlspecialchars($_SESSION['nome']) ?>
             </div>
-            <span class="edit-icon">edit</span> <!-- Ícone posicionado atrás -->
+            
+            <img class="edit-icon" src="../IMG/Icons/edit-icon.svg" alt="">
             <button class="edit-avatar-btn" onclick="toggleAvatarOptions()"></button> <!-- Botão transparente -->
         </div>
     </header>
@@ -154,19 +154,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <!-- Profile Options -->
         <section class="profile-options">
             <button onclick="window.location.href='MeusDados.php'" class="profile-option-btn">
-                <span class="material-symbols-outlined icon-left">person</span>
+                <img class="material-symbols-outlined icon-left" src="..\IMG\Icons\person.svg">
                 Meus Dados
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
+                <img class="material-symbols-outlined" src="..\IMG\Icons\arrow_forward_ios.svg">
             </button>
             <button onclick="window.location.href='Esqueci-Senha.php'" class="profile-option-btn">
-                <span class="material-symbols-outlined icon-left">key</span>
+                <img class="material-symbols-outlined icon-left" src="..\IMG\Icons\key.svg">
                 Alterar Senha
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
+                <img class="material-symbols-outlined" src="..\IMG\Icons\arrow_forward_ios.svg">
             </button>
             <button class="profile-option-btn delete-account-btn">
-                <span class="material-symbols-outlined icon-left">delete</span>
+                <img class="material-symbols-outlined icon-left" src="..\IMG\Icons\delete.svg">
                 Excluir Conta
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
+                <img class="material-symbols-outlined" src="..\IMG\Icons\arrow_forward_ios.svg">
             </button>
         </section>
 
