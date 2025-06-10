@@ -48,7 +48,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
         </div>
         <div class="nav-search">
-            <input type="text" placeholder="Buscar...">
+            <input type="text" id="search-bar" placeholder="Buscar...">
             <div class="filter-container" style="position: relative; display: inline-block;">
                 <img class="filter" src="..\IMG\filter.svg" alt="Filtro">
 
@@ -76,7 +76,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </div>
         <script src="..\JS\filter.js"></script>
-
+        <script src="..\JS\busca.js"></script>
 
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
@@ -177,6 +177,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 endif; ?>
             </div>
         </section>
+        <p id="no-results" style="display: none; text-align: center; font-size: 18px; margin-top: 20px; color: gray;">
+            Nenhuma pizza encontrada.
+        </p>
+
 
     </main>
     
