@@ -42,11 +42,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <body>
     <nav>
         <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
-
+        
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
-            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
         </div>
         <div class="nav-search">
             <input type="text" placeholder="Buscar...">
@@ -122,7 +121,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             
             <h1 class="t-pizza">Pizzas Populares</h1>
             <div class="grid-espaco"></div>
-            <button class="btn-ver-mais" onclick="window.location.href='Destaque.php'">Ver mais</button>
+            <button class="btn-ver-mais" onclick="window.location.href='Cardapio.php'">Ver mais</button>
 
             <?php foreach ($produtos as $produto): ?>
                 <div class="produto-card">

@@ -46,7 +46,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
-            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
         </div>
         <div class="nav-search">
             <input type="text" placeholder="Buscar...">
@@ -82,96 +81,75 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <script src="../JS/userMenu.js"></script>
 
     <main>
-        <section>
-            <h1 id="tradicional">Pizzas Tradicionais</h1>
-        
-            <div id="trad" class="pizza-list">
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
+        <section id="trad">
+            <h1>Pizzas Tradicionais</h1>
+            <div class="pizza-list">
+                <?php
+                $stmt = $pdo->prepare("SELECT id_produto, nome, imagem FROM produtos WHERE sabor = 'trad' ORDER BY nome ASC");
+                $stmt->execute();
+                $pizzasTrad = $stmt->fetchAll();
+
+                if (count($pizzasTrad) === 0): ?>
+                    <p>Nenhuma pizza encontrada nesta categoria.</p>
+                <?php else:
+                    foreach ($pizzasTrad as $pizza):
+                        $imgSrc = !empty($pizza['imagem']) ? htmlspecialchars($pizza['imagem']) : '../IMG/img.jpg';
+                ?>
+                    <div class="pizza-card" onclick="window.location.href='Produto.php?id=<?= $pizza['id_produto'] ?>'">
+                        <img class="pizza-img" src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($pizza['nome']) ?>">
+                        <h2><?= htmlspecialchars($pizza['nome']) ?></h2>
+                    </div>
+                <?php endforeach;
+                endif; ?>
             </div>
         </section>
 
         <section id="doce">
             <h1>Pizzas Doces</h1>
-        
-            <div id="trad" class="pizza-list">
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-            </div>
-        </section>
-        
-        <section id="especial">
-            <h1>Pizzas Especiais</h1>
-        
             <div class="pizza-list">
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
+                <?php
+                $stmt = $pdo->prepare("SELECT id_produto, nome, imagem FROM produtos WHERE sabor = 'doce' ORDER BY nome ASC");
+                $stmt->execute();
+                $pizzasDoce = $stmt->fetchAll();
+
+                if (count($pizzasDoce) === 0): ?>
+                    <p>Nenhuma pizza encontrada nesta categoria.</p>
+                <?php else:
+                    foreach ($pizzasDoce as $pizza):
+                        $imgSrc = !empty($pizza['imagem']) ? htmlspecialchars($pizza['imagem']) : '../IMG/img.jpg';
+                ?>
+                    <div class="pizza-card" onclick="window.location.href='Produto.php?id=<?= $pizza['id_produto'] ?>'">
+                        <img class="pizza-img" src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($pizza['nome']) ?>">
+                        <h2><?= htmlspecialchars($pizza['nome']) ?></h2>
+                    </div>
+                <?php endforeach;
+                endif; ?>
             </div>
         </section>
-        <section>
-            <h1>Pizzas Tradicionais</h1>
-        
-            <div id="trad" class="pizza-list">
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
-                <div class="pizza-card">
-                    <img class="pizza-img" src="../IMG/img.jpg">
-                    <h2>Nome Pizza</h2>
-                </div>
+
+        <section id="esp">
+            <h1>Pizzas Especiais</h1>
+            <div class="pizza-list">
+                <?php
+                $stmt = $pdo->prepare("SELECT id_produto, nome, imagem FROM produtos WHERE sabor = 'esp' ORDER BY nome ASC");
+                $stmt->execute();
+                $pizzasEspecial = $stmt->fetchAll();
+
+                if (count($pizzasEspecial) === 0): ?>
+                    <p>Nenhuma pizza encontrada nesta categoria.</p>
+                <?php else:
+                    foreach ($pizzasEspecial as $pizza):
+                        $imgSrc = !empty($pizza['imagem']) ? htmlspecialchars($pizza['imagem']) : '../IMG/img.jpg';
+                ?>
+                    <div class="pizza-card" onclick="window.location.href='Produto.php?id=<?= $pizza['id_produto'] ?>'">
+                        <img class="pizza-img" src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($pizza['nome']) ?>">
+                        <h2><?= htmlspecialchars($pizza['nome']) ?></h2>
+                    </div>
+                <?php endforeach;
+                endif; ?>
             </div>
         </section>
+
     </main>
     
     <footer>
@@ -224,5 +202,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </div>
     </footer>
+    <script src="../JS/cardapio.js"></script>
 </body>
 </html>

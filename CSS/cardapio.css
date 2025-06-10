@@ -35,10 +35,15 @@ h1 {
 
 .pizza-card {
     width: 230px;
-    height: 250px;
+    height: 255px;
     border: #ddd 2px solid;
     border-radius: 2px;
     padding-bottom: 8px;
+    cursor: pointer;
+}
+
+.pizza-card:hover{
+    border: orange 2px solid;
 }
 
 .pizza-img{

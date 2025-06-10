@@ -92,7 +92,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
-            <a href="Destaque.php" class="<?= $current_page === 'Destaque.php' ? 'active' : '' ?>">Destaque</a>
         </div>
         <div class="nav-search">
             <input type="text" placeholder="Buscar...">
@@ -162,11 +161,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <button onclick="window.location.href='Esqueci-Senha.php'" class="profile-option-btn">
                 <span class="material-symbols-outlined icon-left">key</span>
                 Alterar Senha
-                <span class="material-symbols-outlined">arrow_forward_ios</span>
-            </button>
-            <button onclick="window.location.href=''" class="profile-option-btn">
-                <span class="material-symbols-outlined icon-left">palette</span>
-                Tema
                 <span class="material-symbols-outlined">arrow_forward_ios</span>
             </button>
             <button class="profile-option-btn delete-account-btn">
