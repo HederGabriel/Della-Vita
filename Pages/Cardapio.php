@@ -18,7 +18,7 @@ if (isset($_POST['logout'])) {
     session_destroy(); // Destrói a sessão
 
     // Redireciona de volta para a mesma página
-    $redirect_url = $_POST['redirect'] ?? 'index.php';
+    $redirect_url = $_POST['redirect'] ?? 'Cardapio.php';
     header("Location: " . $redirect_url);
     exit();
 }
@@ -33,17 +33,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Della Vita</title>
-    <link rel="stylesheet" href="../CSS/nav.css"> 
+    <title>Della Vita - Menu</title>
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="stylesheet" href="../CSS/cardapio.css"> 
     <link rel="stylesheet" href="/CSS/font.css">
-    <link rel="stylesheet" href="../CSS/cardapio.css"> <!-- Estilo específico do index -->
     <link rel="stylesheet" href="/CSS/footer.css">
 </head>
 <body>
     <nav>
-        <div class="logo">
-            <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
-        </div>
+        <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
+
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
@@ -74,16 +73,106 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
         <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
     </div>
-
-    <!-- Página inicial do sistema -->
-    <h1>Cardapio</h1>
+    
     <?php if (isset($cliente)): ?>
         <form id="logout-form" method="POST" style="display: none;">
             <input type="hidden" name="logout" value="1">
         </form>
     <?php endif; ?>
-    <script src="../JS/userMenu.js"></script> <!-- Script para o user-menu -->
+    <script src="../JS/userMenu.js"></script>
 
+    <main>
+        <section>
+            <h1 id="tradicional">Pizzas Tradicionais</h1>
+        
+            <div id="trad" class="pizza-list">
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="doce">
+            <h1>Pizzas Doces</h1>
+        
+            <div id="trad" class="pizza-list">
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+            </div>
+        </section>
+        
+        <section id="especial">
+            <h1>Pizzas Especiais</h1>
+        
+            <div class="pizza-list">
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1>Pizzas Tradicionais</h1>
+        
+            <div id="trad" class="pizza-list">
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+                <div class="pizza-card">
+                    <img class="pizza-img" src="../IMG/img.jpg">
+                    <h2>Nome Pizza</h2>
+                </div>
+            </div>
+        </section>
+    </main>
     
     <footer>
         <div class="footer-container">
@@ -135,7 +224,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </div>
     </footer>
-
-
 </body>
 </html>

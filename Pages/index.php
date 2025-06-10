@@ -119,8 +119,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div onclick="window.location.href='Cardapio.php'" class="categoria"><p>Pizzas Tradicionais</p></div>
             <div onclick="window.location.href='Cardapio.php'" class="categoria"><p>Pizzas Doces</p></div>
             <div onclick="window.location.href='Cardapio.php'" class="categoria"><p>Pizzas Especiais</p></div>
-            <div onclick="window.location.href='Cardapio.php'" class="categoria"><p>Bebidas</p></div>
-
+            
             <h1 class="t-pizza">Pizzas Populares</h1>
             <div class="grid-espaco"></div>
             <button class="btn-ver-mais" onclick="window.location.href='Destaque.php'">Ver mais</button>
