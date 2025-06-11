@@ -17,13 +17,15 @@
             <p>Cliente: João Silva</p>
             <p>Itens: Pizza Margherita, Salada Caesar</p>
             <p>Status: Em Preparação</p>
+            <p>Endereço: América Pereira Rocha, 825 - St. Santa Luzia, Posse - CEP: 73900000</p>
             <p>Horário: 20:12</p>
         </div>
         <div class="pedido">
             <div class="avatar"></div>
             <p>Cliente: Maria Oliveira</p>
             <p>Itens: Lasanha, Tiramisu</p>
-            <p>Status: Pronto para Entrega</p>
+            <p>Status: Aguardando Retirada</p>
+            <p>Endereço: Retirada no Local</p>
             <p>Horário: 20:15</p>
         </div>
         <div class="pedido">
@@ -31,10 +33,9 @@
             <p>Cliente: Carlos Pereira</p>
             <p>Itens: Risoto de Cogumelos, Vinho Tinto</p>
             <p>Status: Em Preparação</p>
+            <p>Endereço: Retirada no Local</p>
             <p>Horário: 20:18</p>
         </div>
-        
     </section>
-
 </body>
 </html>
