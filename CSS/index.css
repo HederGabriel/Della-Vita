@@ -129,7 +129,7 @@ section.pizza .categoria {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 25px 0 60px 0;
+    margin: 25px 0 60px 150px;
     cursor: pointer;
 }
 
