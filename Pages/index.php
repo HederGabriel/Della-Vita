@@ -39,7 +39,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="/CSS/footer.css">
 
 </head>
-<>
     <nav>
         <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
         
