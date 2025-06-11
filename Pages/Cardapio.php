@@ -1,8 +1,7 @@
 <?php 
-include_once '../System/session.php'; // Inclui o arquivo de sessão
-include_once '../System/db.php'; // Inclui o arquivo de conexão com o banco de dados
+include_once '../System/session.php'; 
+include_once '../System/db.php'; 
 
-// Verificar se o usuário está logado
 if (isset($_SESSION['id_cliente'])) {
     $id_cliente = $_SESSION['id_cliente'];
     $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
@@ -15,17 +14,33 @@ if (isset($_SESSION['id_cliente'])) {
 }
 
 if (isset($_POST['logout'])) {
-    session_destroy(); // Destrói a sessão
-
-    // Redireciona de volta para a mesma página
+    session_destroy();
     $redirect_url = $_POST['redirect'] ?? 'Cardapio.php';
     header("Location: " . $redirect_url);
     exit();
 }
 
-
-// Página atual
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Filtros
+$saboresSelecionados = $_GET['sabor'] ?? [];
+$ordem = $_GET['ordem'] ?? 'asc';
+$busca = $_GET['busca'] ?? '';
+
+function buscarPizzas($pdo, $sabor, $ordem, $busca) {
+    $query = "SELECT id_produto, nome, imagem FROM produtos WHERE sabor = :sabor";
+    $params = ['sabor' => $sabor];
+
+    if (!empty($busca)) {
+        $query .= " AND nome LIKE :busca";
+        $params['busca'] = '%' . $busca . '%';
+    }
+
+    $query .= " ORDER BY nome " . ($ordem === 'desc' ? 'DESC' : 'ASC');
+    $stmt = $pdo->prepare($query);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +63,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
         </div>
         <div class="nav-search">
-            <input type="text" id="search-bar" placeholder="Buscar...">
+            <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
             <div class="filter-container" style="position: relative; display: inline-block;">
                 <img class="filter" src="..\IMG\filter.svg" alt="Filtro">
 
@@ -75,8 +90,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 </div>
             </div>
         </div>
-        <script src="..\JS\filter.js"></script>
-        <script src="..\JS\busca.js"></script>
+
 
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
@@ -234,6 +248,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </div>
     </footer>
-    <script src="../JS/cardapio.js"></script>
+    <script src="../JS/busca-filter.js"></script>
 </body>
 </html>

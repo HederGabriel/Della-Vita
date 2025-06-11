@@ -47,8 +47,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
         </div>
         <div class="nav-search">
-            <input type="text" placeholder="Buscar...">
+            <input type="text" id="search-bar" placeholder="Buscar...">
         </div>
+        <script src="..\JS\busca.js"></script>
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
             <div class="user-profile" onclick="toggleMenu(event)">

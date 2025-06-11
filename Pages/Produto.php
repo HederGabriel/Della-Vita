@@ -95,8 +95,9 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
         </div>
 
         <div class="nav-search">
-            <input type="text" placeholder="Buscar...">
+            <input type="text" id="search-bar" placeholder="Buscar...">
         </div>
+        <script src="..\JS\busca.js"></script>
 
         <?php if ($cliente): ?>
             <div class="user-profile" onclick="toggleMenu(event)">
