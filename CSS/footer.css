@@ -189,19 +189,21 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 992px) {
+
+@media (max-width: 900px) {
   .footer-container {
     flex-direction: column;
     align-items: center;
   }
 
   .footer-logo img {
-    width: 250px;
+    width: 220px;
+    height: auto;
   }
 
   .footer-conteudo {
     width: 100%;
+    margin-top: 20px;
     align-items: center;
   }
 
@@ -209,28 +211,91 @@ footer a:hover {
     font-size: 36px;
   }
 
-  .footer-boxes > div {
+  .footer-boxes {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  footer div.social,
+  footer div.contato,
+  footer div.links {
     width: 90%;
+    max-width: 500px;
   }
 }
 
+
 @media (max-width: 600px) {
+  .footer-logo img {
+    width: 180px;
+  }
+
   .footer-topo h1 {
     font-size: 30px;
   }
 
-  .footer-boxes {
-    flex-direction: column;
-    align-items: center;
+  footer div.social h2,
+  footer div.contato h2,
+  footer div.links h2 {
+    font-size: 22px;
   }
 
-  .footer-boxes > div {
-    width: 100%;
+  footer div.social h3,
+  footer div.contato h3 {
+    font-size: 20px;
+  }
+
+  footer div.contato label,
+  footer div.contato p,
+  footer div.links p {
+    font-size: 15px;
   }
 
   footer div.social img {
-    width: 50px;
-    height: 40px;
+    width: 36px;
+    height: 44px;
+  }
+
+  .footer-boxes {
+    gap: 24px;
   }
 }
 
+
+@media (max-width: 400px) {
+  footer {
+    padding: 20px 12px;
+  }
+
+  .footer-topo h1 {
+    font-size: 24px;
+    padding-bottom: 6px;
+  }
+
+  footer div.social h2,
+  footer div.contato h2,
+  footer div.links h2 {
+    font-size: 20px;
+  }
+
+  footer div.social h3,
+  footer div.contato h3 {
+    font-size: 18px;
+  }
+
+  footer div.contato label,
+  footer div.contato p,
+  footer div.links p {
+    font-size: 14px;
+  }
+
+  footer div.social img {
+    width: 28px;
+    height: 36px;
+  }
+
+  .footer-boxes {
+    gap: 18px;
+  }
+}
