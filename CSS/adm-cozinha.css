@@ -1,0 +1,54 @@
+/* Reset e estrutura básica */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+}
+
+/* Estilo base das sections */
+section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: font-size 0.3s ease;
+    background-size: 200% 100%;
+    background-position: left center;
+    transition: background-position 0.8s ease, font-size 0.3s ease;
+}
+
+/* Cozinha - azul escuro */
+#cozinha {
+    background-image: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+}
+
+/* Hover suaviza a inversão */
+#cozinha:hover {
+    background-position: right center;
+    font-size: 34px;
+}
+
+/* ADM - vermelho escuro */
+#adm {
+    background-image: linear-gradient(to left, #4b0000, #730000, #a30000);
+}
+
+/* Hover suaviza a inversão */
+#adm:hover {
+    background-position: right center;
+    font-size: 34px;
+}

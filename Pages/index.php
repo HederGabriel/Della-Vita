@@ -188,5 +188,4 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
     </footer>
     <script src="../JS/busca-filter.js"></script>
-</>
 </html>

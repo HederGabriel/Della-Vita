@@ -48,8 +48,12 @@ include '../System/db.php'; // Conexão com o banco de dados
                     $_SESSION['nome'] = $cliente['nome'];
                     $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
 
-                    $redirect = $_POST['redirect'] ?? 'index.php';
-                    header("Location: " . $redirect);
+                    if ($email === 'dellavitaenterprise@gmail.com') {
+                        header("Location: adm-cozinha.php");
+                    } else {
+                        $redirect = $_POST['redirect'] ?? 'index.php';
+                        header("Location: " . $redirect);
+                    }
                     exit();
                 } else {
                     $_SESSION['error_message'] = "Erro: Email ou senha inválidos.";
