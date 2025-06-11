@@ -49,8 +49,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
       <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
     </div>
-    <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
-      <input type="text" placeholder="Buscar..." />
+    <div class="nav-search">
+      <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
     </div>
     <?php if (isset($_SESSION['id_cliente'])): ?>
       <div class="user-profile" onclick="toggleMenu(event)">

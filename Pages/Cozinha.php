@@ -2,7 +2,6 @@
 include_once '../System/db.php';
 date_default_timezone_set('America/Sao_Paulo');
 
-// Consulta para buscar os pedidos finalizados (ajuste o status conforme seu critério de finalização)
 $sql = "
     SELECT 
         p.id_pedido, p.nome_cliente, p.status_pedido, p.data_pedido, c.avatar,
@@ -26,37 +25,69 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Della Vita - Cozinha</title>
-    <link rel="stylesheet" href="../CSS/cozinha.css">
+    <link rel="stylesheet" href="../CSS/cozinha.css" />
 </head>
 <body>
-    
-    <section id="lista-pedido">
-        <button id="sair">Sair</button>
-        <h1>Lista de Pedidos</h1>
-        <button id="reload" onclick="location.reload()">RELOAD</button>
+<section id="lista-pedido">
+    <button id="sair" onclick="window.location.href='adm-cozinha.php'">Sair</button>
+    <h1>Lista de Pedidos</h1>
+    <button id="reload" onclick="location.reload()">RELOAD</button>
 
+    <div class="container-pedidos">
         <?php foreach ($pedidos as $pedido): ?>
+            <?php 
+                $temEndereco = !empty($pedido['rua']);
+                $statusAtual = $pedido['status_pedido'];
+
+                // Mapeamento visual do status para exibir no destaque
+                $mapaStatusExibicao = [
+                    'Recebido' => 'Recebido',
+                    'Em Preparo' => 'Em Preparo',
+                    'Enviado' => $temEndereco ? 'Enviado' : 'Aguardando Retirada',
+                    'Entregue' => $temEndereco ? 'Entregue' : 'Retirado',
+                ];
+
+                $statusExibicao = $mapaStatusExibicao[$statusAtual] ?? $statusAtual;
+            ?>
             <div class="pedido">
                 <div class="avatar">
-                    <img src="<?= htmlspecialchars($pedido['avatar'] ?? '../IMG/Profile/Default.png') ?>" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">
+                    <img src="<?= htmlspecialchars($pedido['avatar'] ?? '../IMG/Profile/Default.png') ?>" alt="Avatar" />
                 </div>
-                <p>Cliente: <?= htmlspecialchars($pedido['nome_cliente']) ?></p>
-                <p>Itens: <?= htmlspecialchars($pedido['itens']) ?></p>
-                <p>Status: <?= htmlspecialchars($pedido['status_pedido']) ?></p>
-                <p>
-                    Endereço: 
-                    <?= empty($pedido['rua']) 
-                        ? 'Retirada no Local' 
-                        : htmlspecialchars("{$pedido['rua']}, {$pedido['numero']} - {$pedido['setor']}, {$pedido['cidade']} - CEP: {$pedido['cep']}") ?>
-                </p>
-                <p>Horário: <?= date('H:i', strtotime($pedido['data_pedido'])) ?></p>
+                <div class="pedido-info">
+                    <p>Cliente: <?= htmlspecialchars($pedido['nome_cliente']) ?></p>
+                    <p>Itens: <?= htmlspecialchars($pedido['itens']) ?></p>
+                    <p class="select-status">
+                        <span class="status-destaque"><?= htmlspecialchars($statusExibicao) ?></span>
+                        <select class="select" onchange="atualizarStatus(this, <?= (int)$pedido['id_pedido'] ?>)">
+                            <option value="Recebido" <?= $statusAtual === 'Recebido' ? 'selected' : '' ?>>Recebido</option>
+                            <option value="Em Preparo" <?= $statusAtual === 'Em Preparo' ? 'selected' : '' ?>>Em Preparo</option>
+
+                            <?php if (!$temEndereco): // Retirada no Local ?>
+                                <option value="Enviado" <?= $statusAtual === 'Enviado' ? 'selected' : '' ?>>Aguardando Retirada</option>
+                                <option value="Entregue" <?= $statusAtual === 'Entregue' ? 'selected' : '' ?>>Retirado</option>
+                            <?php else: // Pedido com endereço (entrega) ?>
+                                <option value="Enviado" <?= $statusAtual === 'Enviado' ? 'selected' : '' ?>>Enviado</option>
+                                <!-- Não mostrar Entregue para pedidos com endereço -->
+                            <?php endif; ?>
+                        </select>
+                    </p>
+                    <p>
+                        Endereço: 
+                        <?= $temEndereco
+                            ? htmlspecialchars("{$pedido['rua']}, {$pedido['numero']} - {$pedido['setor']}, {$pedido['cidade']} - CEP: {$pedido['cep']}")
+                            : 'Retirada no Local'
+                        ?>
+                    </p>
+                    <p>Horário: <?= date('H:i', strtotime($pedido['data_pedido'])) ?></p>
+                </div>
             </div>
         <?php endforeach; ?>
+    </div>
+</section>
 
-    </section>
-
+<script src="../JS/cozinha-status.js"></script>
 </body>
 </html>
