@@ -49,10 +49,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
       <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
     </div>
-    <input type="text" id="search-bar" placeholder="Buscar...">
+    <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
       <input type="text" placeholder="Buscar..." />
     </div>
-    <script src="..\JS\busca.js"></script>
     <?php if (isset($_SESSION['id_cliente'])): ?>
       <div class="user-profile" onclick="toggleMenu(event)">
         <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil" />
@@ -198,5 +197,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </div>
 
   <script src="../JS/acompanharPedido.js"></script>
+  <script src="../JS/busca-filter.js"></script>
+
 </body>
 </html>

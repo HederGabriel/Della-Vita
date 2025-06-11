@@ -3,26 +3,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const filterModal = document.getElementById("filter-modal");
     const filterForm = document.getElementById("filter-form");
     const searchInput = document.getElementById("search-bar");
+    const mensagemNenhumaPizza = document.getElementById("mensagem-nenhuma-pizza");
+    const noRespost = document.getElementById("no-results");
 
-    // Elemento para mostrar a mensagem de "Nenhuma pizza encontrada"
-    // Você deve ter esse elemento no seu HTML, por exemplo:
-    // <p id="mensagem-nenhuma-pizza" style="display:none; color:red; font-weight:bold; margin-top:20px;">
-    //   Nenhuma pizza encontrada.
-    // </p>
-    const mensagemNenhumaPizza = document.getElementById("no-results");
-
-    // Mostrar/ocultar modal de filtro
     filterBtn?.addEventListener("click", () => {
         filterModal.classList.toggle("hidden");
     });
 
-    // Submissão do filtro
+    document.addEventListener("click", (e) => {
+        if (!filterModal.classList.contains("hidden")) {
+            if (
+                !filterModal.contains(e.target) &&
+                !filterBtn.contains(e.target)
+            ) {
+                filterModal.classList.add("hidden");
+            }
+        }
+    });
+
     filterForm?.addEventListener("submit", function (e) {
         e.preventDefault();
         aplicarFiltroEBusca();
     });
 
-    // Aplica filtro e busca combinados
     function aplicarFiltroEBusca() {
         const saboresSelecionados = [...document.querySelectorAll('input[name="sabor"]:checked')]
             .map(cb => cb.value);
@@ -32,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const todasCategorias = ['trad', 'doce', 'esp'];
         const categorias = saboresSelecionados.length > 0 ? saboresSelecionados : todasCategorias;
 
-        let algumCardVisivel = false; // Para controlar se existe algum card visível
+        let algumCardVisivel = false;
 
         todasCategorias.forEach(tipo => {
             const secao = document.getElementById(tipo);
@@ -44,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const container = secao.querySelector(".pizza-list");
                 const cards = Array.from(container.querySelectorAll(".pizza-card"));
 
-                // Ordenar os cards
                 cards.sort((a, b) => {
                     const nomeA = a.querySelector("h2").textContent.trim().toLowerCase();
                     const nomeB = b.querySelector("h2").textContent.trim().toLowerCase();
@@ -53,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 cards.forEach(card => container.appendChild(card));
 
-                // Aplicar busca após o filtro
                 let algumVisivelNaSecao = false;
                 cards.forEach(card => {
                     const titulo = card.querySelector("h2").textContent.toLowerCase();
@@ -71,31 +72,44 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Mostrar ou esconder mensagem de "Nenhuma pizza encontrada"
+        // Exibe a mensagem no-respost se nenhum card estiver visível
+        if (noRespost) {
+            noRespost.style.display = algumCardVisivel ? "none" : "block";
+        }
+
         if (mensagemNenhumaPizza) {
             mensagemNenhumaPizza.style.display = algumCardVisivel ? "none" : "block";
         }
     }
 
-    // Comportamento da barra de busca
     if (searchInput) {
         const isCardapio = window.location.pathname.includes("Cardapio.php");
 
         if (isCardapio) {
-            // Input dinâmico
             searchInput.addEventListener("input", () => {
                 aplicarFiltroEBusca();
+
+                if (searchInput.value.trim() === "") {
+                    const url = new URL(window.location);
+                    url.searchParams.delete("busca");
+                    url.searchParams.delete("search");
+                    window.history.replaceState({}, "", url);
+                }
             });
 
-            // Aplicar busca automaticamente se veio de URL
             const urlParams = new URLSearchParams(window.location.search);
-            const buscaInicial = urlParams.get("busca");
+            const buscaInicial = urlParams.get("busca") || urlParams.get("search");
             if (buscaInicial) {
                 searchInput.value = buscaInicial;
                 aplicarFiltroEBusca();
             }
         } else {
-            // Redireciona com ENTER
+            const urlParams = new URLSearchParams(window.location.search);
+            const buscaAtual = urlParams.get("busca") || urlParams.get("search");
+            if (buscaAtual && searchInput) {
+                searchInput.value = buscaAtual;
+            }
+
             searchInput.addEventListener("keypress", function (e) {
                 if (e.key === "Enter") {
                     e.preventDefault();
@@ -108,7 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Inicializa com tudo visível
     if (window.location.pathname.includes("Cardapio.php")) {
         aplicarFiltroEBusca();
     }

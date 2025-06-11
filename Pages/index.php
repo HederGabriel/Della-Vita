@@ -39,7 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="/CSS/footer.css">
 
 </head>
-<body>
+<>
     <nav>
         <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
         
@@ -48,9 +48,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
         </div>
         <div class="nav-search">
-            <input type="text" id="search-bar" placeholder="Buscar...">
+            <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
         </div>
-        <script src="../JS/busca-filter.js"></script>
 
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
@@ -189,6 +188,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </div>
     </footer>
-
-</body>
+    <script src="../JS/busca-filter.js"></script>
+</>
 </html>

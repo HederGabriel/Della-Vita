@@ -73,7 +73,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
     </div>
     <div class="nav-search">
-      <input type="text" placeholder="Buscar..." />
+      <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
     </div>
     <?php if (isset($_SESSION['id_cliente'])): ?>
       <div class="user-profile" onclick="toggleMenu(event)">
@@ -300,7 +300,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <p id="toast-alerta-texto"></p>
   </div>
 
-
+  <script src="../JS/busca-filter.js"></script>
   <script src="../JS/userMenu.js"></script>
   <script src="../JS/filtro.js"></script>
   <script src="../JS/Pedidos.js"></script>

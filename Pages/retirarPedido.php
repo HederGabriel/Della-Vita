@@ -53,7 +53,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
       <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
     </div>
     <div class="nav-search">
-      <input type="text" placeholder="Buscar..." />
+      <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
     </div>
     <?php if (isset($_SESSION['id_cliente'])): ?>
       <div class="user-profile" onclick="toggleMenu(event)">
@@ -188,5 +188,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
   </div>
 
   <script src="../JS/retirarPedido.js"></script>
+  <script src="../JS/busca-filter.js"></script>
 </body>
 </html>

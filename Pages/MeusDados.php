@@ -58,9 +58,8 @@ if ($cliente) {
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
         </div>
         <div class="nav-search">
-            <input type="text" id="search-bar" placeholder="Buscar...">
+            <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
         </div>
-        <script src="..\JS\busca.js"></script>
         <?php if (isset($_SESSION['id_cliente'])): ?>
             <!-- Exibir perfil do usuário -->
             <div class="user-profile" onclick="toggleMenu(event)">
@@ -198,7 +197,7 @@ if ($cliente) {
         </div>
     </footer>
 
-
+    <script src="../JS/busca-filter.js"></script>
 </body>
 
 </html>
