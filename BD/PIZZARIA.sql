@@ -98,7 +98,6 @@ CREATE TABLE `enderecos` (
 
 LOCK TABLES `enderecos` WRITE;
 /*!40000 ALTER TABLE `enderecos` DISABLE KEYS */;
-INSERT INTO `enderecos` VALUES (9,_binary 'América Pereira Rocha',_binary '825',_binary 'St. Santa Luzia',_binary '73900000','',35,_binary 'Posse');
 /*!40000 ALTER TABLE `enderecos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,7 +125,7 @@ CREATE TABLE `itens_pedido` (
   CONSTRAINT `itens_pedido_ibfk3` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `itens_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`),
   CONSTRAINT `itens_pedido_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produtos` (`id_produto`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,7 +134,6 @@ CREATE TABLE `itens_pedido` (
 
 LOCK TABLES `itens_pedido` WRITE;
 /*!40000 ALTER TABLE `itens_pedido` DISABLE KEYS */;
-INSERT INTO `itens_pedido` VALUES (80,1,39.99,39.99,'casa',35,1,18,'m'),(81,1,69.9,69.9,'local',36,6,18,'m'),(82,1,39.99,39.99,'local',37,1,18,'m'),(83,1,39.99,39.99,'local',38,4,18,'m');
 /*!40000 ALTER TABLE `itens_pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +149,7 @@ CREATE TABLE `pedidos` (
   `nome_cliente` varchar(100) NOT NULL,
   `tipo_pedido` varchar(100) NOT NULL,
   `status_pedido` varchar(100) NOT NULL,
-  `data_pedido` date NOT NULL,
+  `data_pedido` datetime NOT NULL,
   `valor_total` double NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
   `nota` int(11) DEFAULT NULL,
@@ -159,7 +157,7 @@ CREATE TABLE `pedidos` (
   PRIMARY KEY (`id_pedido`),
   KEY `id_cliente` (`id_cliente`),
   CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +166,6 @@ CREATE TABLE `pedidos` (
 
 LOCK TABLES `pedidos` WRITE;
 /*!40000 ALTER TABLE `pedidos` DISABLE KEYS */;
-INSERT INTO `pedidos` VALUES (35,'Heder','casa','archive','2025-06-09',39.99,18,4,'Sem Comentários'),(36,'Heder','local','archive','2025-06-09',69.9,18,NULL,'Sem Comentários'),(37,'Heder','local','Recebido','2025-06-09',39.99,18,NULL,'Sem Comentários'),(38,'Heder','local','Recebido','2025-06-10',39.99,18,NULL,'Sem Comentários');
 /*!40000 ALTER TABLE `pedidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,4 +208,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-11  0:53:10
+-- Dump completed on 2025-06-11 14:14:52
