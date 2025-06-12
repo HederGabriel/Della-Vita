@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Painel de Gerenciamento */
+.painel {
+    width: 1420px;
+    min-height: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Parte superior com imagem e formulário lado a lado */
+.painel-topo {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+/* Upload de Imagem */
+.upload-imagem {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #dddddd5f;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.upload-imagem:hover {
+    background-color: #ddd;
+    transition: background-color 0.3s ease;
+}
+
+.upload-imagem p {
+    margin: 4px 0;
+}
+
+.upload-button {
+    width: 60%;
+    padding: 10px;
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* Formulário de Cadastro de Produto */
+.add-produto {
+    flex: 1;
+    background-color: white;
+    border-radius: 8px;
+    padding: 0px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.add-produto form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.add-produto input,
+.add-produto select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.dados-page {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ingredientes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.ingredientes input {
+    flex: 1;
+    min-width: 200px;
+    height: 40px;
+}
+
+#add-ingrediente {
+    width: 30px;
+    height: 30px;
+    background-color: orange;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Lista de Produtos */
+.lista-produtos {
+    width: 80%;
+    margin: 40px auto 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.lista-produtos h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Container dos produtos */
+.produtos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilo individual de cada produto */
+.produto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+
+.produto img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 20px;
+}
+
+.produto h3 {
+    flex: 1;
+    font-size: 18px;
+    margin: 0 10px;
+}
+
+.produto p {
+    font-weight: bold;
+    color: #333;
+    margin-right: 20px;
+}
+
+.edit-button,
+.delete-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #007bff;
+    margin-right: 10px;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
