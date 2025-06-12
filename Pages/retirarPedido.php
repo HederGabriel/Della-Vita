@@ -39,6 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <link rel="stylesheet" href="../CSS/acompanhar.css" />
   <link rel="stylesheet" href="/CSS/font.css" />
   <link rel="stylesheet" href="/CSS/footer.css" />
+  <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
   <style>
     .acoes{
       margin-left: 82px;

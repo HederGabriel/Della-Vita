@@ -37,7 +37,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="../CSS/index.css"> <!-- Estilo específico do index -->
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
-    <link rel="shortcut icon" href="../IMG/favicon2.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 
 </head>
     <nav>

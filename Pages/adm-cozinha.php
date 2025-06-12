@@ -35,6 +35,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title>Della Vita - ADM</title>
     <link rel="stylesheet" href="..\CSS\font.css">
     <link rel="stylesheet" href="..\CSS\adm-cozinha.css">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <section id="cozinha" onclick="window.location.href='Cozinha.php'">

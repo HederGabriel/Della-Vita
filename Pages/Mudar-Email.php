@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     <title>Mudar Email</title>
     <link rel="stylesheet" href="/CSS/Esqueci-Senha.css">
     <link rel="stylesheet" href="/CSS/font.css">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <main>

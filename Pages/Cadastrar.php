@@ -12,6 +12,7 @@ include '../System/db.php'; // Conexão com o banco de dados
     <link rel="stylesheet" href="/CSS/Cadastrar.css">
     <link rel="stylesheet" href="/CSS/font.css">
     <script src="../JS/cadastrar.js"></script>
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
     

@@ -53,6 +53,7 @@ function buscarPizzas($pdo, $sabor, $ordem, $busca) {
     <link rel="stylesheet" href="../CSS/cardapio.css"> 
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <nav>

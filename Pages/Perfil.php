@@ -82,6 +82,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <script src="../JS/Perfil.js"></script> <!-- Script externo -->
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <nav>

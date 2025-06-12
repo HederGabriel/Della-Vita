@@ -13,6 +13,7 @@ include '../System/db.php'; // Conexão com o banco de dados
     <link rel="stylesheet" href="/CSS/Logar.css"> <!-- Estilo da página -->
     <link rel="stylesheet" href="/CSS/font.css">
     <script src="../JS/logar.js"></script>
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
     

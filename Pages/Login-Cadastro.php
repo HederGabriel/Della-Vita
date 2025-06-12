@@ -7,6 +7,7 @@
     <title>Entrar</title>
     <link rel="stylesheet" href="../CSS/Login-Cadastro.css"> 
     <link rel="stylesheet" href="/CSS/font.css">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
 

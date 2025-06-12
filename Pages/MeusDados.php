@@ -46,6 +46,7 @@ if ($cliente) {
     <script src="../JS/userMenu.js"></script> 
     <link rel="stylesheet" href="/CSS/font.css">
     <link rel="stylesheet" href="/CSS/footer.css">
+    <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
