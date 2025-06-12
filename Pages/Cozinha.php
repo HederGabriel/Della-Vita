@@ -60,6 +60,7 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <p>Cliente: <?= htmlspecialchars($pedido['nome_cliente']) ?></p>
                     <p>Itens: <?= htmlspecialchars($pedido['itens']) ?></p>
                     <p class="select-status">
+                        Status:
                         <span class="status-destaque"><?= htmlspecialchars($statusExibicao) ?></span>
                         <select class="select" onchange="atualizarStatus(this, <?= (int)$pedido['id_pedido'] ?>)">
                             <option value="Recebido" <?= $statusAtual === 'Recebido' ? 'selected' : '' ?>>Recebido</option>
