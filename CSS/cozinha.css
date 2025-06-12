@@ -2,123 +2,135 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: gray;
+    background-color: #f7f2ef;
 }
 
 #lista-pedido {
-    width: 1200px;
+    width: 100%;
+    max-width: 1200px;
     min-height: 330px;
     margin: 15px auto 0 auto;
-    border: black solid 2px;
-    background-color: white;
+    background-color: #fffdfb;
+    border: 2px solid #ffa14c;
     padding: 20px 40px 20px 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
     position: relative;
 }
 
 #lista-pedido h1 {
     text-align: center;
-    font-size: 40px;
+    font-size: 36px;
+    color: #ed6d0f;
+    margin-bottom: 30px;
 }
 
-/* Botão sair */
+
+#sair, #reload {
+    position: absolute;
+    top: 20px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #f57606;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#sair:hover, #reload:hover {
+    background-color: #d45700;
+}
+
 #sair {
-    position: absolute;
-    top: 20px;
     left: 20px;
-    color: white;
-    background-color: orange;
-    width: 50px;
-    height: 30px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
 }
 
-/* Botão reload */
 #reload {
-    position: absolute;
-    top: 20px;
     right: 20px;
-    font-size: 8px;
-    background-color: orange;
-    width: 50px;
-    height: 30px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    color: white;
+    font-size: 12px;
 }
 
-/* NOVO: Container Flex dos pedidos */
+
 .container-pedidos {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 24px;
     justify-content: center;
-    margin-top: 30px;
 }
 
-/* Estilo de cada card de pedido */
+
 .pedido {
-    display: flex; /* Flex container para avatar e texto */
-    align-items: flex-start;
+    display: flex;
     gap: 20px;
-
-    width: 45%;
-    min-width: 320px;
-    background-color: #f8f8f8;
-    border: 2px solid black;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
+    width: 100%;
+    max-width: 540px;
+    background-color: #fff6ed;
+    border: 2px solid #ffb97b;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pedido-info {
-    flex: 1;
-    max-width: 300px;
-    min-width: 270px;
-    word-wrap: break-word;     /* Garante quebra de palavras longas */
-    overflow-wrap: break-word; /* Garante compatibilidade cross-browser */
+.pedido:hover {
+    transform: translateY(-4px);
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.12);
 }
-
 
 .avatar {
-    flex-shrink: 0; /* Evita encolher */
+    flex-shrink: 0;
 }
 
 .avatar img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 2px solid black;
-    margin-bottom: 10px;
+    border: 2px solid #ffa14c;
+    object-fit: cover;
+}
+
+.pedido-info {
+    flex: 1;
+    word-wrap: break-word;
 }
 
 .pedido p {
-    font-size: 18px;
-    margin: 4px 0;
+    font-size: 16px;
+    color: #3a3a3a;
+    margin: 6px 0;
 }
 
-/* Destaque visual para o status atual */
+
 .status-destaque {
+    display: inline-block;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 5px;
-    background-color: #f0ad4e; /* laranja */
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background-color: #f9953e;
     color: white;
     min-width: 90px;
-    display: inline-block;
     text-align: center;
+    margin-top: 4px;
 }
 
-.select{
-    max-width: 100px;
+.select, .select-status {
+    width: 100%;
+    max-width: 150px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ffa14c;
+    border-radius: 6px;
+    background-color: #fffdfb;
+    color: #333;
+    box-sizing: border-box;
+    appearance: none; /* Remove estilos padrões do sistema */
 }
 
-.select-status{
-    max-width: 300px;
-}
+
