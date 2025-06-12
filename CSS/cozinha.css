@@ -43,12 +43,13 @@ body {
     top: 20px;
     right: 20px;
     font-size: 8px;
-    background-color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid rgba(0, 0, 0, 0.466);
+    background-color: orange;
+    width: 50px;
+    height: 30px;
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
+    color: white;
 }
 
 /* NOVO: Container Flex dos pedidos */
