@@ -52,7 +52,7 @@ h1.titulo {
   color: #ed3a08;
 }
 
-/* Barra de Status */
+
 .status {
   margin: 30px 0;
   display: flex;
@@ -313,7 +313,6 @@ h1.titulo {
     height: 40px;
   }
 }
-
 #modalAvaliacao {
   position: fixed;
   top: 0;
@@ -379,4 +378,57 @@ h1.titulo {
 
 #btnEnviarNota:hover {
   background-color: #c85d00;
+}
+
+
+@media (max-width: 900px) {
+  .modal-content-nota {
+    max-width: 50%;
+    padding: 20px;
+  }
+
+  #estrelas span {
+    font-size: 26px;
+  }
+
+  #btnEnviarNota {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-content-nota {
+    max-width: 75%;
+    padding: 20px;
+  }
+
+  #estrelas span {
+    font-size: 24px;
+  }
+
+  #btnEnviarNota {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .modal-content-nota {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .modal-content-nota h3 {
+    font-size: 18px;
+  }
+
+  #estrelas span {
+    font-size: 22px;
+    margin: 0 3px;
+  }
+
+  #btnEnviarNota {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
 }
