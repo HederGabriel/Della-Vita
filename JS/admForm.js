@@ -1,97 +1,181 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const descricaoR = document.getElementById("descricao-r");
-    const contadorResumo = document.getElementById("contador-resumo");
-    const descricaoCompleta = document.getElementById("descricao_completa");
-    const contadorCompleta = document.getElementById("contador-completa");
-    const addIngredienteBtn = document.getElementById("add-ingrediente");
-    const ingredientesContainer = document.getElementById("ingredientes-container");
-    const formulario = document.querySelector("form");
+  const descricaoR = document.getElementById("descricao-r");
+  const contadorResumo = document.getElementById("contador-resumo");
+  const descricaoCompleta = document.getElementById("descricao_completa");
+  const contadorCompleta = document.getElementById("contador-completa");
+  const addIngredienteBtn = document.getElementById("add-ingrediente");
+  const ingredientesContainer = document.getElementById("ingredientes-container");
+  const formulario = document.querySelector("form");
+  const uploadDiv = document.getElementById("upload-imagem");
+  const inputImagem = document.getElementById("inputImagem");
+  const btnEscolher = document.getElementById("btnEscolherImagem");
+  const botaoSubmit = document.getElementById("adicionar-produto");
 
+  descricaoR.addEventListener("input", () => {
+    contadorResumo.textContent = `${descricaoR.value.length}/30`;
+  });
 
-    descricaoR.addEventListener("input", () => {
-        contadorResumo.textContent = `${descricaoR.value.length}/30`;
-    });
+  descricaoCompleta.addEventListener("input", () => {
+    contadorCompleta.textContent = `${descricaoCompleta.value.length}/185`;
+  });
 
-    descricaoCompleta.addEventListener("input", () => {
-        contadorCompleta.textContent = `${descricaoCompleta.value.length}/185`;
-    });
+  addIngredienteBtn.addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "ingredientes[]";
+    input.placeholder = "Ingrediente";
+    input.required = true;
+    ingredientesContainer.appendChild(input);
+  });
 
-    addIngredienteBtn.addEventListener("click", () => {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.name = "ingredientes[]";
-        input.placeholder = "Ingrediente";
-        input.required = true;
-        ingredientesContainer.appendChild(input);
-    });
-
-    // Upload de imagem
-    const uploadDiv = document.getElementById("upload-imagem");
-    const inputImagem = document.getElementById("inputImagem");
-    const btnEscolher = document.getElementById("btnEscolherImagem");
-
-    const mostrarImagem = (file) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            uploadDiv.innerHTML = `
-                <div class="imagem-preview" style="position: relative; cursor: pointer;">
-                    <img src="${reader.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-                    <div class="hover-overlay" style="
-                        position: absolute; top: 0; left: 0; 
-                        width: 100%; height: 100%;
-                        background: rgba(0,0,0,0.5);
-                        display: flex; justify-content: center; align-items: center;
-                        color: white; font-size: 24px; opacity: 0;
-                        transition: opacity 0.3s;
-                        border-radius: 8px;
-                    ">
-                        ✎
-                    </div>
-                </div>
-            `;
-            const preview = uploadDiv.querySelector(".imagem-preview");
-            const overlay = uploadDiv.querySelector(".hover-overlay");
-
-            preview.addEventListener("mouseenter", () => overlay.style.opacity = "1");
-            preview.addEventListener("mouseleave", () => overlay.style.opacity = "0");
-            preview.addEventListener("click", () => inputImagem.click());
-        };
-        reader.readAsDataURL(file);
+  const mostrarImagem = (fileOrDataURL) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadDiv.innerHTML = `
+        <div class="imagem-preview" style="position: relative; cursor: pointer;">
+          <img src="${reader.result}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+          <div class="hover-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;
+               background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;
+               color:white;font-size:24px;opacity:0;transition:opacity 0.3s;border-radius:8px;">
+            ✎
+          </div>
+        </div>
+      `;
+      const preview = uploadDiv.querySelector(".imagem-preview");
+      const overlay = uploadDiv.querySelector(".hover-overlay");
+      preview.addEventListener("mouseenter", () => overlay.style.opacity = "1");
+      preview.addEventListener("mouseleave", () => overlay.style.opacity = "0");
+      preview.addEventListener("click", () => inputImagem.click());
     };
+    if (fileOrDataURL instanceof File) {
+      reader.readAsDataURL(fileOrDataURL);
+    } else {
+      uploadDiv.innerHTML = `
+        <div class="imagem-preview" style="position: relative; cursor: pointer;">
+          <img src="${fileOrDataURL}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+          <div class="hover-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;
+               background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;
+               color:white;font-size:24px;opacity:0;transition:opacity 0.3s;border-radius:8px;">
+            ✎
+          </div>
+        </div>
+      `;
+      const preview = uploadDiv.querySelector(".imagem-preview");
+      const overlay = uploadDiv.querySelector(".hover-overlay");
+      preview.addEventListener("mouseenter", () => overlay.style.opacity = "1");
+      preview.addEventListener("mouseleave", () => overlay.style.opacity = "0");
+      preview.addEventListener("click", () => inputImagem.click());
+    }
+  };
 
-    uploadDiv.addEventListener("dragover", e => {
-        e.preventDefault();
-        uploadDiv.style.border = "2px dashed #000";
-    });
+  uploadDiv.addEventListener("dragover", e => {
+    e.preventDefault();
+    uploadDiv.style.border = "2px dashed #000";
+  });
+  uploadDiv.addEventListener("dragleave", () => {
+    uploadDiv.style.border = "";
+  });
+  uploadDiv.addEventListener("drop", e => {
+    e.preventDefault();
+    uploadDiv.style.border = "";
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      inputImagem.files = e.dataTransfer.files;
+      mostrarImagem(file);
+    }
+  });
+  btnEscolher.addEventListener("click", () => inputImagem.click());
+  inputImagem.addEventListener("change", () => {
+    const file = inputImagem.files[0];
+    if (file && file.type.startsWith("image/")) {
+      mostrarImagem(file);
+    }
+  });
+  formulario.addEventListener("submit", e => {
+    if (!inputImagem.files.length) {
+      alert("Por favor, selecione uma imagem antes de enviar.");
+      inputImagem.focus();
+      e.preventDefault();
+    }
+  });
 
-    uploadDiv.addEventListener("dragleave", () => {
-        uploadDiv.style.border = "";
-    });
-
-    uploadDiv.addEventListener("drop", e => {
-        e.preventDefault();
-        uploadDiv.style.border = "";
-        const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith("image/")) {
-            inputImagem.files = e.dataTransfer.files;
-            mostrarImagem(file);
+  // --- EDITAR PRODUTO ---
+  document.querySelectorAll(".edit-button").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      try {
+        const res = await fetch(`../System/getProduto.php?id=${id}`);
+        const produto = await res.json();
+        if (!produto || produto.error) {
+          alert(produto?.error || "Erro ao carregar o produto.");
+          return;
         }
-    });
 
-    btnEscolher.addEventListener("click", () => inputImagem.click());
+        document.getElementById("id_produto").value = produto.id_produto || "";
+        document.getElementById("nome").value = produto.nome || "";
+        document.getElementById("preco").value = produto.preco || "";
+        descricaoR.value = produto.descricao_resumida || "";
+        contadorResumo.textContent = `${produto.descricao_resumida?.length || 0}/30`;
 
-    inputImagem.addEventListener("change", () => {
-        const file = inputImagem.files[0];
-        if (file && file.type.startsWith("image/")) {
-            mostrarImagem(file);
+        document.getElementById("tipo").value = produto.tipo || "";
+        document.getElementById("categoria").value = produto.sabor || "";
+
+        // limpa ingredientes
+        ingredientesContainer.innerHTML = "";
+
+        // se tiver dadosPagina, carregar JSON e extrair info
+        if (produto.dadosPagina) {
+          try {
+            const resJson = await fetch(produto.dadosPagina);
+            const dados = await resJson.json();
+
+            descricaoCompleta.value = dados.descricao_completa || "";
+            contadorCompleta.textContent = `${descricaoCompleta.value.length}/185`;
+
+            (dados.ingredientes || []).forEach(ing => {
+              const input = document.createElement("input");
+              input.type = "text";
+              input.name = "ingredientes[]";
+              input.placeholder = "Ingrediente";
+              input.required = true;
+              input.value = ing;
+              ingredientesContainer.appendChild(input);
+            });
+          } catch (err) {
+            console.warn("Erro ao carregar dadosPagina:", err);
+          }
+        } else {
+          descricaoCompleta.value = produto.descricao_completa || "";
+          contadorCompleta.textContent = `${descricaoCompleta.value.length}/185`;
+
+          (produto.ingredientes || []).forEach(ing => {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = "ingredientes[]";
+            input.placeholder = "Ingrediente";
+            input.required = true;
+            input.value = ing;
+            ingredientesContainer.appendChild(input);
+          });
         }
-    });
 
-    formulario.addEventListener("submit", (e) => {
-        if (!inputImagem.files.length) {
-            alert("Por favor, selecione uma imagem antes de enviar.");
-            inputImagem.focus();
-            e.preventDefault();
+        botaoSubmit.textContent = "Salvar Alterações";
+        formulario.action = "../System/editarProduto.php";
+
+        if (produto.imagem) {
+          mostrarImagem(produto.imagem);
+          const blob = await (await fetch(produto.imagem)).blob();
+          const filename = produto.imagem.split("/").pop();
+          const file = new File([blob], filename, { type: blob.type });
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          inputImagem.files = dataTransfer.files;
         }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        alert("Erro na requisição: " + err.message);
+      }
     });
+  });
 });

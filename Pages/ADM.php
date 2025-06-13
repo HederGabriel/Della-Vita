@@ -59,6 +59,7 @@
                         <option value="esp">Especial</option>
                     </select>
 
+                    <input type="hidden" name="id_produto" id="id_produto">
                     <button type="submit" id="adicionar-produto">Adicionar Produto ao Cardápio</button>
                 </form>
                 <script src="../JS/admForm.js"></script>
