@@ -39,7 +39,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 <body>
     <section id="cozinha" onclick="window.location.href='Cozinha.php'">
-        <button onclick="window.location.href='../Pages/index.php' " id="Btn-sair">Sair</button>
+        <button id="Btn-sair" onclick="event.stopPropagation(); window.location.href='index.php'">Sair</button>
+
         Cozinha
     </section>
     <section id="adm" onclick="window.location.href='ADM.php'">
