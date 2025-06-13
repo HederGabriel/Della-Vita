@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+  
   // --- MODAL DE CONFIRMAÇÃO PERSONALIZADO PARA EXCLUSÃO ---
   const criarModalConfirmacao = () => {
     if (document.getElementById("custom-confirm-modal")) return;
