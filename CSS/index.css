@@ -1,4 +1,3 @@
-/* Reset e configurações globais */
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +10,7 @@ body {
     background: #fff;
 }
 
-/* Header */
+
 header {
     width: 100%;
     max-width: 1200px;
@@ -44,7 +43,7 @@ header img {
     border-radius: 10px;
 }
 
-/* Combo Section */
+
 section.combo {
     width: 100%;
     max-width: 1200px;
@@ -100,7 +99,7 @@ section.combo-info {
     background-color: #c43c1d;
 }
 
-/* Pizza Section */
+
 section.pizza {
     width: 100%;
     max-width: 1200px;
@@ -223,7 +222,7 @@ section.pizza .btn-ver-mais:hover {
 }
 
 
-/* -------------------- RESPONSIVIDADE -------------------- */
+
 
 @media (max-width: 1024px) {
     header {
