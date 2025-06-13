@@ -1,22 +1,17 @@
 <?php
-require_once '../System/db.php';
+require_once 'db.php';
 
-if (isset($_POST['id'])) {
-    $id = intval($_POST['id']);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
 
-    // Excluir imagem associada
-    $stmt = $pdo->prepare("SELECT imagem FROM produtos WHERE id_produto = ?");
-    $stmt->execute([$id]);
-    $produto = $stmt->fetch();
-    if ($produto && file_exists($produto['imagem'])) {
-        unlink($produto['imagem']);
+    try {
+        $stmt = $pdo->prepare("DELETE FROM produtos WHERE id_produto = ?");
+        $stmt->execute([$id]);
+        header("Location: ../Pages/ADM.php");
+        exit;
+    } catch (PDOException $e) {
+        echo "Erro ao excluir: " . $e->getMessage();
     }
-
-    // Excluir produto
-    $stmt = $pdo->prepare("DELETE FROM produtos WHERE id_produto = ?");
-    if ($stmt->execute([$id])) {
-        echo 'sucesso';
-    } else {
-        echo 'erro';
-    }
+} else {
+    echo "ID não informado.";
 }

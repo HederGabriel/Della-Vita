@@ -178,4 +178,57 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+  // --- MODAL DE CONFIRMAÇÃO PERSONALIZADO PARA EXCLUSÃO ---
+  const criarModalConfirmacao = () => {
+    if (document.getElementById("custom-confirm-modal")) return;
+
+    const modal = document.createElement("div");
+    modal.id = "custom-confirm-modal";
+    modal.className = "custom-confirm-modal";
+    modal.innerHTML = `
+      <div class="custom-confirm-conteudo">
+        <p id="custom-confirm-message" class="custom-confirm-mensagem">Tem certeza que deseja Excluir esse Produto?</p>
+        <div class="custom-confirm-botoes">
+          <button id="custom-confirm-no">Não</button>
+          <button id="custom-confirm-yes">Sim</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  };
+
+  criarModalConfirmacao();
+
+  const modal = document.getElementById("custom-confirm-modal");
+  const btnSim = document.getElementById("custom-confirm-yes");
+  const btnNao = document.getElementById("custom-confirm-no");
+  let idParaExcluir = null;
+
+  document.querySelectorAll(".delete-button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      idParaExcluir = btn.dataset.id;
+      modal.style.display = "flex";
+    });
+  });
+
+  btnNao.addEventListener("click", () => {
+    modal.style.display = "none";
+    idParaExcluir = null;
+  });
+
+  btnSim.addEventListener("click", async () => {
+    if (!idParaExcluir) return;
+    try {
+      const res = await fetch(`../System/excluirProduto.php?id=${idParaExcluir}`, { method: "GET" });
+      const result = await res.text();
+      if (res.ok) {
+        location.reload();
+      } else {
+        alert("Erro ao excluir o produto: " + result);
+      }
+    } catch (err) {
+      alert("Erro ao excluir: " + err.message);
+    }
+  });
+
 });
