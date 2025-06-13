@@ -55,19 +55,32 @@ main > section {
     width: 1200px;
     margin: 40px auto;
     border: 2px solid #FF7F11;
+    border-radius: 12px;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    background-color: #fffaf5;
     box-sizing: border-box;
-    border-radius: 4px;
-    padding: 60px;
+    box-shadow: 0 4px 10px rgba(255, 127, 17, 0.1);
+}
+
+
+.left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 div.ingredientes {
     font-size: 24px;
-    margin: 0 0 0 60px;
     max-width: 310px;
+    color: #333;
 }
 
 div.ingredientes h3 {
-    margin: 0 0 10px -20px;
+    margin-bottom: 10px;
     color: #FF7F11;
 }
 
@@ -75,87 +88,86 @@ div.ingredientes ul {
     max-width: 310px;
 }
 
-.tamanho h2 {
-    margin: 0px 0 10px 0;
-    color: #FF7F11;
-}
-
 div.tamanho {
     font-size: 24px;
-    margin: 40px 0 0 40px;
+    color: #333;
+}
+
+.tamanho h2 {
+    color: #FF7F11;
+    margin-bottom: 10px;
 }
 
 div.tamanho button {
     width: 120px;
     height: 70px;
-    margin: 0px 20px 0 0;
-    font-size: 25px;
+    margin: 0 20px 10px 0;
+    font-size: 22px;
     background-color: white;
     border: 2px solid #FF7F11;
     border-radius: 8px;
     color: #FF7F11;
     cursor: pointer;
-}
-
-div.tamanho button.ativo {
-    border: 3px solid rgb(137, 35, 35);
+    transition: all 0.3s ease;
 }
 
 .tamanho button.ativo,
 .tamanho button:hover {
+    border: 3px solid rgb(137, 35, 35);
     color: rgb(162, 91, 4);
 }
 
+
 div.compra {
-    margin: -34% 0 0 0;
-    float: right;
     width: 400px;
     height: 350px;
     border: 2px solid #FF7F11;
+    border-radius: 10px;
     text-align: center;
+    padding: 20px;
+    background-color: #fff4eb;
+    box-shadow: 0 4px 8px rgba(255, 127, 17, 0.1);
 }
 
 div.compra h2 {
     font-size: 64px;
     margin-top: 8px;
+    color: #5e3023;
 }
 
-div.compra button.space {
-    margin: 20px 15px 0 0;
+
+div.compra button.local,
+div.compra button.addPedido {
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid #FF7F11;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 div.compra button.local {
     width: 160px;
     height: 60px;
     font-size: 16px;
-    cursor: pointer;
-    border: 2px solid #FF7F11;
-    border-radius: 8px;
     background-color: white;
     color: #FF7F11;
+    margin: 20px 15px 0 0;
 }
 
 div.compra button.local:hover {
     background-color: #ff80117e;
     color: white;
-    transition: all 0.3s ease;
-    border: 3px solid rgb(137, 35, 35)
+    border: 3px solid rgb(137, 35, 35);
 }
 
 div.compra button.addPedido {
     width: 200px;
     height: 75px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 2px solid #FF7F11;
-    margin: 25px 0 0 0;
-    padding: 12px 24px;
+    margin-top: 25px;
+    font-size: 18px;
     background-color: #FF7F11;
     color: white;
     border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    transition: all 0.3s ease;
 }
 
 div.compra button.addPedido:hover {

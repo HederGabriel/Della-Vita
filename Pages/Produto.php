@@ -139,24 +139,26 @@ if ($dadosJsonPath && preg_match('/^[\w\-]+\.json$/', basename($dadosJsonPath)))
 
     <main>
         <section>
-            <div class="ingredientes">
-                <h3>Lista de Ingredientes:</h3>
-                <?php if (!empty($ingredientes)): ?>
-                <ul>
-                    <?php foreach ($ingredientes as $ingrediente): ?>
-                        <li><?= htmlspecialchars($ingrediente, ENT_QUOTES | ENT_HTML5) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <?php else: ?>
-                <p>Sem ingredientes listados.</p>
-                <?php endif; ?>
-            </div>
+            <div class="left-col">
+                <div class="ingredientes">
+                    <h3>Lista de Ingredientes:</h3>
+                    <?php if (!empty($ingredientes)): ?>
+                    <ul>
+                        <?php foreach ($ingredientes as $ingrediente): ?>
+                            <li><?= htmlspecialchars($ingrediente, ENT_QUOTES | ENT_HTML5) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php else: ?>
+                    <p>Sem ingredientes listados.</p>
+                    <?php endif; ?>
+                </div>
 
-            <div class="tamanho">
-                <h2>Escolher tamanho da Pizza:</h2>
-                <button id="pq" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 0.8, 2, '.', '') ?>">Pequeno</button>
-                <button id="m" class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco, 2, '.', '') ?>">Médio</button>
-                <button id="g" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 1.3, 2, '.', '') ?>">Grande</button>
+                <div class="tamanho">
+                    <h2>Escolher tamanho da Pizza:</h2>
+                    <button id="pq" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 0.8, 2, '.', '') ?>">Pequeno</button>
+                    <button id="m" class="ativo" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco, 2, '.', '') ?>">Médio</button>
+                    <button id="g" onclick="selecionarTamanho(this)" data-preco="<?= number_format($preco * 1.3, 2, '.', '') ?>">Grande</button>
+                </div>
             </div>
 
             <!-- Preço formatado -->
