@@ -170,6 +170,28 @@
     background-color: #d36811;
 }
 
+#Btn-sair{
+  width: 100%;
+  max-width: 200;
+  height: 30px;
+  margin-bottom: 20px;
+  background-color: orange;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#Btn-sair:hover{
+    background-color: #d36811;
+}
+
 .lista-produtos {
     width: 80%;
     margin: 40px auto 0 auto;

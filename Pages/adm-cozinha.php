@@ -38,8 +38,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="shortcut icon" href="../IMG/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <button onclick="window.location.href='../Pages/index.php' ">Sair</button>
     <section id="cozinha" onclick="window.location.href='Cozinha.php'">
+        <button onclick="window.location.href='../Pages/index.php' " id="Btn-sair">Sair</button>
         Cozinha
     </section>
     <section id="adm" onclick="window.location.href='ADM.php'">

@@ -9,7 +9,7 @@
 </head>
 <body>
     <section class="painel">
-        <button onclick="window.location.href='../Pages/adm-cozinha.php' ">Sair</button>
+        <button onclick="window.location.href='../Pages/adm-cozinha.php' " id="Btn-sair">Sair</button>
         <div class="painel-topo">
 
             <div class="upload-imagem" id="upload-imagem">
