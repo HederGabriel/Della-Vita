@@ -10,37 +10,59 @@
 <body>
     <section class="painel">
         <div class="painel-topo">
-            <div class="upload-imagem">
+            <div class="upload-imagem" id="upload-imagem">
                 <p>Arraste e Solte para Carregar a Imagem</p>
                 <p>Ou</p>
-                <button class="upload-button">Escolhe o Arquivo</button>
+                <button type="button" class="upload-button" id="btnEscolherImagem">Escolher Arquivo</button>
             </div>
+
             <div class="add-produto">
                 
-                <form action="">
-                    <h1>Formulário de Adição de Produto ao Cardápio</h1> 
+                <form action="..\System\inserirProduto.php" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="inputImagem" name="imagem" accept="image/*" required style="opacity: 0; position: absolute; pointer-events: none; width: 0; height: 0;">
+
+
+                    <h1>Formulário de Adição de Produto ao Cardápio</h1>
+
                     <input type="text" name="nome" id="nome" placeholder="Nome do Produto" required>
-                    <input type="number" name="preco" id="preco" placeholder="Preço do Produto" required>
-                    <input type="text" name="descricao-r" id="descricao-r" placeholder="Descrição Resumida" required>
-                    <div class="dados-page">
-                        <input type="text" name="descricao_completa" id="descricao_completa" placeholder="Descrição Completa" required>
-                        <div class="ingredientes">
-                            <input type="text" name="ingredientes" id="ingredientes" placeholder="Ingredientes" required>
-                            <input type="text" name="ingredientes" id="ingredientes" placeholder="Ingredientes" required>
-                            <button id="add-ingrediente">+</button>
-                        </div>
+
+                    <input type="number" name="preco" id="preco" step="0.01" placeholder="Preço do Produto" required>
+
+                    <div class="campo-com-contador">
+                        <input type="text" name="descricao-r" id="descricao-r" maxlength="30" placeholder="Descrição Resumida" required>
+                        <span class="contador" id="contador-resumo">0/30</span>
                     </div>
+
+                    <div class="dados-page">
+                        <div class="campo-com-contador">
+                            <textarea name="descricao_completa" id="descricao_completa" maxlength="185" placeholder="Descrição Completa" required></textarea>
+                            <span class="contador" id="contador-completa">0/185</span>
+                        </div>
+
+                        <div class="ingredientes" id="ingredientes-container">
+                            <input type="text" name="ingredientes[]" placeholder="Ingrediente">
+                            <input type="text" name="ingredientes[]" placeholder="Ingrediente">
+                            <input type="text" name="ingredientes[]" placeholder="Ingrediente">
+                            <input type="text" name="ingredientes[]" placeholder="Ingrediente">
+                        </div>
+                        <button type="button" id="add-ingrediente">+</button>
+                    </div>
+
                     <select name="tipo" id="tipo">
                         <option value="normal">Normal</option>
                         <option value="combo">Combo</option>
                     </select>
-                    <select name="categoria" id="categoroa">
+
+                    <select name="categoria" id="categoria">
                         <option value="trad">Tradicional</option>
                         <option value="doce">Doce</option>
                         <option value="esp">Especial</option>
                     </select>
-                    <button id="adicionar-produto">Adicionar Produto ao Cardápio</button>
+
+                    <button type="submit" id="adicionar-produto">Adicionar Produto ao Cardápio</button>
                 </form>
+                <script src="../JS/admForm.js"></script>
+
             </div>
         </div>
 
