@@ -65,7 +65,20 @@
                                     <img src="<?= $imagem ?>" alt="<?= $nome ?>">
                                     <h3><?= $nome ?></h3>
                                     <?php if (!empty($categoria)): ?>
-                                        <p>Categoria: <?= ucfirst($categoria) ?></p>
+                                        <p>Categoria: 
+                                            <?php 
+                                                if ($categoria === 'trad') {
+                                                    echo 'Tradicional';
+                                                } elseif ($categoria === 'doce') {
+                                                    echo 'Doce';
+                                                } elseif ($categoria === 'esp') {
+                                                    echo 'Especial';
+                                                } else {
+                                                    echo ucfirst($categoria); // fallback, se tiver outro valor
+                                                }
+                                            ?>
+                                        </p>
+
                                     <?php endif; ?>
                                     <p>Tipo: <?= $tipo ?></p>
                                     <p>R$ <?= $preco ?></p>
