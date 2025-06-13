@@ -47,28 +47,42 @@
         <article class="lista-produtos">
             <h2>Produtos Cadastrados</h2>
             <div class="produtos">
-                <div class="produto">
-                    <img src="../IMG/Produtos/Calabresa.png" alt="Calabresa">
-                    <h3>Pizza de Calabresa</h3>
-                    <p>R$ 39,90</p>
-                    <button class="edit-button">Editar</button>
-                    <button class="delete-button">Excluir</button>
-                </div>
-                <div class="produto">
-                    <img src="../IMG/Produtos/Calabresa.png" alt="Frango">
-                    <h3>Pizza de Frango</h3>
-                    <p>R$ 39,90</p>
-                    <button class="edit-button">Editar</button>
-                    <button class="delete-button">Excluir</button>
-                </div>
-                <div class="produto">
-                    <img src="../IMG/Produtos/Calabresa.png" alt="Portuguesa">
-                    <h3>Pizza Portuguesa</h3>
-                    <p>R$ 39,90</p>
-                    <button class="edit-button">Editar</button>
-                    <button class="delete-button">Excluir</button>
-                <!-- Repetir o bloco acima para mais produtos -->
-                </div>
+                <?php
+                require_once '../System/db.php';
+
+                    try {
+                        $stmt = $pdo->query("SELECT * FROM produtos ORDER BY id_produto DESC");
+
+                        if ($stmt->rowCount() > 0) {
+                            while ($row = $stmt->fetch()) {
+                                $nome = htmlspecialchars($row['nome']);
+                                $preco = number_format($row['preco'], 2, ',', '.');
+                                $imagem = htmlspecialchars($row['imagem']); // Caminho completo já vem do banco
+                                $categoria = $row['sabor']; // categoria = sabor
+                                $tipo = ucfirst($row['tipo']);
+                    ?>
+                                <div class="produto">
+                                    <img src="<?= $imagem ?>" alt="<?= $nome ?>">
+                                    <h3><?= $nome ?></h3>
+                                    <?php if (!empty($categoria)): ?>
+                                        <p>Categoria: <?= ucfirst($categoria) ?></p>
+                                    <?php endif; ?>
+                                    <p>Tipo: <?= $tipo ?></p>
+                                    <p>R$ <?= $preco ?></p>
+                                    <button class="edit-button" data-id="<?= $row['id_produto'] ?>">Editar</button>
+                                    <button class="delete-button" data-id="<?= $row['id_produto'] ?>">Excluir</button>
+                                </div>
+                    <?php
+                            }
+                        } else {
+                            echo "<p>Nenhum produto cadastrado ainda.</p>";
+                        }
+                    } catch (PDOException $e) {
+                        echo "<p>Erro ao buscar produtos: " . $e->getMessage() . "</p>";
+                    }
+                    ?>
+            </div>
+
         </article>
     </section>
 </body>
