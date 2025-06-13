@@ -5,29 +5,31 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Painel de Gerenciamento */
+
 .painel {
-    width: 1420px;
+    width: 100%;
+    max-width: 1420px;
     min-height: 600px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 8px;
-    border: 2px solid #ddd;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e97e0a; 
+    box-shadow: 0 4px 12px rgba(255, 180, 17, 0.15); 
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-/* Parte superior com imagem e formulário lado a lado */
+
 .painel-topo {
     display: flex;
     width: 100%;
     gap: 20px;
+    
 }
 
-/* Upload de Imagem */
+
 .upload-imagem {
     width: 400px;
     height: 400px;
@@ -35,21 +37,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #dddddd5f;
-    border: 2px dashed #ccc;
+    background-color: #f7f4f2;
+    border: 2px dashed #ff914d;
     border-radius: 8px;
     padding: 20px;
     cursor: pointer;
     flex-shrink: 0;
+    transition: background-color 0.3s ease;
 }
 
 .upload-imagem:hover {
-    background-color: #ddd;
-    transition: background-color 0.3s ease;
+    background-color: #ffecd9;
 }
 
 .upload-imagem p {
     margin: 4px 0;
+    color: #2e2e2e;
 }
 
 .upload-button {
@@ -61,9 +64,14 @@
     border-radius: 5px;
     margin-top: 10px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* Formulário de Cadastro de Produto */
+.upload-button:hover {
+    background-color: #d36811;
+}
+
+
 .add-produto {
     flex: 1;
     background-color: white;
@@ -72,6 +80,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    box-shadow: 0 2px 6px rgba(255, 127, 17, 0.15);
 }
 
 .add-produto form {
@@ -84,8 +93,20 @@
 .add-produto input,
 .add-produto select {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 2px solid #b45f06;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #2e2e2e;
+}
+
+#descricao_completa{
+    padding: 10px;
+    border: 2px solid #b45f06;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #2e2e2e;
 }
 
 .dados-page {
@@ -112,16 +133,43 @@
     height: 30px;
     background-color: orange;
     border: none;
-    border-radius: 2px;
+    border-radius: 6px;
     color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-/* Lista de Produtos */
+#add-ingrediente:hover {
+    background-color: #d36811;
+}
+
+#adicionar-produto{
+    width: 100%;
+    max-width: 200;
+    height: 30px;
+    margin-bottom: 20px;
+    background-color: orange;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#adicionar-produto:hover{
+    background-color: #d36811;
+}
+
 .lista-produtos {
     width: 80%;
     margin: 40px auto 0 auto;
@@ -138,14 +186,14 @@
     color: #333;
 }
 
-/* Container dos produtos */
+
 .produtos {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Estilo individual de cada produto */
+
 .produto {
     display: flex;
     align-items: center;
@@ -186,12 +234,22 @@
 }
 
 .edit-button {
-    background-color: #007bff;
+    background-color: #ed770f;
     margin-right: 10px;
+}
+
+.edit-button:hover {
+    background-color: #ff7700;
+    transition: 0.5s ease;
 }
 
 .delete-button {
     background-color: #dc3545;
+}
+
+.delete-button:hover {
+    background-color: #f70019;
+    transition: 0.5s ease;
 }
 
 .campo-com-contador {
@@ -206,7 +264,7 @@
     min-width: 920px;
     min-height: 36px;
     width: 920px;
-    padding-right: 60px; /* espaço para o contador */
+    padding-right: 60px; 
     box-sizing: border-box;
 }
 
@@ -220,64 +278,168 @@
 }
 
 .custom-confirm-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;       /* Centraliza horizontalmente */
-  align-items: flex-start;       /* Alinha no topo */
-  padding-top: 40px;             /* Espaçamento do topo */
-  z-index: 10000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;       
+    z-index: 10000;
 }
 
 .custom-confirm-conteudo {
-  background: #fff;
-  border-radius: 10px;
-  padding: 25px 35px;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-  animation: slideDown 0.3s ease-out forwards;  /* Aplica a animação */
-  text-align: center;
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px 35px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    animation: slideDown 0.3s ease-out forwards;  
+    text-align: center;
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
 .custom-confirm-mensagem {
-  margin-bottom: 25px;
-  font-size: 16px;
-  color: #5e3023;
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: #5e3023;
 }
 
 .custom-confirm-botoes {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 .custom-confirm-botoes button {
-  background-color: #ff7f11;
-  color: #fff;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    background-color: #ff7f11;
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .custom-confirm-botoes button:hover {
-  background-color: #9f3608;
+    background-color: #9f3608;
+}
+
+@media (max-width: 1024px) {
+  .painel-topo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .upload-imagem {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  .add-produto {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .campo-com-contador input,
+  .campo-com-contador textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .painel {
+    padding: 10px;
+  }
+
+  .upload-imagem {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .add-produto {
+    padding: 10px;
+  }
+
+  .ingredientes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #adicionar-produto {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .produto {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .produto img {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .produto h3 {
+    font-size: 16px;
+  }
+
+  .produto p {
+    font-size: 14px;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-imagem p {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .upload-button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .custom-confirm-conteudo {
+    padding: 20px;
+  }
+
+  .custom-confirm-mensagem {
+    font-size: 14px;
+  }
+
+  .custom-confirm-botoes {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .custom-confirm-botoes button {
+    width: 100%;
+    font-size: 14px;
+  }
 }
