@@ -59,6 +59,7 @@
                         <option value="trad">Tradicional</option>
                         <option value="doce">Doce</option>
                         <option value="esp">Especial</option>
+                        <option value="combo">Combo</option>
                     </select>
 
                     <input type="hidden" name="id_produto" id="id_produto">
