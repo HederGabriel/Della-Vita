@@ -5,12 +5,13 @@ include_once '../System/db.php'; // Inclui o arquivo de conexão com o banco de 
 // Verificar se o usuário está logado
 if (isset($_SESSION['id_cliente'])) {
     $id_cliente = $_SESSION['id_cliente'];
-    $stmt = $pdo->prepare("SELECT nome, avatar FROM clientes WHERE id_cliente = :id_cliente");
+    $stmt = $pdo->prepare("SELECT nome, avatar, email FROM clientes WHERE id_cliente = :id_cliente");
     $stmt->execute(['id_cliente' => $id_cliente]);
     $cliente = $stmt->fetch();
     if ($cliente) {
         $_SESSION['nome'] = $cliente['nome'];
         $_SESSION['avatar'] = $cliente['avatar'] ?? '../IMG/Profile/Default.png';
+        $_SESSION['email'] = $cliente['email'];
     }
 }
 
@@ -42,44 +43,58 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
     <nav>
         <img src="..\IMG\Logo2.jpg" alt="Logo" class="logo" onclick="window.location.href='index.php'">
-        
+
+        <!-- Navegação -->
         <div class="nav-links">
             <a href="index.php" class="<?= $current_page === 'index.php' ? 'active' : '' ?>">Início</a>
             <a href="Cardapio.php" class="<?= $current_page === 'Cardapio.php' ? 'active' : '' ?>">Cardápio</a>
         </div>
+
+        <!-- Barra de busca -->
         <div class="nav-search">
             <input type="text" id="search-bar" placeholder="Buscar..." autocomplete="off">
         </div>
 
+        <!-- Avatar ou botão de login -->
         <?php if (isset($_SESSION['id_cliente'])): ?>
-            <!-- Exibir perfil do usuário -->
-            <div class="user-profile" onclick="toggleMenu(event)">
-                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="Foto de Perfil">
+            <div id="user-profile" class="user-profile"
+                data-email="<?= htmlspecialchars($_SESSION['email']) ?>"
+                onclick="toggleMenu(event)">
+                <img src="<?= !empty($_SESSION['avatar']) ? htmlspecialchars($_SESSION['avatar']) : '../IMG/avatar_padrao.png' ?>" alt="Foto de Perfil">
             </div>
         <?php else: ?>
-            <button class="login-btn" onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">Entrar</button>
+            <button class="login-btn"
+                onclick="window.location.href='Login-Cadastro.php?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)">
+                Entrar
+            </button>
         <?php endif; ?>
     </nav>
+
+    <!-- Menu de usuário (preenchido dinamicamente pelo JS) -->
     <div id="user-menu">
-        <ul>
-            <li><a href="Perfil.php" class="<?= $current_page === 'Perfil.php' ? 'active' : '' ?>">Perfil</a></li>
-            <li><a href="Pedidos.php" class="<?= $current_page === 'Pedidos.php' ? 'active' : '' ?>">Pedidos</a></li>
-            <li><a href="#" onclick="showLogoutModal()">Sair</a></li>
-        </ul>
+        <ul></ul>
     </div>
+
+
+    <!-- Overlay e modal de logout -->
     <div id="overlay" onclick="hideLogoutModal()"></div>
+
     <div id="logout-modal">
         <p>Tem certeza que deseja sair?</p>
         <button class="confirm-btn" onclick="document.getElementById('logout-form').submit()">Confirmar</button>
         <button class="cancel-btn" onclick="hideLogoutModal()">Cancelar</button>
     </div>
-    
+
+    <!-- Formulário invisível para logout -->
     <?php if (isset($cliente)): ?>
         <form id="logout-form" method="POST" style="display: none;">
             <input type="hidden" name="logout" value="1">
         </form>
     <?php endif; ?>
+
+    <!-- Script JS que controla o menu -->
     <script src="../JS/userMenu.js"></script>
+
 
     <Header> 
         <h1>Sofisticação e sabor, direto na sua porta.</h1>
