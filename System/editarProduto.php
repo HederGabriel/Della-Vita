@@ -21,30 +21,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo = $_POST['tipo'];
     $categoria = $_POST['categoria'];
 
-    // --- CRIA OU SUBSTITUI JSON ---
-    $dadosJson = [
-        'descricao_completa' => $descricao_completa,
-        'ingredientes' => array_values($ingredientes)
-    ];
+    // --- Busca os caminhos antigos de imagem e JSON ---
+    $stmt = $pdo->prepare("SELECT imagem, dadosPagina FROM produtos WHERE id_produto = ?");
+    $stmt->execute([$id]);
+    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+    $imagemAntiga = $resultado['imagem'] ?? '';
+    $jsonAntigo = $resultado['dadosPagina'] ?? '';
 
+    // --- Pasta JSON ---
     $pastaJson = '../Json/';
     if (!file_exists($pastaJson)) {
         mkdir($pastaJson, 0777, true);
     }
 
+    // --- Apaga JSON antigo se existir ---
+    if (!empty($jsonAntigo) && file_exists($jsonAntigo)) {
+        unlink($jsonAntigo);
+    }
+
+    // --- Cria JSON novo ---
+    $dadosJson = [
+        'descricao_completa' => $descricao_completa,
+        'ingredientes' => array_values($ingredientes)
+    ];
     $nomeJson = $nomeFormatado . '.json';
     $caminhoJson = $pastaJson . $nomeJson;
     file_put_contents($caminhoJson, json_encode($dadosJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-    // --- VERIFICA IMAGEM NOVA ---
+    // --- Pasta Imagem ---
+    $pastaImagem = '../IMG/Produtos/';
+    if (!file_exists($pastaImagem)) {
+        mkdir($pastaImagem, 0777, true);
+    }
+
     $caminhoImagem = null;
 
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
-        $pastaImagem = '../IMG/Produtos/';
-        if (!file_exists($pastaImagem)) {
-            mkdir($pastaImagem, 0777, true);
+        // Apaga imagem antiga
+        if (!empty($imagemAntiga) && file_exists($imagemAntiga)) {
+            unlink($imagemAntiga);
         }
 
+        // Salva nova imagem
         $ext = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
         $nomeImagem = $nomeFormatado . '.' . $ext;
         $caminhoImagem = $pastaImagem . $nomeImagem;
@@ -54,14 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } else {
-        // Mantém imagem atual se nenhuma nova foi enviada
-        $stmt = $pdo->prepare("SELECT imagem FROM produtos WHERE id_produto = ?");
-        $stmt->execute([$id]);
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-        $caminhoImagem = $resultado['imagem'];
+        // Mantém imagem antiga
+        $caminhoImagem = $imagemAntiga;
     }
 
-    // --- ATUALIZA NO BANCO ---
+    // --- Atualiza banco ---
     $stmt = $pdo->prepare("UPDATE produtos SET nome = ?, preco = ?, imagem = ?, descricao_resumida = ?, dadosPagina = ?, tipo = ?, sabor = ? WHERE id_produto = ?");
     $success = $stmt->execute([
         $nome, $preco, $caminhoImagem, $descricao_resumida, $caminhoJson, $tipo, $categoria, $id
