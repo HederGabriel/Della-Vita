@@ -232,4 +232,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  const campoNome = document.getElementById("nome");
+  const form = document.querySelector("form");
+
+  // Cria input hidden para nome formatado
+  const inputNomeFormatado = document.createElement("input");
+  inputNomeFormatado.type = "hidden";
+  inputNomeFormatado.name = "nome_formatado";
+  form.appendChild(inputNomeFormatado);
+
+  function gerarNomeFormatado(nomeOriginal) {
+    let nome = nomeOriginal.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    nome = nome.replace(/[^a-zA-Z0-9]/g, "_");
+    return nome.toLowerCase();
+  }
+
+  function atualizarNomeFormatado() {
+    inputNomeFormatado.value = gerarNomeFormatado(campoNome.value);
+  }
+
+  campoNome.addEventListener("input", atualizarNomeFormatado);
+
+  // Força atualização no carregamento inicial (edição de produto)
+  document.addEventListener("DOMContentLoaded", () => {
+    atualizarNomeFormatado();
+  });
+
+
 });

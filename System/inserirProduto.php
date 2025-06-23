@@ -3,6 +3,7 @@ require_once '../System/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
+    $nomeFormatado = $_POST['nome_formatado']; // Recebido via JS
     $preco = number_format((float)$_POST['preco'], 2, '.', '');
     $descricao_r = mb_substr($_POST['descricao-r'], 0, 30);
     $descricao_completa = mb_substr($_POST['descricao_completa'], 0, 185);
@@ -23,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $ext = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
-    $nomeImagem = uniqid('produto_', true) . '.' . $ext;
+    $nomeImagem = $nomeFormatado . '.' . $ext; // Ex: pizza_doce.jpg
     $caminhoImagem = $pastaImagem . $nomeImagem;
 
     if (!move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoImagem)) {
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mkdir($pastaJson, 0777, true);
     }
 
-    $nomeJson = uniqid('produto_', true) . '.json';
+    $nomeJson = $nomeFormatado . '.json'; // Ex: pizza_doce.json
     $caminhoJson = $pastaJson . $nomeJson;
     file_put_contents($caminhoJson, json_encode($dadosJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
