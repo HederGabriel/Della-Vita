@@ -70,4 +70,4 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
 
 ---
 
-> Projeto acadêmico com fins de aprendizado e portfólio.
+> ⚠️ Este projeto é pessoal e não está sendo distribuído publicamente. Criado com fins de aprendizado e uso próprio.
